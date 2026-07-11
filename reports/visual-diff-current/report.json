@@ -1,0 +1,117 @@
+{
+  "generatedAt": "2026-06-28T13:23:43.960Z",
+  "baselineDir": "public",
+  "candidateDir": "public-preview",
+  "viewport": {
+    "width": 1440,
+    "height": 1200
+  },
+  "threshold": 0.1,
+  "summary": {
+    "compared": 4,
+    "changed": 0,
+    "passed": 4,
+    "missingInCandidate": 0,
+    "extraInCandidate": 0
+  },
+  "missingInCandidate": [],
+  "extraInCandidate": [],
+  "skipped": {
+    "baselineRedirects": [
+      "ja/index.html"
+    ],
+    "candidateRedirects": [
+      "ja/index.html"
+    ]
+  },
+  "results": [
+    {
+      "path": "/amp/",
+      "source": "amp/index.html",
+      "status": "passed",
+      "width": 1440,
+      "height": 1256,
+      "baselineSize": {
+        "width": 1440,
+        "height": 1256
+      },
+      "candidateSize": {
+        "width": 1440,
+        "height": 1256
+      },
+      "diffPixels": 0,
+      "diffRatio": 0,
+      "assets": {
+        "baseline": "assets/amp-99f14646-baseline.png",
+        "candidate": "assets/amp-99f14646-candidate.png",
+        "diff": "assets/amp-99f14646-diff.png"
+      }
+    },
+    {
+      "path": "/en/amp/",
+      "source": "en/amp/index.html",
+      "status": "passed",
+      "width": 1440,
+      "height": 1256,
+      "baselineSize": {
+        "width": 1440,
+        "height": 1256
+      },
+      "candidateSize": {
+        "width": 1440,
+        "height": 1256
+      },
+      "diffPixels": 0,
+      "diffRatio": 0,
+      "assets": {
+        "baseline": "assets/en-amp-1d68c4e8-baseline.png",
+        "candidate": "assets/en-amp-1d68c4e8-candidate.png",
+        "diff": "assets/en-amp-1d68c4e8-diff.png"
+      }
+    },
+    {
+      "path": "/en/",
+      "source": "en/index.html",
+      "status": "passed",
+      "width": 1440,
+      "height": 1256,
+      "baselineSize": {
+        "width": 1440,
+        "height": 1256
+      },
+      "candidateSize": {
+        "width": 1440,
+        "height": 1256
+      },
+      "diffPixels": 0,
+      "diffRatio": 0,
+      "assets": {
+        "baseline": "assets/en-477322a4-baseline.png",
+        "candidate": "assets/en-477322a4-candidate.png",
+        "diff": "assets/en-477322a4-diff.png"
+      }
+    },
+    {
+      "path": "/",
+      "source": "index.html",
+      "status": "passed",
+      "width": 1440,
+      "height": 1256,
+      "baselineSize": {
+        "width": 1440,
+        "height": 1256
+      },
+      "candidateSize": {
+        "width": 1440,
+        "height": 1256
+      },
+      "diffPixels": 0,
+      "diffRatio": 0,
+      "assets": {
+        "baseline": "assets/root-42099b4a-baseline.png",
+        "candidate": "assets/root-42099b4a-candidate.png",
+        "diff": "assets/root-42099b4a-diff.png"
+      }
+    }
+  ]
+}

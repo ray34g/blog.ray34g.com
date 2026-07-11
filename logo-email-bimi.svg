@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<svg width="96" height="96" viewBox="0 0 96 96" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg">
+ <title>ray34g.com</title>
+<circle cx="48" cy="48" r="46" fill="#212529" stroke="none"/>
+ <g>
+    <polygon points="58.1,36.24 64.1,36.24 79.4723,62.8569 76.4723,68.0531 45.7277,68.0531 42.7277,62.8569" fill="#ffffff" stroke="none"/>
+    <polygon points="61.1,48.45 67.4,59.35 54.8,59.35" fill="#212529" stroke="#212529" stroke-width="1.5" stroke-linejoin="round"/>
+    <polygon points="37.9,59.76 31.9,59.76 16.5277,33.1431 19.5277,27.9469 50.2723,27.9469 53.2723,33.1431" fill="#ffffff" stroke="none"/>
+    <polygon points="34.9,47.55 28.6,36.65 41.2,36.65" fill="#212529" stroke="#212529" stroke-width="1.5" stroke-linejoin="round"/>
+ </g>
+<circle cx="48" cy="48" r="46" fill="none" stroke="#ffffff" stroke-width="4"/>
+</svg>

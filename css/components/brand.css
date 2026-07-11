@@ -1,0 +1,25 @@
+/* assets/css/components/brand.css */
+.brand-mark {
+  display: block;
+  max-height: var(--brand-max-height, 45px);
+  width: auto;
+}
+
+.brand-wordmark {
+  display: block;
+  max-height: var(--brand-max-height, 45px);
+  width: auto;
+}
+
+.brand-lockup {
+  --brand-max-height: 45px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.brand-monochrome,
+.brand-monochrome svg {
+  color: var(--bs-emphasis-color) !important;
+}

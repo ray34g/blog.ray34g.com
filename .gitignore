@@ -1,8 +1,0 @@
-# Local and temporary files
-.DS_Store
-Thumbs.db
-*.log
-
-# Deployment tooling scratch space
-.cache/
-.tmp/

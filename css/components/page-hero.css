@@ -1,0 +1,18 @@
+
+.page-hero-background-image-derived {
+  filter: blur(24px);
+}
+
+.page-hero-title {
+  color: var(--christmas-red);
+  font-weight: 900;
+}
+
+.page-hero-title-image {
+  width: min(65%, 28rem);
+  height: auto;
+}
+
+.page-hero-subtitle {
+  color: var(--gold-20);
+}

@@ -1,0 +1,31 @@
+.media-video-section {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 0 0 2.5rem;
+  position: relative;
+  --media-video-band-overlap: clamp(4rem, 9vw, 8rem);
+}
+
+.media-video-section-inner {
+  margin: 0 auto;
+  max-width: 1080px;
+  width: min(80%, 1080px);
+}
+
+.media-video-section-title {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0;
+  min-height: var(--media-video-band-overlap);
+}
+
+.media-video-section-title-img {
+  max-height: 257px;
+  min-height: var(--media-video-band-overlap);
+  object-fit: contain;
+}
+
+.media-video-section-band {
+  margin-top: calc(var(--media-video-band-overlap) * -1);
+  padding: calc(var(--media-video-band-overlap) + 1rem) 0 2.5rem;
+}

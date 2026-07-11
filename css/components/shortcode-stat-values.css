@@ -1,0 +1,62 @@
+.stat-values {
+  --stat-value-base-size: 12rem;
+  --stat-value-size: 12rem;
+  --stat-value-scale: calc(var(--stat-value-size) / var(--stat-value-base-size));
+}
+
+.stat-value {
+  width: min(100%, var(--stat-value-size));
+}
+.stat-value-number {
+  min-height: calc(2.5rem * var(--stat-value-scale));
+}
+
+.stat-value-label {
+  font-size: clamp(
+    calc(0.8rem * var(--stat-value-scale)),
+    calc(-0.2rem * var(--stat-value-scale) + 5vw),
+    calc(1.4rem * var(--stat-value-scale))
+  );
+}
+
+.stat-value-divider {
+  margin: calc(0.4rem * var(--stat-value-scale)) 0;
+}
+
+.stat-value-number {
+  font-size: clamp(
+    calc(0.9rem * var(--stat-value-scale)),
+    calc(-0.4rem * var(--stat-value-scale) + 5vw),
+    calc(1.6rem * var(--stat-value-scale))
+  );
+}
+
+.stat-value-main {
+  font-size: 1.65em;
+}
+
+.stat-value-sub {
+  font-size: 1.1em;
+}
+
+.stat-value-unit {
+  font-size: 0.9em;
+}
+
+
+.stat-value-underline {
+  --underline-color: var(--bs-primary);
+  padding-bottom: 0.05em;
+  z-index: 0;
+}
+
+.stat-value-underline::after {
+  --underline-color: var(--gold-20);
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0.15em;
+  border-bottom: 5px solid var(--underline-color);
+  pointer-events: none;
+  z-index: -1;
+}

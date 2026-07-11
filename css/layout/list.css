@@ -1,0 +1,54 @@
+.list-page {
+  line-height: 2;
+}
+
+.list-page-intro {
+  max-width: 65ch;
+}
+
+.list-date {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.list-meta {
+  min-width: 0;
+}
+
+.pagination-primary {
+  --bs-pagination-color: var(--bs-primary);
+  --bs-pagination-hover-color: var(--bs-primary);
+  --bs-pagination-focus-color: var(--bs-primary);
+  --bs-pagination-active-bg: var(--bs-primary);
+  --bs-pagination-active-border-color: var(--bs-primary);
+  --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+.pagination-primary .page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-primary .page-number {
+  min-inline-size: 2.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pagination-primary .page-nav {
+  min-inline-size: 4.5rem;
+  white-space: nowrap;
+}
+
+.pagination-primary .page-status {
+  min-inline-size: 5rem;
+  text-align: center;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 992px) {
+  .list-date {
+    inline-size: var(--list-date-width, 22ch);
+  }
+}

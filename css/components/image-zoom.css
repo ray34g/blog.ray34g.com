@@ -1,0 +1,5 @@
+/* assets/css/components/image-zoom.css */
+#imageZoomModal .modal-header {
+  height: var(--site-header-height);
+  min-height: 3rem;
+}

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visual Diff Report</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { margin: 2rem; line-height: 1.45; }
+    header { margin-bottom: 1.5rem; }
+    h1 { font-size: 1.6rem; margin: 0 0 0.5rem; }
+    dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 0.75rem; margin: 0; }
+    dt { font-weight: 700; }
+    dd { margin: 0; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent); padding: 0.55rem; text-align: left; vertical-align: top; }
+    th { font-size: 0.85rem; }
+    .status { border-radius: 999px; display: inline-block; font-size: 0.8rem; font-weight: 700; padding: 0.1rem 0.5rem; }
+    .passed { background: #d7f5df; color: #145523; }
+    .changed { background: #ffe0d6; color: #7b2414; }
+    .assets { white-space: nowrap; }
+    .assets a + a { margin-left: 0.5rem; }
+    @media (prefers-color-scheme: dark) {
+      .passed { background: #173b20; color: #a9e7b6; }
+      .changed { background: #4a2018; color: #ffc2b2; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Visual Diff Report</h1>
+    <dl>
+      <dt>Generated</dt><dd>2026-06-28T13:23:43.960Z</dd>
+      <dt>Compared</dt><dd>4</dd>
+      <dt>Changed</dt><dd>0</dd>
+      <dt>Passed</dt><dd>4</dd>
+      <dt>Skipped redirects</dt><dd>1</dd>
+      <dt>Viewport</dt><dd>1440x1200</dd>
+      <dt>Baseline</dt><dd>public</dd>
+      <dt>Candidate</dt><dd>public-preview</dd>
+    </dl>
+  </header>
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Path</th>
+          <th>Status</th>
+          <th>Diff pixels</th>
+          <th>Diff ratio</th>
+          <th>Image size</th>
+          <th>Assets</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="/amp/">/amp/</a></td>
+          <td><span class="status passed">passed</span></td>
+          <td>0</td>
+          <td>0.000%</td>
+          <td>1440x1256</td>
+          <td class="assets">
+            <a href="assets/amp-99f14646-baseline.png">baseline</a>
+            <a href="assets/amp-99f14646-candidate.png">candidate</a>
+            <a href="assets/amp-99f14646-diff.png">diff</a>
+          </td>
+        </tr>
+        <tr>
+          <td><a href="/en/amp/">/en/amp/</a></td>
+          <td><span class="status passed">passed</span></td>
+          <td>0</td>
+          <td>0.000%</td>
+          <td>1440x1256</td>
+          <td class="assets">
+            <a href="assets/en-amp-1d68c4e8-baseline.png">baseline</a>
+            <a href="assets/en-amp-1d68c4e8-candidate.png">candidate</a>
+            <a href="assets/en-amp-1d68c4e8-diff.png">diff</a>
+          </td>
+        </tr>
+        <tr>
+          <td><a href="/en/">/en/</a></td>
+          <td><span class="status passed">passed</span></td>
+          <td>0</td>
+          <td>0.000%</td>
+          <td>1440x1256</td>
+          <td class="assets">
+            <a href="assets/en-477322a4-baseline.png">baseline</a>
+            <a href="assets/en-477322a4-candidate.png">candidate</a>
+            <a href="assets/en-477322a4-diff.png">diff</a>
+          </td>
+        </tr>
+        <tr>
+          <td><a href="/">/</a></td>
+          <td><span class="status passed">passed</span></td>
+          <td>0</td>
+          <td>0.000%</td>
+          <td>1440x1256</td>
+          <td class="assets">
+            <a href="assets/root-42099b4a-baseline.png">baseline</a>
+            <a href="assets/root-42099b4a-candidate.png">candidate</a>
+            <a href="assets/root-42099b4a-diff.png">diff</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

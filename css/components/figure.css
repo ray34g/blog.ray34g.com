@@ -1,0 +1,74 @@
+/* assets/css/components/figure.css */
+.image-media {
+  --figure-placeholder-stripe-step: 12px;
+  --figure-placeholder-stripe-cycle: 24px;
+  --figure-placeholder-min-height: 12rem;
+  --figure-placeholder-label-size: .9rem;
+  --figure-placeholder-label-spacing: .08em;
+  position: relative;
+}
+
+.image-placement picture {
+  display: block;
+}
+
+.image-media.ratio > picture,
+.image-media.ratio > picture > img,
+.image-media.ratio > img {
+  height: 100%;
+  width: 100%;
+}
+
+.image-media.has-bg-grid {
+  background:
+    linear-gradient(135deg, rgba(var(--christmas-red-rgb), 0.06), rgba(var(--gold-20-rgb), 0.1)),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(var(--christmas-red-rgb), 0.04) 0,
+      rgba(var(--christmas-red-rgb), 0.04) var(--figure-placeholder-stripe-step),
+      rgba(255, 255, 255, 0.55) var(--figure-placeholder-stripe-step),
+      rgba(255, 255, 255, 0.55) var(--figure-placeholder-stripe-cycle)
+    );
+}
+
+.image-media.has-placeholder {
+  min-height: var(--figure-placeholder-min-height);
+  background:
+    linear-gradient(135deg, rgba(var(--christmas-red-rgb), 0.08), rgba(var(--gold-20-rgb), 0.12)),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(var(--christmas-red-rgb), 0.08) 0,
+      rgba(var(--christmas-red-rgb), 0.08) var(--figure-placeholder-stripe-step),
+      rgba(255, 255, 255, 0.45) var(--figure-placeholder-stripe-step),
+      rgba(255, 255, 255, 0.45) var(--figure-placeholder-stripe-cycle)
+    );
+}
+
+.image-media.has-placeholder::before {
+  content: "[" attr(data-placeholder-label) "]";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  color: rgba(var(--christmas-deep-red-rgb), 0.7);
+  font-size: var(--figure-placeholder-label-size);
+  font-weight: 500;
+  letter-spacing: var(--figure-placeholder-label-spacing);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.image-media.is-coming-soon::before {
+  color: rgba(var(--christmas-red-rgb), 0.8);
+}
+
+.image-media.is-broken::before {
+  color: rgba(var(--christmas-red-rgb), 0.8);
+}
+
+.figure-img.is-clamped-height,
+.article-image.is-clamped-height {
+  width: auto;
+  max-width: 100%;
+  max-height: 720px;
+}

@@ -1,0 +1,53 @@
+/* assets/css/base/layout.css */
+html, body {
+    overflow-x: hidden; /* 横スクロールを無効化 */
+    background-color: var(--bs-gray-900);
+}
+
+body {
+  --skip-to-content-height: 0px;
+}
+
+.skip-to-content {
+  z-index: 1031;
+}
+
+.skip-to-content .visually-hidden-focusable {
+  max-height: 0;
+}
+
+.skip-to-content:focus-within .visually-hidden-focusable {
+  max-height: var(--skip-to-content-height);
+}
+
+body:has(.skip-to-content:focus-within) {
+  --skip-to-content-height: 3rem;
+}
+
+body:has(.skip-to-content:focus-within) .site-header {
+  top: var(--skip-to-content-height);
+}
+
+.site-header {
+  height: var(--site-header-height);
+}
+
+.site-header .navbar-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.site-header nav>*:not(.navbar-bg) {
+  position: relative;
+  z-index: 1;
+}
+
+.below-site-header {
+  padding-top: var(--site-header-height);
+}
+
+.site-header-adjusted-vh {
+  min-height: calc(100vh - var(--site-header-height));
+}

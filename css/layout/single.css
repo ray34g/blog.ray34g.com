@@ -1,0 +1,83 @@
+/* assets/css/layout/single.css */
+/* FAQ accordion: square corners and no left/right borders */
+.faq-accordion {
+  --bs-accordion-border-radius: 0;
+  --bs-accordion-inner-border-radius: 0;
+  --bs-accordion-btn-padding-x: 0.5rem;
+  --bs-accordion-btn-focus-box-shadow: unset;
+  --bs-accordion-active-color: var(--christmas-red);
+  --bs-accordion-active-bg: unset;
+  --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23212529' stroke-linecap='butt' stroke-linejoin='miter'%3e%3cpath d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23212529' stroke-linecap='butt' stroke-linejoin='miter'%3e%3cpath d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+.faq-accordion .accordion-item {
+  border-left: 0;
+  border-right: 0;
+}
+.faq-accordion .faq-q-number {
+  flex: 0 0 3ch;
+  align-self: flex-start;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+.faq-accordion .faq-q-separator {
+  flex: 0 0 1ch;
+  align-self: flex-start;
+}
+
+/* Contact form inputs */
+.contact-mailto-input {
+  border-bottom: 2px solid var(--bs-primary-border-subtle) !important;
+}
+.contact-mailto-input:focus {
+  box-shadow: none;
+}
+
+.contact-mailto-input::placeholder {
+  opacity: .5;
+}
+
+.page-article h2 {
+  color: var(--christmas-red);
+  font-weight: 900;
+}
+
+.page-article {
+  line-height: 2;
+}
+.news-article .content .content-table-wrap {
+  --table-wrap-width: 100vw;
+
+  position: relative;
+  width: var(--table-wrap-width);
+  max-width: none;
+
+  margin-inline: calc(50% - var(--table-wrap-width) / 2);
+
+  overflow: visible;
+
+  display: flex;
+  justify-content: center;
+}
+
+.news-article .content .content-table-wrap .table {
+  width: max-content;
+  max-width: none;
+
+  flex: 0 0 auto;
+
+  line-height: 1.6;
+  margin: 0;
+}
+
+.news-article .content .content-table-wrap .table > :not(caption) > * > * {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  max-width: var(--table-cell-max, clamp(14ch, 28vw, 34ch));
+  padding: 0.75rem 1rem;
+}
+
+.news-article .content .content-table-wrap .table th {
+  min-width: 2rem;
+}

@@ -1,0 +1,40 @@
+/* assets/css/base/tokens.css */
+
+:root { color-scheme: light dark; }
+
+:root,
+[data-bs-theme="light"],
+[data-bs-theme="dark"] {
+  --bs-primary: #212529;
+  --bs-primary-rgb: 33, 37, 41;
+  --bs-primary-bg-subtle: #343a40;
+  --bs-primary-border-subtle: #495057;
+  
+  --site-header-height: 5rem; 
+
+  --bg-overlay-glass-blur: 16px;
+  --bg-overlay-glass-alpha: 0.92;
+
+  --bs-link-color: var(--bs-primary);
+  --bs-link-color-rgb: var(--bs-primary-rgb);
+  --bs-link-decoration: underline;
+  --bs-link-hover-color: #495057;
+  --bs-link-hover-color-rgb: 73, 80, 87;
+  
+  --bs-dropdown-link-active-bg: var(--bs-primary);
+}
+
+[data-bs-theme="dark"] {
+  /* 例：ダーク時だけ glass を濃くする等 */
+}
+
+.navbar-dark, .navbar[data-bs-theme=dark] {
+  /* 例：ダーク時だけ glass を濃くする等 */
+  --bs-navbar-color: rgba(255, 255, 255, 0.75);
+  --bs-navbar-hover-color: rgba(255, 255, 255, 0.85);
+}
+
+.bg-body ::selection {
+  color: #fff;
+  background: var(--bs-primary);
+}

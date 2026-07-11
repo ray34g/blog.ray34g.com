@@ -1,0 +1,79 @@
+:root {
+  --bs-font-sans-serif: 
+    "Poppins", system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", 
+    "Noto Sans", "Liberation Sans", 
+    Arial, sans-serif, 
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+:root[lang="ja"],
+:root[lang="ja-JP"] {
+  --bs-font-sans-serif: 
+    "Poppins", "Noto Sans JP", system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue",
+    "Noto Sans", "Liberation Sans",
+    Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+h1, h2, h3, h4, h5, h6 {
+  --bs-body-font-family:
+    "Poppins",
+    "LINE Seed JP",
+    var(--bs-font-sans-serif)!important;
+}
+
+.h2 {
+  color: var(--christmas-red);
+  font-weight: 900;
+}
+
+.site-header {
+  --bs-body-font-family:
+    "Poppins",
+    "LINE Seed JP",
+    var(--bs-font-sans-serif)!important;
+}
+
+.heading-anchor {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+.anchor-link {
+  vertical-align: baseline;
+}
+
+.content-heading {
+  scroll-margin-top: calc(var(--site-header-height) + 1rem);
+}
+
+.content-heading-prefix {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: baseline;
+}
+
+.heading-prefix-icon {
+  vertical-align: middle;
+}
+
+.content-heading:hover .heading-anchor,
+.content-heading:focus-within .heading-anchor {
+  opacity: 1;
+}
+
+.heading-anchor:hover,
+.heading-anchor:focus-visible {
+  color: var(--bs-primary) !important;
+}
+
+.heading-anchor-icon {
+  vertical-align: middle;
+}
+
+:root[lang="ja"] .phrasebreak,
+:root[lang="ja-JP"] .phrasebreak {
+  word-break: auto-phrase;
+}
