@@ -1,6 +1,6 @@
 main:
   - name: "Home"
-    pageRef: "/"
+    url: https://ray34g.com/
     weight: 100
     # params:
     #   hideWhenCurrent: true

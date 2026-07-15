@@ -1,6 +1,7 @@
 ---
 title: Hugo と Decap CMS で編集者向けワークフローを作る
 date: 2026-06-28
+draft: true
 description: Git ベースの静的サイトで、非エンジニアが安全に更新できる編集体験を作るための設計メモ。
 techs:
   - Hugo

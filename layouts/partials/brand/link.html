@@ -6,6 +6,7 @@
     mediaGroupClass: string (mark + wordmark wrapper class)
     wordmarkClass: string (wordmark wrapper/img class)
     textClass: string (brand text class)
+    markProcess: string (optional Hugo image processing specification)
     href: string (optional)
 */}}
 
@@ -30,6 +31,7 @@
 {{- $mediaGroupClass := .mediaGroupClass | default "brand-lockup" -}}
 {{- $wordmarkClass := .wordmarkClass | default "d-block flex-shrink-0" -}}
 {{- $textClass := .textClass | default "fw-semibold" -}}
+{{- $markProcess := .markProcess | default "" -}}
 
 {{/* ---- visible label policy ---- */}}
 {{- $displayLabel := "" -}}
@@ -59,6 +61,7 @@
         "alt" $alt
         "class" $mediaClass
         "svgClass" $markSvgClass
+        "process" $markProcess
       ) -}}
       {{- partial "brand/media.html" (dict
         "path" $wordmark

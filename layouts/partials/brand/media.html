@@ -4,12 +4,14 @@
     alt: string
     class: string
     svgClass: string
+    process: string (optional Hugo image processing specification)
 */}}
 
 {{- $path := .path | default "" -}}
 {{- $alt := .alt | default site.Title -}}
 {{- $class := .class | default "" -}}
 {{- $svgClass := .svgClass | default "" -}}
+{{- $process := .process | default "" -}}
 
 {{- if ne (trim $path " \t\r\n") "" -}}
   {{- $resource := resources.Get $path -}}
@@ -40,9 +42,13 @@
     {{- $imgH := 0 -}}
 
     {{- with $resource -}}
-      {{- $imgSrc = .RelPermalink -}}
-      {{- $imgW = .Width -}}
-      {{- $imgH = .Height -}}
+      {{- $processed := . -}}
+      {{- if ne $process "" -}}
+        {{- $processed = .Resize $process -}}
+      {{- end -}}
+      {{- $imgSrc = $processed.RelPermalink -}}
+      {{- $imgW = $processed.Width -}}
+      {{- $imgH = $processed.Height -}}
     {{- else -}}
       {{- $staticPath := printf "static/%s" (strings.TrimPrefix "/" $path) -}}
       {{- if fileExists $staticPath -}}

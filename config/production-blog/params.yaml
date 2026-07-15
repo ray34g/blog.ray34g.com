@@ -1,7 +1,6 @@
-header:
-  brand:
-    label: blog.ray34g.com
-    alt: blog.ray34g.com
+nav:
+  mainMenu:
+    title: ray34g.com
 feed:
   sections:
   - posts
