@@ -5,7 +5,7 @@
   {{- partial "skip-to-content.html" . -}}
   {{- partial "header.html" . -}}
   {{- if eq hugo.Environment "production-blog" -}}
-  <div class="main-content-wrapper d-flex flex-column flex-grow-1 bg-body" data-bs-theme="light">
+  <div class="main-content-wrapper d-flex flex-column flex-grow-1 bg-body">
     <div class="container-xxl px-4 px-xxl-2 below-site-header">
       <div class="blog-content-grid d-lg-grid">
         <aside class="blog-sidebar">
@@ -19,7 +19,7 @@
     {{ block "back_to_top" . }}{{ end }}
   </div>
   {{- else -}}
-  <div id="main-content" tabindex="-1" class="main-content-wrapper d-flex flex-column flex-grow-1 bg-body" data-bs-theme="light">
+  <div id="main-content" tabindex="-1" class="main-content-wrapper d-flex flex-column flex-grow-1 bg-body">
     {{ block "main" . }}{{ end }}
     {{ block "back_to_top" . }}{{ end }}
   </div>

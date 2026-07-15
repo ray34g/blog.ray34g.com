@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "contractVersion": "1.0.0",
+  "sourceRepository": "ray34g/ray34g-personal-website",
+  "sourceCommit": "9e0bc140a14c394fe5cabf7b24cd1e954b887121",
+  "bootstrapVersion": "5.3.8",
+  "files": [
+    {
+      "path": "assets/css/base/tokens.css",
+      "sha256": "420725e76c76a17f3321d2896734c1bcf173ef188ee965064955fd77cbbdfa06"
+    },
+    {
+      "path": "assets/js/theme.js",
+      "sha256": "b00d4c30b223e868bbdcd1360c7715c470c3e5e4f568bbb096fa2b12a4e74171"
+    },
+    {
+      "path": "layouts/_default/baseof.html",
+      "sha256": "f8f45fd1cb1f85986d17876e99185443d81d6d6aa28e3352e6df0430c19fe09a"
+    }
+  ]
+}

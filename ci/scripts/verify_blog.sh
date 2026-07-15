@@ -73,6 +73,11 @@ if ! rg -q 'data-back-to-top' "${PUBLIC_DIR}/posts/index.html"; then
   exit 1
 fi
 
+if rg -q 'main-content-wrapper[^>]*data-bs-theme=.?light' "${PUBLIC_DIR}/index.html"; then
+  echo "[verify-blog] ERROR: blog content wrapper must inherit the selected color theme" >&2
+  exit 1
+fi
+
 python3 - "${PUBLIC_DIR}/feeds/atom.xml" <<'PY'
 import sys
 import xml.etree.ElementTree as ET

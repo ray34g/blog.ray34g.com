@@ -9,6 +9,7 @@
     "build:fast": "ci/scripts/build_blog_fast.sh public",
     "serve": "hugo server --environment production-blog --disableFastRender --bind=0.0.0.0 --port=1315",
     "verify": "ci/scripts/verify_blog.sh public",
+    "verify:theme": "node scripts/verify-theme-backport.mjs",
     "check:i18n": "ci/scripts/check_i18n_keys.sh",
     "render-report": "node scripts/render-report.mjs",
     "build-diff-report": "bash scripts/build-diff-report.sh",
@@ -20,7 +21,7 @@
     "lhci": "lhci autorun",
     "check:links": "linkinator http://localhost:1313/ --recurse --skip '^https?://(?!localhost:1313)'",
     "sbom": "ci/scripts/generate_sbom.sh",
-    "test": "npm run build && npm run verify"
+    "test": "npm run verify:theme && npm run build && npm run verify"
   },
   "author": "",
   "license": "",

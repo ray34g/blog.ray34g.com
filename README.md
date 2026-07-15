@@ -30,6 +30,11 @@ Shared brand/theme changes arrive as reviewed backport pull requests from the
 private upstream. This repository must never require private-upstream access at
 build time.
 
+`theme-backport.lock.json` records the exact upstream commit, Bootstrap version
+and SHA-256 of every allowlisted shared file. `npm run verify:theme` checks it
+against this repository's independent `config/theme-backport-policy.yaml` before
+the production build.
+
 ## License
 
 Code is licensed under the MIT License. Third-party notices are listed in
