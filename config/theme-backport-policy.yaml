@@ -1,0 +1,8 @@
+schemaVersion: 1
+contractVersion: 1.0.0
+sourceRepository: ray34g/ray34g-personal-website
+bootstrapVersion: 5.3.8
+allowedFiles:
+  - assets/css/base/tokens.css
+  - assets/js/theme.js
+  - layouts/_default/baseof.html
