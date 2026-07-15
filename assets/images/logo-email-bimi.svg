@@ -1,16 +1,12 @@
-<?xml version='1.0' encoding='utf-8'?>
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 96.0 96.0" version="1.1" id="SVGRoot">
-  <defs id="defs-default">
-    <mask maskUnits="userSpaceOnUse" id="waveMask">
-      <circle id="sphere-mask" cx="48" cy="48" r="47" fill="#ffffff"/>
-    </mask>
-  </defs>
-  <g id="layer1" transform="scale(0.75 0.75)" transform-origin="center" >
-    <circle style="fill:#222222;fill-opacity:1;stroke:none;" id="sphere" cx="48" cy="48" r="47" />
-    <circle style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:4;" id="sphere-wall" cx="48" cy="48" r="47" />
-  </g>
-  <g id="layer2" transform="scale(0.75 0.75)" transform-origin="center" mask="url(#waveMask)">
-    <path id="wave2" style="fill:#ffffff;fill-opacity:0.2;stroke:none;" d="M 18.12121,56.001256 C 12.24105,56.038626 6.22559,56.915866 0,59.164687 V 104 H 93.090906 192 V 59.164687 c -32.66939,15.078424 -65.70597,-11.993699 -98.909094,0 C 66.54704,71.415909 43.60191,55.839343 18.12121,56.001256 Z" />
-    <path id="wave1" style="fill:#ffffff;fill-opacity:0.93333334;stroke:none;" d="m 173.87879,56.001256 c 5.88016,0.03737 11.89562,0.91461 18.12121,3.163431 V 104 H 98.909094 0 V 59.164687 c 32.669392,15.078424 65.705969,-11.993699 98.909094,0 26.543866,12.251222 49.488996,-3.325344 74.969696,-3.163431 z" />
-  </g>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<svg width="96" height="96" viewBox="0 0 96 96" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg">
+ <title>ray34g.com</title>
+ <circle cx="48" cy="48" r="46" fill="#212529" stroke="none"/>
+ <g>
+  <polygon points="58.1,36.24 64.1,36.24 79.4723,62.8569 76.4723,68.0531 45.7277,68.0531 42.7277,62.8569" fill="#ffffff" stroke="none"/>
+  <polygon points="61.1,48.45 67.4,59.35 54.8,59.35" fill="#212529" stroke="#212529" stroke-width="1.5" stroke-linejoin="round"/>
+  <polygon points="37.9,59.76 31.9,59.76 16.5277,33.1431 19.5277,27.9469 50.2723,27.9469 53.2723,33.1431" fill="#ffffff" stroke="none"/>
+  <polygon points="34.9,47.55 28.6,36.65 41.2,36.65" fill="#212529" stroke="#212529" stroke-width="1.5" stroke-linejoin="round"/>
+ </g>
+ <circle cx="48" cy="48" r="46" fill="none" stroke="#ffffff" stroke-width="4"/>
 </svg>

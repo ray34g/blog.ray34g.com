@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg version="1.1" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
-<path d="m124.5 216-89.39 88.36-9.98-10.01 87.48-86.72-93.18 0.0951 0.2283-14.25 95.64-0.097-53.24-49.87 10.07-10.07 52.37 49.03 0.1257-180.5h14.25l0.1257 179.7 82.9-82.03 9.969 10.18-84.49 83.65 103.1-0.0203 8e-3 14.25-98.58 0.3758 17.96 16.75-10.02 9.874-20.82-19.31-0.1025 231.8h-14.3zm46.43 29.29 10.07-10.01 70.4 65.99-9.513 10.21zm101.9-37.56 0.0157-14.25h22.49l-0.1516 14.25zm-228.5-80.77 10.08-10.07 10.13 9.535-10.06 10.04zm-34.78-32.95 9.445-9.908 22.97 21.31-9.801 9.687zm129.3 376.5-0.0129 27.5h-14.25l-0.0131-27.5" fill="#db0632" stroke-width=".25"/>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<svg width="96" height="96" viewBox="0 0 96 96" version="1.2" baseProfile="tiny" xmlns="http://www.w3.org/2000/svg">
+ <title>ray34g.com</title>
+ <circle cx="48" cy="48" r="46" fill="#212529" stroke="none"/>
+ <g>
+  <polygon points="58.1,36.24 64.1,36.24 79.4723,62.8569 76.4723,68.0531 45.7277,68.0531 42.7277,62.8569" fill="#ffffff" stroke="none"/>
+  <polygon points="61.1,48.45 67.4,59.35 54.8,59.35" fill="#212529" stroke="#212529" stroke-width="1.5" stroke-linejoin="round"/>
+  <polygon points="37.9,59.76 31.9,59.76 16.5277,33.1431 19.5277,27.9469 50.2723,27.9469 53.2723,33.1431" fill="#ffffff" stroke="none"/>
+  <polygon points="34.9,47.55 28.6,36.65 41.2,36.65" fill="#212529" stroke="#212529" stroke-width="1.5" stroke-linejoin="round"/>
+ </g>
+ <circle cx="48" cy="48" r="46" fill="none" stroke="#ffffff" stroke-width="4"/>
 </svg>
