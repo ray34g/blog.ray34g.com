@@ -1,0 +1,65 @@
+# i18n/en.yaml
+
+# Reserved words
+
+_id: "id"
+_description: "description"
+_hash: "hash"
+_zero: "zero"
+_one: "one"
+_two: "two"
+_few: "few"
+_many: "many"
+_other: "other"
+
+# UI Messages
+
+search: "Search"
+search_placeholder: "Search..."
+search_open_button_title: "Open Search"
+skip_to_content: "Skip to main content"
+back_to_top: "Back to top"
+"search.title": "Search"
+"search.input_label": "Search query"
+"search.placeholder": "Type to search..."
+"search.results": "Search results"
+"search.hint": "Start typing to see results."
+"search.footer_hint": "Tip: Press Esc to close."
+"common.close": "Close"
+
+preferences_language: "Languages"
+preferences_theme: "Themes"
+preferences_theme_auto: "Auto"
+preferences_theme_light: "Light"
+preferences_theme_dark: "Dark"
+
+news: "News"
+news_no_articles: "No news articles yet."
+list_no_articles: "No items in {{ .Section }} yet."
+figure_image_coming_soon: "Image coming soon"
+figure_broken_image: "Unable to display image"
+article_anchor_label: "Link to this heading"
+related_links: "Related Links"
+video_gallery: "Video Gallery"
+video_selection: "Video selection"
+youtube_watch_on_youtube: "Watch on YouTube"
+youtube_watch_aria: "Watch {{ .Title }} on YouTube"
+youtube_play_aria: "Play {{ .Title }}"
+pagination_prev: "Previous"
+pagination_next: "Next"
+social_platform_instagram: "Instagram"
+social_platform_facebook: "Facebook"
+social_platform_x: "X (Twitter)"
+social_platform_email: "Email"
+social_platform_rss: "RSS"
+social_platform_print: "Print"
+
+home_about_eyebrow: "Profile"
+home_about_title: "About this site"
+home_latest_posts: "Latest posts"
+home_view_all_posts: "View all posts"
+
+# Badges
+tokyo: "Tokyo"
+osaka: "Osaka"
+common: "Common"

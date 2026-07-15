@@ -1,0 +1,22 @@
+<section class="py-5" aria-labelledby="home-about-title">
+  <div class="container-xxl py-lg-4">
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-12 col-lg-6">
+        {{- with resources.Get "images/placeholders/home-profile.svg" -}}
+          <img class="img-fluid w-100 rounded-4" src="{{ .RelPermalink }}" width="960" height="640" alt="" loading="lazy" decoding="async">
+        {{- end -}}
+      </div>
+      <article class="col-12 col-lg-6">
+        <p class="text-uppercase small fw-semibold text-body-secondary mb-2">{{ i18n "home_about_eyebrow" }}</p>
+        <h2 id="home-about-title" class="display-6 fw-bold mb-4">{{ i18n "home_about_title" }}</h2>
+        <div class="content">
+          {{- with .Content -}}
+            {{ . }}
+          {{- else -}}
+            <p>{{ site.Params.description }}</p>
+          {{- end -}}
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,25 @@
+{{- $payload := dict
+  "page" .Page
+  "platform" (.Get "platform")
+  "href" (.Get "href")
+  "label" (.Get "label")
+  "icon" (.Get "icon")
+  "ariaLabel" (.Get "ariaLabel")
+  "newTab" (.Get "newTab")
+  "target" (.Get "target")
+  "rel" (.Get "rel")
+  "buttonClass" (.Get "buttonClass")
+  "iconWrapClass" (.Get "iconWrapClass")
+  "iconClass" (.Get "iconClass")
+  "labelClass" (.Get "labelClass")
+  "trailingIcon" (.Get "trailingIcon")
+  "trailingIconClass" (.Get "trailingIconClass")
+  "trailingIconGapClass" (.Get "trailingIconGapClass")
+  "itemClass" (.Get "itemClass")
+-}}
+
+{{- with .Parent -}}
+  {{- .Scratch.Add "cta-links-items" (slice $payload) -}}
+{{- else -}}
+  {{ partial "cta/link.html" $payload }}
+{{- end -}}

@@ -1,0 +1,38 @@
+{{ define "main" }}
+  {{- if eq hugo.Environment "production-blog" -}}
+    {{- $posts := where site.RegularPages "Section" "posts" -}}
+    {{ partial "blog/post-list.html" (dict "page" . "pages" $posts.ByDate.Reverse) }}
+  {{- else -}}
+    {{- $homeSections := .Params.home_sections | default dict -}}
+    {{- $showAbout := index $homeSections "about" | default false -}}
+    {{- $showLatestPosts := index $homeSections "latest_posts" | default false -}}
+    {{- $youtube := .Params.youtube | default dict -}}
+    {{- partial "home/hero.html" . -}}
+
+    <div class="bg-body flex-grow-1">
+      {{- if $showAbout -}}
+        {{- partial "home/about.html" . -}}
+      {{- end -}}
+
+      {{- with index $youtube "videoId" -}}
+        <section class="pb-5" aria-label="YouTube">
+          <div class="container-xxl">
+            <div class="ratio ratio-16x9">
+              {{- partial "home/youtube-facade.html" (dict "page" $ "youtube" $youtube) -}}
+            </div>
+          </div>
+        </section>
+      {{- end -}}
+
+      {{- if $showLatestPosts -}}
+        {{- partial "home/latest-posts.html" . -}}
+      {{- end -}}
+    </div>
+  {{- end -}}
+{{ end }}
+
+{{ define "back_to_top" }}
+  {{- if eq hugo.Environment "production-blog" -}}
+    {{ partial "back-to-top.html" . }}
+  {{- end -}}
+{{ end }}

@@ -1,0 +1,29 @@
+{{/* layouts/partials/header/navbar-brand.html */}}
+
+{{- $brand := site.Params.header.brand | default dict -}}
+{{- $mainMenuAppearance := site.Params.appearance.mainMenu | default dict -}}
+{{- $usePrimaryForeground := eq ($mainMenuAppearance.primaryColorUse | default "none") "foreground" -}}
+
+{{- $mediaClass := "d-block flex-shrink-0" -}}
+{{- $mediaGroupClass := "brand-lockup" -}}
+{{- $wordmarkClass := "d-block flex-shrink-0" -}}
+{{- with $brand.class -}}
+  {{- $mediaClass = printf "%s %s" $mediaClass . -}}
+  {{- $wordmarkClass = printf "%s %s" $wordmarkClass . -}}
+{{- end -}}
+
+{{- $linkClass := "d-flex align-items-center gap-2 me-lg-4 text-decoration-none text-body-emphasis" -}}
+{{- $textClass := "fw-semibold fs-5" -}}
+{{- if not $usePrimaryForeground -}}
+  {{- $mediaGroupClass = printf "%s %s" $mediaGroupClass "brand-monochrome" -}}
+{{- end -}}
+
+{{ partial "brand/link.html" (dict
+  "brand" $brand
+  "class" $linkClass
+  "mediaClass" $mediaClass
+  "mediaGroupClass" $mediaGroupClass
+  "wordmarkClass" $wordmarkClass
+  "textClass" $textClass
+  "href" .Site.Home.RelPermalink
+) }}

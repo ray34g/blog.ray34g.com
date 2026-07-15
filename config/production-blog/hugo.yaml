@@ -1,0 +1,10 @@
+baseURL: https://blog.ray34g.com/
+title: blog.ray34g.com
+buildDrafts: false
+buildFuture: false
+outputs:
+  home:
+  - HTML
+  - RSS
+  - JSON
+  - Atom

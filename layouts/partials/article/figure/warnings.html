@@ -1,0 +1,42 @@
+{{- $warnEnabled := .warnEnabled | default false -}}
+{{- if not $warnEnabled -}}
+  {{- return "" -}}
+{{- end -}}
+
+{{- $pagePath := .pagePath | default "(unknown page)" -}}
+{{- $destination := .destination | default "" -}}
+{{- $mobileDestination := .mobileDestination | default "" -}}
+{{- $imgAlt := .imgAlt | default "" -}}
+{{- $srcsetRaw := .srcsetRaw -}}
+{{- $sizes := .sizes -}}
+{{- $mobileImage := .mobileImage | default dict -}}
+{{- $hasResponsiveSources := .hasResponsiveSources | default false -}}
+{{- $mobileResolvedWidth := .mobileResolvedWidth -}}
+{{- $mobileResolvedHeight := .mobileResolvedHeight -}}
+{{- $resolvedWidth := .resolvedWidth -}}
+{{- $resolvedHeight := .resolvedHeight -}}
+{{- $hasSource := .hasSource | default false -}}
+{{- $hasResolvedImage := .hasResolvedImage | default false -}}
+{{- $desktopImage := .desktopImage | default dict -}}
+
+{{- if eq (trim $imgAlt " \t\r\n") "" -}}
+  {{- warnf "[figure] missing alt text: page=%s src=%q" $pagePath $destination -}}
+{{- end -}}
+{{- if and $srcsetRaw (not $sizes) -}}
+  {{- warnf "[figure] srcset used without sizes: page=%s src=%q" $pagePath $destination -}}
+{{- end -}}
+{{- if and $mobileDestination (not (index $mobileImage "found")) (not (index $mobileImage "isRemote")) -}}
+  {{- warnf "[figure] mobile image could not be resolved: page=%s src=%q mobileSrc=%q" $pagePath $destination $mobileDestination -}}
+{{- end -}}
+{{- if and $hasResponsiveSources (or $mobileResolvedWidth $mobileResolvedHeight) (not (and $mobileResolvedWidth $mobileResolvedHeight)) -}}
+  {{- warnf "[figure] mobileWidth/mobileHeight should be paired: page=%s src=%q mobileSrc=%q" $pagePath $destination $mobileDestination -}}
+{{- end -}}
+{{- if and $hasResponsiveSources (or $srcsetRaw $sizes) -}}
+  {{- warnf "[figure] mobileSrc takes precedence over srcset/sizes: page=%s src=%q" $pagePath $destination -}}
+{{- end -}}
+{{- if and (not $resolvedWidth) (not $resolvedHeight) -}}
+  {{- warnf "[figure] no width/height provided: page=%s src=%q" $pagePath $destination -}}
+{{- end -}}
+{{- if and $hasSource (not $hasResolvedImage) (not (index $desktopImage "isRemote")) -}}
+  {{- warnf "[figure] local image could not be resolved: page=%s src=%q" $pagePath $destination -}}
+{{- end -}}

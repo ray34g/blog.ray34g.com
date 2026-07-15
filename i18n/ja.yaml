@@ -1,0 +1,81 @@
+# i18n/ja.yaml
+
+# Reserved words
+
+_id: "識別子"
+_description: "説明"
+_hash: "ハッシュ"
+_zero: "0件"
+_one: "1件"
+_two: "2件"
+_few: "数件"
+_many: "多数"
+_other: "その他"
+
+# Global UI messages for 404
+
+page_not_found_title_ja: "ページが見つかりませんでした"
+page_not_found_description_ja: "お探しのページは移動したか、削除された可能性があります。"
+page_not_found_suggestion_ja: "前のページに戻るか、ホームから目的のページを探してみてください。"
+
+go_back_to_home_ja: "トップページに戻る"
+back_to_prev_ja: "前のページに戻る"
+
+page_not_found_title_en: "Page not found"
+page_not_found_description_en: "The page you’re looking for may have been moved or no longer exists."
+page_not_found_suggestion_en: "Head to Home to continue, or go back to the previous page."
+
+go_back_to_home_en: "Go to home"
+back_to_prev_en: "Go back"
+
+# UI Messages
+
+search: "検索"
+search_placeholder: "検索"
+search_open_button_title: "検索機能を開く"
+skip_to_content: "本文へスキップ"
+back_to_top: "ページの先頭へ戻る"
+"search.title": "検索"
+"search.input_label": "検索キーワード"
+"search.placeholder": "検索語句を入力..."
+"search.results": "検索結果"
+"search.hint": "入力すると検索結果が表示されます。"
+"search.footer_hint": "Escキーで閉じられます。"
+"common.close": "閉じる"
+
+preferences_language: "Languages"
+preferences_theme: "Themes"
+preferences_theme_auto: "Auto"
+preferences_theme_light: "Light"
+preferences_theme_dark: "Dark"
+
+news: "ニュース"
+news_no_articles: "ニュース記事はまだありません。"
+list_no_articles: "「{{ .Section }}」の項目はまだありません。"
+figure_image_coming_soon: "画像準備中"
+figure_broken_image: "画像を表示できません"
+article_anchor_label: "この見出しへのリンク"
+related_links: "関連リンク"
+video_gallery: "動画ギャラリー"
+video_selection: "動画の切り替え"
+youtube_watch_on_youtube: "YouTubeで見る"
+youtube_watch_aria: "YouTube で{{ .Title }}を見る"
+youtube_play_aria: "{{ .Title }}を再生"
+pagination_prev: "前へ"
+pagination_next: "次へ"
+social_platform_instagram: "Instagram"
+social_platform_facebook: "Facebook"
+social_platform_x: "X (Twitter)"
+social_platform_email: "メール"
+social_platform_rss: "RSS"
+social_platform_print: "印刷"
+
+home_about_eyebrow: "プロフィール"
+home_about_title: "このサイトについて"
+home_latest_posts: "最新の投稿"
+home_view_all_posts: "投稿一覧へ"
+
+# Badges
+tokyo: "東京"
+osaka: "大阪"
+common: "共通"

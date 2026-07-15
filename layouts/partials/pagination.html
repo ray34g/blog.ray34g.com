@@ -1,0 +1,57 @@
+{{- $paginator := .paginator -}}
+{{- if and $paginator (gt $paginator.TotalPages 1) -}}
+  {{- $lang := lower (.page.Lang | default site.Language.Lang | default "en") -}}
+  {{- $prevLabel := i18n "pagination_prev" | default (cond (eq $lang "ja") "前へ" "Previous") -}}
+  {{- $nextLabel := i18n "pagination_next" | default (cond (eq $lang "ja") "次へ" "Next") -}}
+
+  <nav class="mt-4 pt-2" aria-label="Pagination">
+    <ul class="pagination pagination-primary justify-content-center flex-wrap mb-0 gap-1">
+
+      <li class="page-item{{ if not $paginator.HasPrev }} disabled{{ end }}">
+        {{- if $paginator.HasPrev -}}
+          <a class="page-link page-nav rounded-pill px-3 py-1" href="{{ $paginator.Prev.URL }}">
+            {{ $prevLabel }}
+          </a>
+        {{- else -}}
+          <span class="page-link page-nav rounded-pill px-3 py-1" aria-disabled="true">
+            {{ $prevLabel }}
+          </span>
+        {{- end -}}
+      </li>
+
+      {{/* スマホ用: 現在ページ / 総ページ数 */}}
+      <li class="page-item d-sm-none">
+        <span class="page-link page-status rounded-pill px-3 py-1">
+          {{ $paginator.PageNumber }} / {{ $paginator.TotalPages }}
+        </span>
+      </li>
+
+      {{/* sm以上: 全ページ番号 */}}
+      {{- range $paginator.Pagers -}}
+        {{- $isCurrent := eq .PageNumber $paginator.PageNumber -}}
+        <li class="page-item d-none d-sm-block{{ if $isCurrent }} active{{ end }}">
+          <a
+            class="page-link page-number rounded-pill px-3 py-1"
+            href="{{ .URL }}"
+            aria-label="{{ if eq $lang "ja" }}{{ .PageNumber }}ページ目{{ else }}Page {{ .PageNumber }}{{ end }}"
+            {{ if $isCurrent }}aria-current="page"{{ end }}>
+            {{ .PageNumber }}
+          </a>
+        </li>
+      {{- end -}}
+
+      <li class="page-item{{ if not $paginator.HasNext }} disabled{{ end }}">
+        {{- if $paginator.HasNext -}}
+          <a class="page-link page-nav rounded-pill px-3 py-1" href="{{ $paginator.Next.URL }}">
+            {{ $nextLabel }}
+          </a>
+        {{- else -}}
+          <span class="page-link page-nav rounded-pill px-3 py-1" aria-disabled="true">
+            {{ $nextLabel }}
+          </span>
+        {{- end -}}
+      </li>
+
+    </ul>
+  </nav>
+{{- end -}}

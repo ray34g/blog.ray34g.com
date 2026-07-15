@@ -1,0 +1,52 @@
+{{- $attrs := .Attributes | default dict -}}
+{{- $figureAttrs := dict -}}
+
+{{- with index $attrs "class" -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "imgClass" (printf "article-image %s" .)) -}}
+{{- else -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "imgClass" "article-image") -}}
+{{- end -}}
+
+{{- with index $attrs "id" -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "id" .) -}}
+{{- end -}}
+{{- with index $attrs "figureClass" -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "class" .) -}}
+{{- end -}}
+{{- with index $attrs "mediaClass" -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "mediaClass" .) -}}
+{{- end -}}
+{{- with or (index $attrs "caption") .Title -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "caption" .) -}}
+{{- end -}}
+{{- with index $attrs "mobileSrc" -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "mobileSrc" .) -}}
+{{- end -}}
+{{- with index $attrs "mobileWidth" -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "mobileWidth" .) -}}
+{{- end -}}
+{{- with index $attrs "mobileHeight" -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "mobileHeight" .) -}}
+{{- end -}}
+{{- with index $attrs "loading" -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "loading" .) -}}
+{{- end -}}
+{{- with index $attrs "decoding" -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "decoding" .) -}}
+{{- end -}}
+{{- with index $attrs "warn" -}}
+  {{- $figureAttrs = merge $figureAttrs (dict "warn" .) -}}
+{{- end -}}
+
+{{- partial "article/figure.html" (dict
+  "page" .Page
+  "destination" (.Destination | default "")
+  "alt" (.Text | default "")
+  "width" (index $attrs "width")
+  "height" (index $attrs "height")
+  "link" (index $attrs "link")
+  "target" (index $attrs "target")
+  "rel" (index $attrs "rel")
+  "zoom" (index $attrs "zoom")
+  "attributes" $figureAttrs
+) -}}

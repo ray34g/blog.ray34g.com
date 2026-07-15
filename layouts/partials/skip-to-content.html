@@ -1,0 +1,11 @@
+<div class="skip-to-content position-fixed top-0 start-0 end-0 bg-body-tertiary" aria-label="Skip links">
+  <div class="visually-hidden-focusable overflow-hidden">
+    <div class="container-xl">
+      <a class="d-inline-flex p-2 m-1" href="{{ block "skip_target" . }}#main-content{{ end }}">{{ i18n "skip_to_content" | default "Skip to main content" }}</a>
+      {{ block "skip_nav_link" . }}{{ end }}
+      {{- /*  <a class="d-inline-flex p-2 m-1" href="#contents-navigation">  */ -}}
+        {{- /*  {{ i18n "skip_to_navigation" | default "Skip to content navigation" }}  */ -}}
+      {{- /*  </a>  */ -}}
+    </div>
+  </div>
+</div>

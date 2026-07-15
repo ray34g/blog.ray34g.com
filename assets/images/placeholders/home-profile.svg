@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-label="Placeholder profile graphic">
+  <rect width="960" height="640" rx="32" fill="#e9ecef"/>
+  <circle cx="480" cy="250" r="112" fill="#adb5bd"/>
+  <path d="M252 560c18-124 104-196 228-196s210 72 228 196" fill="#6c757d"/>
+  <g fill="none" stroke="#495057" stroke-width="12" opacity=".35">
+    <path d="M72 80h208M680 80h208M72 560h112M776 560h112"/>
+  </g>
+</svg>

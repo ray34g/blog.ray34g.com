@@ -1,0 +1,43 @@
+{{- $link := .link | default "" -}}
+{{- $imgSrc := .imgSrc | default "" -}}
+{{- $zoomRaw := .zoomRaw | default "" -}}
+{{- $imageStatus := .imageStatus | default "" -}}
+{{- $target := .target | default "" -}}
+{{- $rel := .rel | default "" -}}
+
+{{- $zoomEnabled := false -}}
+{{- with $zoomRaw -}}
+  {{- $zoomEnabled = not (in (slice "false" "0" "off" "no") (lower (printf "%v" .))) -}}
+{{- end -}}
+
+{{- $linkHref := $link -}}
+{{- if eq $linkHref "self" -}}
+  {{- $linkHref = $imgSrc -}}
+{{- end -}}
+{{- $linkIsSelf := and $linkHref (eq $linkHref $imgSrc) -}}
+
+{{- $linkClass := "image-link d-block text-decoration-none link-body-emphasis" -}}
+{{- if and $zoomEnabled $linkIsSelf (eq $imageStatus "ready") -}}
+  {{- $linkClass = printf "%s position-relative cursor-zoom-in" $linkClass -}}
+{{- end -}}
+
+{{- $linkTargetAttr := "" -}}
+{{- with $target -}}
+  {{- $linkTargetAttr = printf ` target="%s"` . -}}
+{{- end -}}
+{{- $linkRelAttr := "" -}}
+{{- with $rel -}}
+  {{- $linkRelAttr = printf ` rel="%s"` . -}}
+{{- end -}}
+{{- $linkZoomAttrs := "" -}}
+{{- if and $zoomEnabled $linkIsSelf (eq $imageStatus "ready") -}}
+  {{- $linkZoomAttrs = ` data-zoom="true" data-bs-toggle="modal" data-bs-target="#imageZoomModal"` -}}
+{{- end -}}
+
+{{- return dict
+  "linkHref" $linkHref
+  "linkClass" $linkClass
+  "linkTargetAttr" $linkTargetAttr
+  "linkRelAttr" $linkRelAttr
+  "linkZoomAttrs" $linkZoomAttrs
+-}}

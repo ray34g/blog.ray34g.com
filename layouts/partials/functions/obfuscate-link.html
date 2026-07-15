@@ -1,0 +1,53 @@
+{{/*
+Renders an obfuscated mailto link.
+
+Required:
+  to
+  text
+
+Optional:
+  subject
+  body
+  class
+  data
+
+Usage:
+{{ partial "functions/obfuscate-link.html" (dict
+  "to" "hello@example.com"
+  "subject" "お問い合わせ"
+  "body" "本文テンプレート"
+  "text" "メールで問い合わせる"
+  "class" "contact-link"
+  "data" (dict "contact-mailto" "1")
+) }}
+*/}}
+
+{{- $to := .to | default "" -}}
+{{- if not $to -}}
+  {{- errorf "functions/obfuscate-link.html: 'to' is required" -}}
+{{- end -}}
+
+{{- $text := .text | default "" -}}
+{{- if not $text -}}
+  {{- errorf "functions/obfuscate-link.html: 'text' is required" -}}
+{{- end -}}
+
+{{- $subject := .subject | default "" -}}
+{{- $body := .body | default "" -}}
+{{- $class := .class | default "" -}}
+{{- $dataAttrs := .data | default dict -}}
+
+{{- $toB64 := $to | base64Encode -}}
+{{- $subjectEncoded := $subject | urlquery -}}
+{{- $bodyEncoded := $body | urlquery -}}
+
+<a
+  href="#"
+  class="js-obfuscated-mailto{{ with $class }} {{ . }}{{ end }}"
+  data-to-b64="{{ $toB64 }}"
+  data-subject="{{ $subjectEncoded }}"
+  data-body="{{ $bodyEncoded }}"
+  {{- range $k, $v := $dataAttrs }}
+  {{ printf "data-%s=%q" $k $v | safeHTMLAttr }}
+  {{- end }}
+>{{ $text }}</a>

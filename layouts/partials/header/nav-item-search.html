@@ -1,0 +1,21 @@
+{{ $label := i18n "search_open_button_title" | default "Open search" -}}
+<button type="button"
+        class="search-button nav-link btn d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill w-100
+               border border-dark border-opacity-25"
+        data-bs-toggle="modal"
+        data-bs-target="#searchModal"
+        aria-controls="searchModal"
+        aria-label="{{ $label }}"
+        title="{{ $label }}">
+  {{ partial "icons/icon-use-site-sprite.html" (dict "page" . "id" "fas:magnifying-glass") }}
+
+  <span class="small nav-link-text flex-grow-1 text-start text-truncate">
+    {{ i18n "search_placeholder" | default "Search" }}
+  </span>
+
+  <span id="search-kbd-hint"
+        class="d-lg-none d-xl-inline px-2 small nav-link-text border border-dark border-opacity-25 rounded text-nowrap"
+        aria-hidden="true">
+    Ctrl /
+  </span>
+</button>

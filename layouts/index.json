@@ -1,0 +1,20 @@
+{{- $items := slice -}}
+{{- range site.RegularPages -}}
+  {{- if eq .Kind "page" -}}
+    {{- $summary := "" -}}
+    {{- with .Description -}}
+      {{- $summary = . -}}
+    {{- else with .Summary -}}
+      {{- $summary = . | plainify -}}
+    {{- end -}}
+    {{- $items = $items | append (dict
+      "title" (.Title | plainify)
+      "url" .RelPermalink
+      "summary" ($summary | plainify)
+      "content" (.Plain | plainify)
+      "section" .Section
+      "lang" .Lang
+    ) -}}
+  {{- end -}}
+{{- end -}}
+{{- $items | jsonify -}}

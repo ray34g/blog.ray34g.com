@@ -1,0 +1,5 @@
+{{- with .caption -}}
+  <figcaption class="figure-caption m-0 mt-3 text-body-secondary lh-base" itemprop="caption">
+    {{ . | markdownify }}
+  </figcaption>
+{{- end -}}

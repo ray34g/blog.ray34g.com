@@ -1,0 +1,44 @@
+[nav_home]
+other = "ホーム"
+
+[nav_posts]
+other = "投稿"
+
+[nav_github]
+other = "GitHub"
+
+[footer_powered_by]
+other = "Powered by Hugo"
+
+[a11y_main_navigation]
+other = "メインナビゲーション"
+
+[blog_title]
+other = "ray34g.com Blog"
+
+[blog_description]
+other = "コンピューターグラフィックス、Webデザイン、静的サイト運用についての記録です。"
+
+[blog_navigation]
+other = "ブログナビゲーション"
+
+[blog_all_posts]
+other = "すべての記事"
+
+[blog_archive]
+other = "アーカイブ"
+
+[blog_videos]
+other = "動画"
+
+[blog_subscribe]
+other = "購読"
+
+[blog_no_posts]
+other = "記事はまだありません。"
+
+[blog_no_videos]
+other = "動画を含む記事はまだありません。"
+
+[opens_in_new_tab]
+other = "新しいタブで開きます"

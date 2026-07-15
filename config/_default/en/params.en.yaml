@@ -1,0 +1,8 @@
+
+dateFormat: "Jan 02, 2006"
+numberFormat: "-|.|," # Doc: https://gohugo.io/functions/numfmt/
+
+translationNotAvailableMessage: "Not available in this language."
+translationNotAvailableBadge: "N/A"
+
+languageShortName: "EN"

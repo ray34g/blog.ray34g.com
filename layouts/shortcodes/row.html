@@ -1,0 +1,30 @@
+{{- /*
+  Bootstrap row wrapper for nested col shortcodes.
+
+  Example:
+    {{< row g="4" >}}
+      {{< col >}}Left{{< /col >}}
+      {{< col >}}Right{{< /col >}}
+    {{< /row >}}
+*/ -}}
+{{- $classParts := slice "row" -}}
+{{- with (.Get "class" | strings.TrimSpace) -}}
+  {{- $classParts = $classParts | append . -}}
+{{- end -}}
+{{- with (.Get "g" | strings.TrimSpace) -}}
+  {{- $classParts = $classParts | append (printf "g-%s" .) -}}
+{{- end -}}
+{{- with (.Get "gx" | strings.TrimSpace) -}}
+  {{- $classParts = $classParts | append (printf "gx-%s" .) -}}
+{{- end -}}
+{{- with (.Get "gy" | strings.TrimSpace) -}}
+  {{- $classParts = $classParts | append (printf "gy-%s" .) -}}
+{{- end -}}
+{{- with (.Get "justify" | strings.TrimSpace) -}}
+  {{- $classParts = $classParts | append (printf "justify-content-%s" .) -}}
+{{- end -}}
+{{- with (.Get "align" | strings.TrimSpace) -}}
+  {{- $classParts = $classParts | append (printf "align-items-%s" .) -}}
+{{- end -}}
+
+{{- printf `<div class="%s">%s</div>` (delimit $classParts " ") .Inner | safeHTML -}}

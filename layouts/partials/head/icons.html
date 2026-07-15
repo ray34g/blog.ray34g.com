@@ -1,0 +1,6 @@
+  <!-- Icons -->
+{{ if (templates.Exists "partials/head/favicons.html") }}
+  {{ partialCached "head/favicons.html" . }}
+{{ else }}
+  <link rel="icon" href="{{ "favicon.ico" | relURL }}">
+{{ end }}

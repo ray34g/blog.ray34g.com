@@ -1,0 +1,156 @@
+{{/* layouts/partials/menu/main.html */}}
+{{ define "menu/main/topLevelItem" }}
+  {{ $item := .item }}
+  {{ $page := .page }}
+  {{ $order := .order | default "" }}
+  {{ $i := .index }}
+  {{ $col := .col | default "col-6" }}
+  {{ $dropDownMenuClass := .class | default "bg-overlay-glass shadow" }}
+
+  {{ $max := 0 }}
+
+  {{ $isCurrent := $page.IsMenuCurrent "main" $item }}
+  {{ $hasCurrent := $page.HasMenuCurrent "main" $item }}
+  {{ $isActive := or $isCurrent $hasCurrent }}
+
+  {{ if $item.HasChildren }}
+    {{ if and $item.HasChildren $item.URL }}
+      {{ warnf "[menu/main] Top menu item has both URL and children: name='%s' url='%s' (URL will be shown only inside dropdown)"
+        (or $item.Name "") (or $item.URL "") }}
+    {{ end }}
+
+    {{/*  calc dropdown width  */}}
+    {{- $sumMax := 0 -}}
+    {{- $colCount := 0 -}}
+
+    {{- range $item.Children -}}
+      {{- $maxCol := 0 -}}
+
+      {{- $n := strings.RuneCount .Name -}}
+      {{- if gt $n $maxCol -}}{{- $maxCol = $n -}}{{- end -}}
+
+      {{- range .Children -}}
+        {{- $m := strings.RuneCount .Name -}}
+        {{- if gt $m $maxCol -}}{{- $maxCol = $m -}}{{- end -}}
+      {{- end -}}
+
+      {{- $sumMax = add $sumMax $maxCol -}}
+      {{- $colCount = add $colCount 1 -}}
+
+      {{/*  {{- warnf "[menu/main] col=%q maxCol=%d sumMax=%d" .Name $maxCol $sumMax -}}  */}}
+    {{- end -}}
+
+    {{- $charW := 0.6 -}}
+    {{- $padW := 4.0 -}}   {{/* padings (p-n) */}}
+    {{- $gapW := 1.0 -}}   {{/* gaps (gap-n) */}}
+    {{- $safetyW := 2.0 -}} {{/* font metrics and browser zoom tolerance */}}
+
+    {{- /* total */ -}}
+    {{- $w := add (mul (float $sumMax) $charW) (mul (float $colCount) $padW) -}}
+    {{- $w = add $w $gapW -}}
+    {{- $w = add $w $safetyW -}}
+
+    <li class="nav-item dropdown {{ $col }} col-lg-auto {{ $order }}">
+      <button class="nav-link dropdown-toggle d-inline-flex align-items-center gap-2 w-100 py-2 px-0 px-lg-2 text-start{{ if $isActive }} active{{ end }}"
+              id="main-dd-{{ $i }}"
+              role="button"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="outside"
+              aria-expanded="false"
+              {{ if $isCurrent }}aria-current="page"{{ end }}
+              title="{{ $item.Title }}">
+        {{ template "menu/util/iconAndLabel" (dict "item" $item "page" $page "iconClass" "") }}
+          {{ partial "icons/icon-use-site-sprite.html" (dict "page" $page "id" "custom:chevron-down" "class" "dropdown-chevron icon-xs d-none") }}
+      </button>
+
+      {{- $mainMenuAppearance := site.Params.appearance.mainMenu | default dict -}}
+      {{- $useLightThemeOnDropdownMenu := $mainMenuAppearance.useLightThemeOnDropdownMenu | default false -}}
+
+      {{- $clamp := printf "%.2f" $w -}}
+      <div class="dropdown-menu main-menu-dropdown {{ $dropDownMenuClass }}"
+           {{- if $useLightThemeOnDropdownMenu }} data-light-theme-unless-dark-pref{{ end }}
+           style="--main-menu-dropdown-desktop-min-width: clamp(10rem, {{ $clamp }}rem, 28rem);"
+           aria-labelledby="main-dd-{{ $i }}">
+        <div class="d-flex flex-wrap flex-lg-nowrap gap-1">
+          {{ range $item.Children }}
+            {{ template "menu/main/column" (dict "item" . "page" $page "depth" 2) }}
+          {{ end }}
+        </div>
+      </div>
+    </li><!-- main-menu.{{ $item.Name }} -->
+
+  {{ else }}
+    <li class="nav-item {{ $col }} col-lg-auto {{ $order }}">
+      {{ template "menu/util/link" (dict
+        "item" $item
+        "page" $page
+        "url"  $item.URL
+        "class" "nav-link d-inline-flex align-items-center gap-2 px-0 px-lg-2"
+        "isCurrent" $isCurrent
+        "isActive" $isCurrent
+        "iconClass" ""
+      ) }}
+    </li><!-- main-menu.{{ $item.Title }} -->
+  {{ end }}
+{{ end }}
+
+{{ define "menu/main/column" }}
+  {{ $item := .item }}
+  {{ $page := .page }}
+  {{ $depth := .depth | default 2 }}
+
+  {{ $isCurrent := $page.IsMenuCurrent "main" $item }}
+
+  {{ if and $item.HasChildren (lt $depth 3) }}
+    <div class="flex-grow-1 flex-shrink-0">
+      {{/* dropdown header (link or plain) with icon */}}
+      {{ template "menu/util/headerOrLink" (dict
+        "item" $item
+        "page" $page
+        "url"  $item.URL
+        "classHeader" "dropdown-header d-flex align-items-center gap-2"
+        "classLink" "dropdown-header d-flex align-items-center gap-2"
+        "iconClass" ""
+      ) }}
+
+      <div class="d-flex flex-column">
+        {{ range $item.Children }}
+          {{ template "menu/main/leafItem" (dict "item" . "page" $page "depth" (add $depth 1)) }}
+        {{ end }}
+      </div>
+    </div>
+  {{ else }}
+    {{ template "menu/util/itemOrText" (dict
+      "item" $item
+      "page" $page
+      "isCurrent" $isCurrent
+      "isActive" $isCurrent
+      "classItem" "dropdown-item d-flex align-items-center gap-2"
+      "classText" "dropdown-item-text d-flex align-items-center gap-2"
+      "iconClass" ""
+    ) }}
+  {{ end }}
+{{ end }}
+
+{{ define "menu/main/leafItem" }}
+  {{ $item := .item }}
+  {{ $page := .page }}
+  {{ $depth := .depth | default 3 }}
+
+  {{ $isCurrent := $page.IsMenuCurrent "main" $item }}
+
+  {{ if $item.HasChildren }}
+    {{ warnf "[menu/main] Menu depth exceeds 3: '%s' (title: '%s', url: '%s') has deeper children; rendering stopped at depth %d."
+      (or $item.Name $item.Title) (or $item.Title "") (or $item.URL "") $depth }}
+  {{ end }}
+
+  {{ template "menu/util/itemOrText" (dict
+    "item" $item
+    "page" $page
+    "isCurrent" $isCurrent
+    "isActive" $isCurrent
+    "classItem" "dropdown-item d-flex align-items-center gap-2"
+    "classText" "dropdown-item-text d-flex align-items-center gap-2"
+    "iconClass" ""
+  ) }}
+{{ end }}

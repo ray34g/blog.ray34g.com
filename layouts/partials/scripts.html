@@ -1,0 +1,28 @@
+{{/* layouts/partials/scripts.html */}}
+{{- $alg := "sha384" -}}
+
+{{- $lang := .Site.Language.Lang | default "ja" -}}
+
+{{- $jsResources := slice -}}
+{{- $jsResources = $jsResources | append (resources.Get "vendor/bootstrap/bootstrap.bundle.min.js") -}}
+
+{{- if .Site.Params.enableSearch | default false -}}
+  {{- $jsResources = $jsResources | append (resources.Get "vendor/fuse/fuse.min.js") -}}
+{{- end -}}
+
+{{- $appTarget := printf "js/app.entry.%s.js" $lang -}}
+{{- $app := resources.Get "js/app.entry.js"
+  | resources.ExecuteAsTemplate $appTarget .
+  | js.Build (dict
+    "minify" true
+    "params" (dict
+      "lang" (.Site.Language.Lang | default "ja")
+      )
+    )
+-}}
+{{- $jsResources = $jsResources | append $app -}}
+
+{{- $bundleTarget := printf "js/bundle.%s.js" $lang -}}
+{{- $bundle := resources.Concat $bundleTarget $jsResources | minify | fingerprint $alg -}}
+
+<script defer id="script-bundle" src="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous"></script>

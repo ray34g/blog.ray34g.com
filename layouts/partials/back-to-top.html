@@ -1,0 +1,12 @@
+{{- if ne (.Param "showBackToTop") false -}}
+  {{- $label := i18n "back_to_top" | default (cond (eq .Site.Language.Lang "ja") "ページの先頭へ戻る" "Back to top") -}}
+  <div class="container-xxl position-relative" data-back-to-top>
+    <div class="position-absolute bottom-0 end-0 z-2 p-3">
+      <a class="btn btn-light border rounded-circle p-2 lh-1 shadow"
+         href="#top"
+         aria-label="{{ $label }}">
+        {{- partial "icons/icon-use-site-sprite.html" (dict "page" . "id" "custom:arrow-up" "class" "icon-lg") -}}
+      </a>
+    </div>
+  </div>
+{{- end -}}

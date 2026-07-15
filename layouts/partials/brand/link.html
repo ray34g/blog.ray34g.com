@@ -1,0 +1,78 @@
+{{/* layouts/partials/brand/link.html
+  Input dict:
+    brand: map (logo/text/alt/svgClass/mark/wordmark/label/maxHeight)
+    class: string (anchor class)
+    mediaClass: string (mark wrapper/img class)
+    mediaGroupClass: string (mark + wordmark wrapper class)
+    wordmarkClass: string (wordmark wrapper/img class)
+    textClass: string (brand text class)
+    href: string (optional)
+*/}}
+
+{{- $b := .brand | default dict -}}
+
+{{- $mark := $b.mark | default ($b.logo | default "") -}}
+{{- $wordmark := $b.wordmark | default "" -}}
+{{- $text := $b.text | default "" -}}
+{{- $label := $b.label | default "" -}}
+{{- $alt  := $b.alt  | default site.Title -}}
+{{- $markSvgClass := $b.markSvgClass | default ($b.svgClass | default "brand-mark") -}}
+{{- $wordmarkSvgClass := $b.wordmarkSvgClass | default "brand-wordmark" -}}
+{{- $maxHeight := $b.maxHeight | default "" -}}
+{{- $mediaGroupStyle := "" -}}
+{{- with $maxHeight -}}
+  {{- $mediaGroupStyle = printf "--brand-max-height: %s;" . -}}
+{{- end -}}
+
+{{- $href := .href | default site.Home.RelPermalink -}}
+{{- $class := .class | default "d-inline-flex align-items-center gap-2" -}}
+{{- $mediaClass := .mediaClass | default "d-block flex-shrink-0" -}}
+{{- $mediaGroupClass := .mediaGroupClass | default "brand-lockup" -}}
+{{- $wordmarkClass := .wordmarkClass | default "d-block flex-shrink-0" -}}
+{{- $textClass := .textClass | default "fw-semibold" -}}
+
+{{/* ---- visible label policy ---- */}}
+{{- $displayLabel := "" -}}
+{{- if isset $b "label" -}}
+  {{- if ne (trim $label " \t\r\n") "" -}}
+    {{- $displayLabel = $label -}}
+  {{- end -}}
+{{- else if isset $b "text" -}}
+  {{- if ne (trim $text " \t\r\n") "" -}}
+    {{- $displayLabel = $text -}}
+  {{- end -}}
+{{- else if eq (trim $wordmark " \t\r\n") "" -}}
+  {{- $displayLabel = site.Title -}}
+{{- end -}}
+{{- $hasLabel := ne (trim $displayLabel " \t\r\n") "" -}}
+{{- $hasMark := ne (trim $mark " \t\r\n") "" -}}
+{{- $hasWordmark := ne (trim $wordmark " \t\r\n") "" -}}
+{{- $hasVisualMedia := or $hasMark $hasWordmark -}}
+
+{{/* ---- output ---- */}}
+{{- if or $hasVisualMedia $hasLabel -}}
+<a class="{{ $class }}" href="{{ $href }}">
+  {{- if $hasVisualMedia -}}
+    <span class="{{ $mediaGroupClass }}"{{ with $mediaGroupStyle }} style="{{ . | safeCSS }}"{{ end }}>
+      {{- partial "brand/media.html" (dict
+        "path" $mark
+        "alt" $alt
+        "class" $mediaClass
+        "svgClass" $markSvgClass
+      ) -}}
+      {{- partial "brand/media.html" (dict
+        "path" $wordmark
+        "alt" $alt
+        "class" $wordmarkClass
+        "svgClass" $wordmarkSvgClass
+      ) -}}
+    </span>
+  {{- end -}}
+
+  {{- if $hasLabel -}}
+    <span class="{{ $textClass }}">{{ $displayLabel }}</span>
+  {{- else -}}
+    <span class="visually-hidden">{{ $alt }}</span>
+  {{- end -}}
+</a>
+{{- end -}}

@@ -1,0 +1,55 @@
+{{- $page := .page -}}
+{{- $sectionClass := .sectionClass | default "" -}}
+{{- $contentClass := .contentClass | default "" -}}
+{{- $contentInnerClass := .contentInnerClass | default "" -}}
+{{- $bleedClass := .bleedClass | default "" -}}
+{{- $mediaClass := .mediaClass | default "" -}}
+{{- $mediaImgClass := .mediaImgClass | default "" -}}
+{{- $styleAttr := .styleAttr | default "" -}}
+{{- $bleedStyleAttr := .bleedStyleAttr | default "" -}}
+{{- $contentHTML := .contentHTML | default "" -}}
+{{- $alt := .alt | default "" -}}
+{{- $loading := .loading | default "eager" -}}
+{{- $decoding := .decoding | default "async" -}}
+{{- $mobileMedia := .mobileMedia | default "(max-width: 767.98px)" -}}
+
+{{- $desktopImage := partial "article/figure/resolve-image.html" (dict
+  "page" $page
+  "destination" (.desktopSrc | default "")
+) -}}
+{{- $mobileImage := partial "article/figure/resolve-image.html" (dict
+  "page" $page
+  "destination" (.mobileSrc | default "")
+) -}}
+
+{{- $sources := slice -}}
+{{- if and ($mobileImage.found) ($mobileImage.src) -}}
+  {{- $sources = $sources | append (dict
+    "media" $mobileMedia
+    "src" $mobileImage.src
+  ) -}}
+{{- end -}}
+
+<section class="full-bleed-band{{ with $sectionClass }} {{ . }}{{ end }}"{{ with $styleAttr }} style="{{ . | safeCSS }}"{{ end }}>
+  <div class="full-bleed-band__bleed{{ with $bleedClass }} {{ . }}{{ end }}"{{ with $bleedStyleAttr }} style="{{ . | safeCSS }}"{{ end }}>
+    {{- if and ($desktopImage.found) ($desktopImage.src) -}}
+      <div class="full-bleed-band__media{{ with $mediaClass }} {{ . }}{{ end }}" aria-hidden="true">
+        {{- partial "article/figure/ready-media.html" (dict
+          "sources" $sources
+          "imgClass" (printf "full-bleed-band__image%s" (cond (ne $mediaImgClass "") (printf " %s" $mediaImgClass) ""))
+          "imgSrc" $desktopImage.src
+          "imgAlt" $alt
+          "loading" $loading
+          "decoding" $decoding
+          "resolvedWidth" $desktopImage.width
+          "resolvedHeight" $desktopImage.height
+        ) -}}
+      </div>
+    {{- end -}}
+  </div>
+  <div class="full-bleed-band__content{{ with $contentClass }} {{ . }}{{ end }}">
+    <div class="full-bleed-band__content-inner{{ with $contentInnerClass }} {{ . }}{{ end }}">
+      {{- $contentHTML | safeHTML -}}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,20 @@
+<div class="blog-posts mx-auto my-5">
+  <header class="mb-5">
+    <h2 class="h1">{{ .Title }}</h2>
+    {{ with .Description }}<p class="lead text-body-secondary">{{ . }}</p>{{ end }}
+  </header>
+  {{- $posts := where site.RegularPages "Section" "posts" -}}
+  {{- range $posts.GroupByDate "2006" }}
+  <section class="mb-5" aria-labelledby="archive-{{ .Key }}">
+    <h3 id="archive-{{ .Key }}">{{ .Key }}</h3>
+    <ul class="list-unstyled">
+      {{- range .Pages }}
+      <li class="d-flex flex-column flex-sm-row gap-1 gap-sm-3 py-2 border-bottom">
+        <time class="text-body-secondary flex-shrink-0" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      </li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+</div>

@@ -1,0 +1,41 @@
+{
+  "name": "ray34g-blog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Hugo source for blog.ray34g.com",
+  "scripts": {
+    "build": "HUGO_ENVIRONMENT=production-blog ci/scripts/build_pages.sh public",
+    "build:fast": "ci/scripts/build_blog_fast.sh public",
+    "serve": "hugo server --environment production-blog --disableFastRender --bind=0.0.0.0 --port=1315",
+    "verify": "ci/scripts/verify_blog.sh public",
+    "check:i18n": "ci/scripts/check_i18n_keys.sh",
+    "render-report": "node scripts/render-report.mjs",
+    "build-diff-report": "bash scripts/build-diff-report.sh",
+    "build-diff-report:local": "bash scripts/build-diff-report.sh",
+    "visual:diff": "npm run render-report",
+    "visual:diff:local": "npm run build-diff-report",
+    "icons:sync": "node scripts/sync-icons.mjs",
+    "cms:local": "decap-server",
+    "lhci": "lhci autorun",
+    "check:links": "linkinator http://localhost:1313/ --recurse --skip '^https?://(?!localhost:1313)'",
+    "sbom": "ci/scripts/generate_sbom.sh",
+    "test": "npm run build && npm run verify"
+  },
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "7.3.0",
+    "@sveltia/cms": "0.170.7",
+    "bootstrap": "5.3.8",
+    "bootstrap-icons": "1.13.1",
+    "decap-server": "3.9.1",
+    "linkinator": "7.6.1",
+    "lucide-static": "1.24.0",
+    "pixelmatch": "7.2.0",
+    "playwright-core": "1.61.1",
+    "pngjs": "7.0.0",
+    "puppeteer": "24.34.0",
+    "yaml": "2.9.0"
+  }
+}

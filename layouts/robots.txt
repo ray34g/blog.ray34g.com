@@ -1,0 +1,38 @@
+{{- if or (eq hugo.Environment "development") (eq hugo.Environment "preview") -}}
+User-agent: *
+Disallow: /
+{{- else -}}
+# Public search indexing
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+# AI-assisted search and user-requested retrieval
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /admin/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /admin/
+
+# Model-training crawlers
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+Sitemap: {{ "sitemap.xml" | absURL }}
+{{- end }}

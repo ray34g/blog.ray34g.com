@@ -1,0 +1,8 @@
+header:
+  brand:
+    label: blog.ray34g.com
+    alt: blog.ray34g.com
+feed:
+  sections:
+  - posts
+  limit: 20

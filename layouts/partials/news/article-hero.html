@@ -1,0 +1,25 @@
+{{- $hero := .Params.hero | default dict -}}
+{{- $imagePath := or (index $hero "image") (index $hero "src") (index $hero "visual") -}}
+{{- with $imagePath -}}
+  {{- $image := or ($.Resources.GetMatch .) ($.Resources.GetMatch (strings.TrimPrefix "/" .)) (resources.GetMatch (strings.TrimPrefix "/" .)) -}}
+  {{- $src := partial "functions/asset-url.html" (dict "page" $ "path" .) -}}
+  {{- $width := "" -}}
+  {{- $height := "" -}}
+  {{- with $image -}}
+    {{- $src = .RelPermalink -}}
+    {{- $width = .Width -}}
+    {{- $height = .Height -}}
+  {{- end -}}
+  {{- $alt := or (index $hero "alt") $.Title -}}
+  <div class="news-article-hero text-center mb-4">
+    <img
+      class="img-fluid mx-auto d-block"
+      src="{{ $src | safeURL }}"
+      alt="{{ $alt }}"
+      loading="eager"
+      decoding="async"
+      {{- with $width }} width="{{ . }}"{{ end -}}
+      {{- with $height }} height="{{ . }}"{{ end -}}
+    >
+  </div>
+{{- end -}}

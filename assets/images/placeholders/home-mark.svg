@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="80" viewBox="0 0 220 80" role="img" aria-label="Placeholder mark">
+  <g fill="none" stroke="#fff" stroke-width="3">
+    <circle cx="40" cy="40" r="28"/>
+    <path d="M26 40h28M40 26v28"/>
+    <path d="M82 24h126M82 40h96M82 56h112" opacity=".8"/>
+  </g>
+</svg>

@@ -1,0 +1,82 @@
+{{- /*
+  Generic CTA link group for rounded-pill icon + label links.
+
+  Example:
+    {{< cta-links md="3" >}}
+      {{< cta-link platform="instagram" newTab="true" >}}
+      {{< cta-link platform="facebook" newTab="true" >}}
+      {{< cta-link href="/contact-us/" icon="custom:mail" label="Contact us" >}}
+    {{< /cta-links >}}
+
+  Params:
+    layout: "grid" (default) or "stack"
+    class: extra classes for the group wrapper
+    itemClass: extra classes for each item wrapper
+    cols / sm / md / lg / xl / xxl: row-cols-* values for grid layout
+    gap: Bootstrap gap value (g-* for grid, gap-* for stack)
+*/ -}}
+{{- $.Scratch.Delete "cta-links-items" -}}
+{{- .Inner -}}
+{{- $items := $.Scratch.Get "cta-links-items" | default slice -}}
+{{- if not $items -}}
+  {{- warnf "[cta-links] no child cta-link items on %s" .Page.File.Path -}}
+  {{- return -}}
+{{- end -}}
+
+{{- $layout := .Get "layout" | default "grid" | strings.TrimSpace -}}
+{{- $wrapperClasses := slice -}}
+{{- $itemClass := .Get "itemClass" | default "" | strings.TrimSpace -}}
+{{- $align := .Get "align" | default "" | strings.TrimSpace -}}
+
+{{- if eq $layout "stack" -}}
+  {{- $wrapperClasses = slice "d-flex" "flex-column" -}}
+  {{- with (.Get "gap" | default "2" | printf "%v" | strings.TrimSpace) -}}
+    {{- $wrapperClasses = $wrapperClasses | append (printf "gap-%s" .) -}}
+  {{- end -}}
+  {{- with $align -}}
+    {{- $wrapperClasses = $wrapperClasses | append (printf "align-items-%s" .) -}}
+  {{- end -}}
+{{- else -}}
+  {{- $wrapperClasses = slice "row" "row-cols-1" -}}
+  {{- $breakpoints := slice
+    (dict "prefix" "row-cols" "value" (.Get "cols"))
+    (dict "prefix" "row-cols-sm" "value" (.Get "sm"))
+    (dict "prefix" "row-cols-md" "value" (.Get "md" | default "3"))
+    (dict "prefix" "row-cols-lg" "value" (.Get "lg"))
+    (dict "prefix" "row-cols-xl" "value" (.Get "xl"))
+    (dict "prefix" "row-cols-xxl" "value" (.Get "xxl"))
+  -}}
+  {{- range $item := $breakpoints -}}
+    {{- with ($item.value | default "" | printf "%v" | strings.TrimSpace) -}}
+      {{- $wrapperClasses = $wrapperClasses | append (printf "%s-%s" $item.prefix .) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with (.Get "gap" | default "3" | printf "%v" | strings.TrimSpace) -}}
+    {{- $wrapperClasses = $wrapperClasses | append (printf "g-%s" .) -}}
+  {{- end -}}
+  {{- with $align -}}
+    {{- $wrapperClasses = $wrapperClasses | append (printf "justify-content-%s" .) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with (.Get "class" | default "" | strings.TrimSpace) -}}
+  {{- $wrapperClasses = $wrapperClasses | append . -}}
+{{- end -}}
+
+<div class="{{ delimit $wrapperClasses " " }}">
+  {{- range $items -}}
+    {{- $currentItemClass := $itemClass -}}
+    {{- with .itemClass -}}
+      {{- $currentItemClass = delimit (slice $currentItemClass .) " " | strings.TrimSpace -}}
+    {{- end -}}
+    {{- if eq $layout "stack" -}}
+      <div{{ with $currentItemClass }} class="{{ . }}"{{ end }}>
+        {{ partial "cta/link.html" . }}
+      </div>
+    {{- else -}}
+      <div class="{{ delimit (slice "col" $currentItemClass) " " | strings.TrimSpace }}">
+        {{ partial "cta/link.html" . }}
+      </div>
+    {{- end -}}
+  {{- end -}}
+</div>

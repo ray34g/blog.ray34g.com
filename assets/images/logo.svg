@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 405 675" width="27" height="45" style="color: #db0632;">
+  <g class="star" fill="none" stroke="currentColor" stroke-width="15.000000" stroke-linecap="butt" stroke-linejoin="miter">
+    <path d="M172.5 601.154V18.742" />
+    <path d="M172.5 667.330V629.552658" />
+    <path d="M27.370 277.5H329.250" />
+    <path d="M357.380 277.5H386.442" />
+    <g id="diag_pos45" transform="rotate(45 172.5 277.5)">
+      <path d="M249.93 277.5H375.49" />
+      <path d="M56.27 277.5H230.18" />
+      <path d="M23.98 277.5H42.94" />
+      <path d="M-39.01 277.5H0.67" />
+    </g>
+    <g transform="rotate(-45 172.5 277.5)">
+      <path d="M-11.05 277.5H341.17" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,233 @@
+version: 1
+
+font_families:
+  - Noto Sans JP
+  - LINE Seed JP
+  - Poppins
+
+defaults:
+  Noto Sans JP:
+    - 400
+  LINE Seed JP: []
+  Poppins:
+    - 400
+
+rules:
+  - id: line-seed-display
+    font_family: LINE Seed JP
+    match:
+      classes_glob:
+        - "display-*"
+    weights:
+      - 300
+    reason: Bootstrap display classes
+
+  - id: line-seed-headings
+    font_family: LINE Seed JP
+    match:
+      elements_any:
+        - h1
+        - h2
+        - h3
+        - h4
+        - h5
+        - h6
+    weights:
+      - 500
+    reason: HTML heading elements
+
+  - id: line-seed-heading-bold
+    font_family: LINE Seed JP
+    match:
+      classes_all:
+        - fw-bold
+      elements_any:
+        - h1
+        - h2
+        - h3
+        - h4
+        - h5
+        - h6
+    weights:
+      - 700
+    reason: Explicit bold utility on heading elements
+
+  - id: line-seed-heading-semibold
+    font_family: LINE Seed JP
+    match:
+      classes_all:
+        - fw-semibold
+      elements_any:
+        - h1
+        - h2
+        - h3
+        - h4
+        - h5
+        - h6
+    weights:
+      - 600
+    reason: Explicit semibold utility on heading elements
+
+  - id: noto-lead
+    font_family: Noto Sans JP
+    match:
+      classes_any:
+        - lead
+    weights:
+      - 300
+    reason: Bootstrap lead text
+
+  - id: noto-body-small
+    font_family: Noto Sans JP
+    match:
+      elements_any:
+        - small
+    weights:
+      - 400
+    reason: HTML small element
+
+  - id: noto-body-strong
+    font_family: Noto Sans JP
+    match:
+      elements_any:
+        - strong
+        - b
+        - dt
+    weights:
+      - 700
+    reason: Bold inline and body semantics
+
+  - id: noto-alert-badge
+    font_family: Noto Sans JP
+    match:
+      classes_any:
+        - alert-link
+        - badge
+    weights:
+      - 700
+    reason: Bootstrap strong emphasis components
+
+  - id: noto-medium
+    font_family: Noto Sans JP
+    match:
+      classes_all:
+        - fw-medium
+    weights:
+      - 500
+    reason: Explicit medium utility
+
+  - id: noto-semibold
+    font_family: Noto Sans JP
+    match:
+      classes_all:
+        - fw-semibold
+    weights:
+      - 600
+    reason: Explicit semibold utility outside headings
+
+  - id: noto-bold
+    font_family: Noto Sans JP
+    match:
+      classes_all:
+        - fw-bold
+    weights:
+      - 700
+    reason: Explicit bold utility outside headings
+
+  - id: noto-page-hero-title-black
+    font_family: Noto Sans JP
+    match:
+      classes_any:
+        - page-hero-title
+    weights:
+      - 900
+    reason: Page hero title styling
+
+  - id: noto-body-components
+    font_family: Noto Sans JP
+    match:
+      classes_any:
+        - btn
+        - btn-link
+        - form-control
+        - form-select
+        - input-group-text
+        - dropdown-item
+        - tooltip
+        - popover
+    weights:
+      - 400
+    reason: Bootstrap body and component text
+
+  - id: poppins-italic-elements
+    font_family: Poppins
+    match:
+      elements_any:
+        - em
+        - i
+    weights:
+      - 400
+    styles:
+      - italic
+    reason: HTML italic elements
+
+  - id: poppins-italic-utility
+    font_family: Poppins
+    match:
+      classes_any:
+        - fst-italic
+    weights:
+      - 400
+    styles:
+      - italic
+    reason: Bootstrap italic utility
+
+  - id: poppins-display
+    font_family: Poppins
+    match:
+      classes_glob:
+        - "display-*"
+    weights:
+      - 300
+    reason: Bootstrap display classes
+
+  - id: poppins-headings
+    font_family: Poppins
+    match:
+      elements_any:
+        - h1
+        - h2
+        - h3
+        - h4
+        - h5
+        - h6
+    weights:
+      - 500
+    reason: HTML heading elements
+
+  - id: poppins-medium
+    font_family: Poppins
+    match:
+      classes_all:
+        - fw-medium
+    weights:
+      - 500
+    reason: Explicit medium utility
+
+  - id: poppins-semibold
+    font_family: Poppins
+    match:
+      classes_all:
+        - fw-semibold
+    weights:
+      - 600
+    reason: Explicit semibold utility
+
+  - id: poppins-bold
+    font_family: Poppins
+    match:
+      classes_all:
+        - fw-bold
+    weights:
+      - 700
+    reason: Explicit bold utility

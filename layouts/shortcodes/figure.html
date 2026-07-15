@@ -1,0 +1,58 @@
+{{- $caption := .Inner | strings.TrimSpace -}}
+{{- if not $caption -}}
+  {{- $caption = .Get "caption" | default "" | strings.TrimSpace -}}
+{{- end -}}
+
+{{- $attrs := dict -}}
+{{- with .Get "mobileSrc" -}}
+  {{- $attrs = merge $attrs (dict "mobileSrc" .) -}}
+{{- end -}}
+{{- with .Get "mobileWidth" -}}
+  {{- $attrs = merge $attrs (dict "mobileWidth" .) -}}
+{{- end -}}
+{{- with .Get "mobileHeight" -}}
+  {{- $attrs = merge $attrs (dict "mobileHeight" .) -}}
+{{- end -}}
+{{- with .Get "class" -}}
+  {{- $attrs = merge $attrs (dict "class" .) -}}
+{{- end -}}
+{{- with .Get "imgClass" -}}
+  {{- $attrs = merge $attrs (dict "imgClass" .) -}}
+{{- end -}}
+{{- with .Get "mediaClass" -}}
+  {{- $attrs = merge $attrs (dict "mediaClass" .) -}}
+{{- end -}}
+{{- with .Get "srcset" -}}
+  {{- $attrs = merge $attrs (dict "srcset" .) -}}
+{{- end -}}
+{{- with .Get "sizes" -}}
+  {{- $attrs = merge $attrs (dict "sizes" .) -}}
+{{- end -}}
+{{- with .Get "loading" -}}
+  {{- $attrs = merge $attrs (dict "loading" .) -}}
+{{- end -}}
+{{- with .Get "decoding" -}}
+  {{- $attrs = merge $attrs (dict "decoding" .) -}}
+{{- end -}}
+{{- with .Get "warn" -}}
+  {{- $attrs = merge $attrs (dict "warn" .) -}}
+{{- end -}}
+{{- with .Get "id" -}}
+  {{- $attrs = merge $attrs (dict "id" .) -}}
+{{- end -}}
+{{- with $caption -}}
+  {{- $attrs = merge $attrs (dict "caption" .) -}}
+{{- end -}}
+
+{{- partial "article/figure.html" (dict
+  "page" .Page
+  "destination" (.Get "src")
+  "alt" (.Get "alt")
+  "width" (.Get "width")
+  "height" (.Get "height")
+  "link" (.Get "link")
+  "target" (.Get "target")
+  "rel" (.Get "rel")
+  "zoom" (.Get "zoom")
+  "attributes" $attrs
+) -}}

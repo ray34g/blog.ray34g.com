@@ -1,0 +1,97 @@
+{{ define "main" }}
+{{ $defaultLang := site.Language.Lang | default "en" }}
+{{ $langs := slice }}
+{{ range hugo.Sites }}{{ $langs = $langs | append .Language.Lang }}{{ end }}
+<section class="error-404 not-found w-100 d-flex bg-body below-site-header">
+  <div class="container py-5 my-auto">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-8">
+
+        {{ range hugo.Sites }}
+          {{ $lang := .Language.Lang }}
+          <div class="lang-block"
+               data-lang="{{ $lang }}"
+               {{ if ne $lang $defaultLang }}hidden{{ end }}>
+
+            <header class="page-header mb-4">
+              <div class="display-1 fw-bold lh-1 mb-3">404</div>
+              <h1 class="h3">{{ i18n (printf "page_not_found_title_%s" $lang) }}</h1>
+              <p class="text-muted">{{ i18n (printf "page_not_found_description_%s" $lang) }}</p>
+            </header>
+
+            <div class="page-content">
+              <p class="mb-5">{{ i18n (printf "page_not_found_suggestion_%s" $lang) }}</p>
+
+              <div class="d-flex flex-wrap gap-2 align-items-center">
+                <a class="btn btn-primary rounded-pill" href="{{ "" | relLangURL }}">
+                  {{ i18n (printf "go_back_to_home_%s" $lang) }}
+                </a>
+
+                <a class="btn btn-outline-secondary rounded-pill"
+                   href="javascript:window.history.back();">
+                  {{ i18n (printf "back_to_prev_%s" $lang) }}
+                </a>
+
+                <!--
+                <a class="link-secondary small ms-md-2" href="{{ "sitemap/" | relLangURL }}">
+                  Sitemap
+                </a>
+                -->
+              </div>
+
+            </div>
+
+            <hr class="mt-5">
+
+          </div>
+        {{ end }}
+
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+    var supported = "{{ $langs | jsonify }}";
+
+    var alias = {
+      eng: "en",
+      jp: "ja",
+      jpn: "ja"
+    };
+
+    var fallback = "{{ $defaultLang }}";
+    if (supported.indexOf(fallback) === -1) {
+      fallback = supported[0] || fallback;
+    }
+
+    var blocks = document.querySelectorAll(".lang-block");
+    for (var i = 0; i < blocks.length; i++) blocks[i].hidden = true;
+
+    var path = window.location.pathname || "/";
+    var parts = path.split("/").filter(Boolean);
+
+    var candidates = [];
+    if (parts[0]) candidates.push(parts[0]);
+    if (parts[1]) candidates.push(parts[1]);
+
+    // candidates -> alias normalize -> supported
+    var lang = null;
+    for (var j = 0; j < candidates.length; j++) {
+      var c = candidates[j];
+      if (alias[c]) c = alias[c];
+      if (supported.indexOf(c) !== -1) {
+        lang = c;
+        break;
+      }
+    }
+
+    if (!lang) lang = fallback;
+
+    // fallbacks
+    var el = document.querySelector('.lang-block[data-lang="' + lang + '"]')
+          || document.querySelector('.lang-block[data-lang="' + fallback + '"]')
+          || blocks[0];
+
+    if (el) el.hidden = false;
+</script>
+{{ end }}

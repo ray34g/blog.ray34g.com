@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.170.7/schema/sveltia-cms.json
+
+backend:
+  name: github
+  repo: ray34g/blog.ray34g.com
+  branch: main
+  squash_merges: true
+
+# A local proxy changes only the working tree. Production authentication uses
+# a short-lived, least-privilege GitHub token for this single-maintainer site.
+local_backend:
+  url: http://localhost:8081/api/v1
+
+publish_mode: editorial_workflow
+site_url: https://blog.ray34g.com
+display_url: https://blog.ray34g.com
+logo_url: /images/icon.svg
+media_folder: static/uploads
+public_folder: /uploads
+
+i18n:
+  structure: multiple_files
+  locales: [ja, en]
+  default_locale: ja
+
+collections:
+  - name: posts
+    label: Posts
+    label_singular: Post
+    description: Multilingual posts stored as Hugo leaf bundles.
+    folder: content/posts
+    path: '{{slug}}/index'
+    extension: md
+    format: yaml-frontmatter
+    create: true
+    delete: true
+    i18n: true
+    media_folder: ''
+    public_folder: ''
+    slug: '{{slug}}'
+    summary: '{{title}} — {{date}}'
+    sortable_fields: [title, date, commit_date]
+    view_filters:
+      - label: Drafts
+        field: draft
+        pattern: true
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        i18n: true
+      - name: date
+        label: Published at
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+        i18n: duplicate
+      - name: draft
+        label: Draft
+        widget: boolean
+        default: true
+        required: false
+        i18n: duplicate
+      - name: description
+        label: Description
+        widget: text
+        i18n: true
+      - name: techs
+        label: Technologies
+        widget: list
+        required: false
+        i18n: duplicate
+      - name: roles
+        label: Roles
+        widget: list
+        required: false
+        i18n: duplicate
+      - name: capabilities
+        label: Capabilities
+        widget: list
+        required: false
+        i18n: duplicate
+      - name: contexts
+        label: Contexts
+        widget: list
+        required: false
+        i18n: duplicate
+      - name: body
+        label: Body
+        widget: markdown
+        i18n: true

@@ -1,0 +1,63 @@
+{{/* layouts/partials/brand/media.html
+  Input dict:
+    path: string
+    alt: string
+    class: string
+    svgClass: string
+*/}}
+
+{{- $path := .path | default "" -}}
+{{- $alt := .alt | default site.Title -}}
+{{- $class := .class | default "" -}}
+{{- $svgClass := .svgClass | default "" -}}
+
+{{- if ne (trim $path " \t\r\n") "" -}}
+  {{- $resource := resources.Get $path -}}
+  {{- $isSvg := strings.HasSuffix (lower $path) ".svg" -}}
+
+  {{- if $isSvg -}}
+    {{- $svg := "" -}}
+    {{- with $resource -}}
+      {{- $svg = .Content -}}
+    {{- else -}}
+      {{- $staticPath := printf "static/%s" (strings.TrimPrefix "/" $path) -}}
+      {{- if fileExists $staticPath -}}
+        {{- $svg = readFile $staticPath -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- if ne $svg "" -}}
+      {{- $svg = replaceRE `(?i)<svg\b` (printf `<svg class="%s"` $svgClass) $svg 1 -}}
+      <span class="{{ $class }}" aria-hidden="true">
+        {{- $svg | safeHTML -}}
+      </span>
+    {{- else -}}
+      {{- warnf "brand media was set but not found (assets/static): %q" $path -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $imgSrc := "" -}}
+    {{- $imgW := 0 -}}
+    {{- $imgH := 0 -}}
+
+    {{- with $resource -}}
+      {{- $imgSrc = .RelPermalink -}}
+      {{- $imgW = .Width -}}
+      {{- $imgH = .Height -}}
+    {{- else -}}
+      {{- $staticPath := printf "static/%s" (strings.TrimPrefix "/" $path) -}}
+      {{- if fileExists $staticPath -}}
+        {{- $imgSrc = strings.TrimPrefix "/" $path | relURL -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- if ne $imgSrc "" -}}
+      <img src="{{ $imgSrc }}"
+           {{- if and (gt $imgW 0) (gt $imgH 0) -}} width="{{ $imgW }}" height="{{ $imgH }}"{{- end -}}
+           alt=""
+           class="{{ $class }}{{ with $svgClass }} {{ . }}{{ end }}"
+           aria-hidden="true">
+    {{- else -}}
+      {{- warnf "brand media was set but not found (assets/static): %q" $path -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

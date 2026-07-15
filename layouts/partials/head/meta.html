@@ -1,0 +1,74 @@
+<meta charset="utf-8" />
+{{- with site.Language.Locale }}
+<meta http-equiv="content-language" content="{{ . }}" />
+{{- end }}
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Title -->
+{{- if .IsHome -}}
+<title>{{ site.Title | emojify }}</title>
+<meta name="title" content="{{ site.Title | emojify }}" />
+{{- else -}}
+<title>{{ .Title | emojify }} - {{ site.Title | emojify }}</title>
+<meta name="title" content="{{ .Title | emojify }} - {{ site.Title | emojify }}" />
+{{- end }}
+
+<!-- Metadata -->
+{{- $metaDescription := "" -}}
+{{- if .Description -}}
+  {{- $metaDescription = .Description -}}
+{{- else if .IsPage -}}
+  {{- $metaDescription = .Summary -}}
+{{- else if and .IsHome (eq hugo.Environment "production-blog") -}}
+  {{- with site.GetPage "section" "posts" -}}
+    {{- $metaDescription = .Description | default site.Params.description -}}
+  {{- else -}}
+    {{- $metaDescription = site.Params.description -}}
+  {{- end -}}
+{{- else -}}
+  {{- $metaDescription = site.Params.description -}}
+{{- end -}}
+<meta name="description"
+  content="{{ $metaDescription }}" />
+
+{{- $kw := union .Params.Tags site.Params.keywords -}}
+{{- with $kw }}
+<meta name="keywords" content="{{ delimit . ", " }}" />
+{{- end }}
+
+{{- with .Params.author }}
+<meta name="author" content="{{ . }}">
+{{- end }}
+
+{{ hugo.Generator }}
+
+<meta name="robots"
+  content="{{ with .Params.robots }}{{ . }}{{ else }}{{ with site.Params.robots }}{{ . }}{{ else }}all{{ end }}{{ end }}" />
+<link rel="canonical" href="{{ .Permalink }}" />
+
+{{- if .PrevInSection -}}
+<link rel="prev" href="{{ .PrevInSection.Permalink }}" />
+{{- end }}
+{{- if .NextInSection -}}
+<link rel="next" href="{{ .NextInSection.Permalink }}" />
+{{- end }}
+
+<!-- Output formats -->
+{{- range .AlternativeOutputFormats }}
+<link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .RelPermalink }}"
+  title="{{ (site.Title | emojify) | safeHTML }}" />
+{{- end }}
+
+<!-- RSS -->
+{{- with .OutputFormats.Get "RSS" -}}
+<link rel="alternate" href="{{ .RelPermalink }}" type="application/rss+xml" title="{{ site.Title }}">
+<link rel="feed" href="{{ .RelPermalink }}" type="application/rss+xml" title="{{ site.Title }}">
+{{- end -}}
+
+<!-- Atom feed discovery -->
+{{- with site.Home.OutputFormats.Get "Atom" -}}
+  {{- if not $.IsHome }}
+<link rel="alternate" href="{{ .RelPermalink }}" type="application/atom+xml" title="{{ site.Title }}">
+  {{- end }}
+<link rel="feed" href="{{ .RelPermalink }}" type="application/atom+xml" title="{{ site.Title }}">
+{{- end -}}

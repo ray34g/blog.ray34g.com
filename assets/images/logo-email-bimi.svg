@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 96.0 96.0" version="1.1" id="SVGRoot">
+  <defs id="defs-default">
+    <mask maskUnits="userSpaceOnUse" id="waveMask">
+      <circle id="sphere-mask" cx="48" cy="48" r="47" fill="#ffffff"/>
+    </mask>
+  </defs>
+  <g id="layer1" transform="scale(0.75 0.75)" transform-origin="center" >
+    <circle style="fill:#222222;fill-opacity:1;stroke:none;" id="sphere" cx="48" cy="48" r="47" />
+    <circle style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:4;" id="sphere-wall" cx="48" cy="48" r="47" />
+  </g>
+  <g id="layer2" transform="scale(0.75 0.75)" transform-origin="center" mask="url(#waveMask)">
+    <path id="wave2" style="fill:#ffffff;fill-opacity:0.2;stroke:none;" d="M 18.12121,56.001256 C 12.24105,56.038626 6.22559,56.915866 0,59.164687 V 104 H 93.090906 192 V 59.164687 c -32.66939,15.078424 -65.70597,-11.993699 -98.909094,0 C 66.54704,71.415909 43.60191,55.839343 18.12121,56.001256 Z" />
+    <path id="wave1" style="fill:#ffffff;fill-opacity:0.93333334;stroke:none;" d="m 173.87879,56.001256 c 5.88016,0.03737 11.89562,0.91461 18.12121,3.163431 V 104 H 98.909094 0 V 59.164687 c 32.669392,15.078424 65.705969,-11.993699 98.909094,0 26.543866,12.251222 49.488996,-3.325344 74.969696,-3.163431 z" />
+  </g>
+</svg>

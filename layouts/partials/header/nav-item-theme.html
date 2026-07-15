@@ -1,0 +1,37 @@
+
+{{- $mainMenuAppearance := site.Params.appearance.mainMenu | default dict -}}
+{{- $useLightThemeOnDropdownMenu := $mainMenuAppearance.useLightThemeOnDropdownMenu | default false -}}
+
+<div class="dropdown">
+  <button type="button"
+          class="nav-link dropdown-toggle align-items-center d-inline-flex w-100 gap-2"
+          id="theme-menu-dropdown"
+          data-bs-toggle="dropdown"
+          data-bs-auto-close="outside"
+          aria-expanded="false">
+  {{ partial "icons/icon-use-site-sprite.html" (dict "page" . "id" "fas:circle-half-stroke") }}
+  <span class="d-lg-none d-xl-inline">{{ i18n "preferences_theme" | default "Theme" }}</span>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end"
+      {{- if $useLightThemeOnDropdownMenu }} data-light-theme-unless-dark-pref{{ end }}
+      aria-labelledby="theme-menu-dropdown">
+    <li>
+        <button type="button" class="dropdown-item d-inline-flex align-items-center gap-2" data-theme-option="system">
+        {{ partial "icons/icon-use-site-sprite.html" (dict "page" . "id" "fas:circle-half-stroke" "class" "opacity-50") }}
+        {{ i18n "preferences_theme_system" | default "System" }}
+        </button>
+    </li>
+    <li>
+        <button type="button" class="dropdown-item d-inline-flex align-items-center gap-2" data-theme-option="light">
+        {{ partial "icons/icon-use-site-sprite.html" (dict "page" . "id" "far:sun" "class" "opacity-50") }}
+        {{ i18n "preferences_theme_light" | default "Light" }}
+        </button>
+    </li>
+    <li>
+        <button type="button" class="dropdown-item d-inline-flex align-items-center gap-2" data-theme-option="dark">
+        {{ partial "icons/icon-use-site-sprite.html" (dict "page" . "id" "far:moon" "class" "opacity-50") }}
+        {{ i18n "preferences_theme_dark" | default "Dark" }}
+        </button>
+    </li>
+  </ul>
+</div>

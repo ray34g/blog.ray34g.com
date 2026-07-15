@@ -1,0 +1,73 @@
+{{- $content := .Inner | strings.TrimSpace -}}
+{{- $lines := split $content "\n" -}}
+{{- $size := .Get "size" | default "12rem" -}}
+{{- $xs := .Get "cols" | default "1" | int -}}
+{{- $sm := .Get "sm" | default "2" | int -}}
+{{- $md := .Get "md" -}}
+{{- $lg := .Get "lg" | default "3" | int -}}
+{{- $xl := .Get "xl" -}}
+{{- $xxl := .Get "xxl" -}}
+{{- $shape := .Get "shape" | default "circle" -}}
+{{- $shapeClassParam := .Get "shapeClass" | strings.TrimSpace -}}
+{{- $cardClass := .Get "cardClass" | strings.TrimSpace -}}
+{{- $page := .Page -}}
+{{- $colClasses := slice (printf "col-%d" (div 12 $xs)) (printf "col-sm-%d" (div 12 $sm)) (printf "col-lg-%d" (div 12 $lg)) -}}
+{{- with $md }}{{- $colClasses = $colClasses | append (printf "col-md-%d" (div 12 (. | int))) -}}{{- end -}}
+{{- with $xl }}{{- $colClasses = $colClasses | append (printf "col-xl-%d" (div 12 (. | int))) -}}{{- end -}}
+{{- with $xxl }}{{- $colClasses = $colClasses | append (printf "col-xxl-%d" (div 12 (. | int))) -}}{{- end -}}
+{{- $colClass := delimit $colClasses " " -}}
+{{- $shapeClass := "rounded-circle aspect-square" -}}
+{{- if $shapeClassParam -}}
+  {{- $shapeClass = $shapeClassParam -}}
+{{- else if eq $shape "square" -}}
+  {{- $shapeClass = "rounded-0 aspect-square" -}}
+{{- end -}}
+{{- $containerStyle := "" -}}
+{{- if ne $size "12rem" -}}
+  {{- $containerStyle = printf "style=%q" (printf "--stat-value-size: %s;" $size) | safeHTMLAttr -}}
+{{- end -}}
+{{- $resolvedCardClass := "bg-primary text-white" -}}
+{{- with $cardClass -}}
+  {{- $resolvedCardClass = . -}}
+{{- end -}}
+
+<dl class="stat-values row justify-content-center g-3 mb-4 list-unstyled text-center"{{ with $containerStyle }} {{ . }}{{ end }}>
+  {{- range $line := $lines -}}
+    {{- $trimmed := $line | strings.TrimSpace -}}
+    {{- if $trimmed -}}
+      {{- $parts := split $trimmed "|" -}}
+      {{- if ge (len $parts) 2 -}}
+        {{- $term := index $parts 0 | strings.TrimSpace -}}
+        {{- $value := index $parts 1 | strings.TrimSpace -}}
+        {{- $subvalue := "" -}}
+        {{- $suffix := "" -}}
+        {{- if eq (len $parts) 3 -}}
+          {{- $suffix = delimit (after 2 $parts) "|" | strings.TrimSpace -}}
+        {{- else if ge (len $parts) 4 -}}
+          {{- $subvalue = index $parts 2 | strings.TrimSpace -}}
+          {{- $suffix = delimit (after 3 $parts) "|" | strings.TrimSpace -}}
+        {{- end -}}
+        {{- $termRendered := $page.RenderString (dict "display" "inline") $term -}}
+        <div class="{{ $colClass }} d-flex justify-content-center">
+          <div class="stat-value d-flex flex-column flex-shrink-0 {{ $shapeClass }} {{ $resolvedCardClass }} p-3 px-2 px-sm-3 text-center">
+            <dt class="stat-value-label d-flex flex-grow-1 align-items-end justify-content-center lh-sm">
+              {{- $termRendered -}}
+            </dt>
+            <hr class="stat-value-divider mx-auto w-75 text-white">
+            <dd class="stat-value-number d-flex flex-grow-1 flex-wrap align-content-start align-items-baseline justify-content-center column-gap-0 row-gap-0 row-gap-sm-1 mb-0">
+              <span class="stat-value-pair stat-value-underline d-inline-flex flex-nowrap align-items-baseline position-relative fw-bold">
+                <span class="stat-value-main lh-1">{{ $value }}</span>
+                {{- with $subvalue }}
+                  <span class="stat-value-sub lh-1">{{ if eq . "+" }}&#43;{{ else }}{{ . }}{{ end }}</span>
+                {{- end }}
+              </span>
+              {{- with $suffix }}
+                <span class="stat-value-unit lh-1">{{ if eq . "+" }}&#43;{{ else }}{{ . }}{{ end }}</span>
+              {{- end }}
+            </dd>
+          </div>
+        </div>
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+</dl>

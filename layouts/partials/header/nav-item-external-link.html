@@ -1,0 +1,10 @@
+{{ $link := .link }}
+{{ $page := .page | default $ }}
+<a class="nav-link d-inline-flex align-items-center gap-2"
+   href="{{ $link.url }}"
+   title="{{ $link.name }}"
+   target="_blank"
+   rel="noopener">
+  {{ partial "icons/icon-use-site-sprite.html" (dict "page" $page "id" $link.icon) }}
+  <span class="d-lg-none d-xl-inline">{{ $link.name }}</span>
+</a>

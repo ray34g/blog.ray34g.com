@@ -1,0 +1,66 @@
+{{- $page := . -}}
+{{- $useHeaderOverlay := site.Params.appearance.useHeaderOverlay | default false -}}
+{{- $freezeRaw := site.Params.freezeAnimations | default false -}}
+{{- $freezeAnimations := or (eq $freezeRaw true) (in (slice "1" "true" "yes" "on") (lower (printf "%v" $freezeRaw))) -}}
+{{- $hero := $page.Params.hero | default dict -}}
+{{- $heading := index $hero "heading" | default $page.Title -}}
+{{- $name := index $hero "name" | default "Go Ray / @ray34g" -}}
+{{- $description := index $hero "description" | default site.Params.description -}}
+{{- $profile := resources.Get "images/profile.jpg" -}}
+{{- $profileFinal := $profile -}}
+{{- if and $profile (not (site.Params.disableImageOptimization | default false)) -}}
+  {{- $profileFinal = $profile.Resize "480x480 webp q85" -}}
+{{- end -}}
+
+{{- partial "header/overlay-zone-init.html" . -}}
+{{- $overlayZone := partial "header/overlay-zone-attr.html" . -}}
+<section id="hero"
+  class="hero home-hero position-relative overflow-hidden bg-dark text-light{{ if not $useHeaderOverlay }} below-site-header{{ end }}"
+  {{ $overlayZone | safeHTMLAttr }}
+  data-bs-theme="dark">
+  <div class="container-xxl position-relative home-hero__content">
+    <div class="home-hero__layout row align-items-center justify-content-center gx-sm-5">
+      <div class="col-8 col-sm-5 text-center">
+        {{- with $profileFinal }}
+          <img class="home-hero__profile img-fluid rounded-circle"
+            src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}"
+            alt="{{ $name }}" loading="eager" fetchpriority="high" decoding="async">
+        {{- end }}
+      </div>
+      <div class="col-12 col-sm-5 px-4 px-sm-3 text-start">
+        <h1 class="h1 fw-bold text-body-emphasis mb-3">{{ $heading }}</h1>
+        <p class="fw-bold text-body-emphasis mb-2">{{ $name }}</p>
+        {{- with $description }}
+          <p class="text-body-emphasis mb-3">{{ . }}</p>
+        {{- end }}
+        <nav class="home-hero__social d-flex justify-content-start gap-3" aria-label="Social media">
+          <a class="text-light" href="https://twitter.com/ray34g" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            {{- partial "icons/icon-inline.html" (dict "id" "fab:twitter" "class" "icon-lg") -}}
+          </a>
+          <a class="text-light" href="https://linkedin.com/in/ray34g" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            {{- partial "icons/icon-inline.html" (dict "id" "fab:linkedin" "class" "icon-lg") -}}
+          </a>
+          <a class="text-light" href="https://www.instagram.com/ray34g" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            {{- partial "icons/icon-inline.html" (dict "id" "fab:instagram" "class" "icon-lg") -}}
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-hero__divider position-absolute bottom-0 start-0 w-100" aria-hidden="true">
+    <svg class="home-hero__waves{{ if $freezeAnimations }} is-static{{ end }}" viewBox="0 24 150 32"
+      preserveAspectRatio="none" shape-rendering="auto" focusable="false">
+      <defs>
+        <path id="home-hero-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"></path>
+      </defs>
+      <g class="home-hero__parallax">
+        <use href="#home-hero-wave" x="0" y="0" fill-opacity=".7"></use>
+        <use href="#home-hero-wave" x="0" y="4" fill-opacity=".5"></use>
+        <use href="#home-hero-wave" x="0" y="8" fill-opacity=".3"></use>
+        <use href="#home-hero-wave" x="0" y="0" fill-opacity=".1"></use>
+        <use href="#home-hero-wave" x="0" y="12"></use>
+      </g>
+    </svg>
+  </div>
+</section>

@@ -1,0 +1,82 @@
+{{ define "main" }}
+  {{- $lang := lower (.Lang | default site.Language.Lang | default "en") -}}
+  {{- $defaultSection := cond (eq $lang "ja") "このセクション" "this section" -}}
+  {{- $sectionLabel := .Title | default .Section | default $defaultSection -}}
+  {{- $labelNoArticles := i18n "list_no_articles" (dict "Section" $sectionLabel) -}}
+
+  {{- $articles := (where .RegularPagesRecursive "Lang" .Lang).ByDate.Reverse -}}
+  {{- $paginator := .Paginate $articles -}}
+  {{- $pageDateFormat := .Params.dateFormat | default site.Params.dateFormat | default "2006-01-02" -}}
+  {{- $dateWidthSample := time.AsTime "2006-11-22" -}}
+  {{- $listDateWidth := printf "%dch" (add (len ($dateWidthSample.Format $pageDateFormat)) 1) -}}
+
+  <div class="bg-body below-site-header flex-grow-1">
+    {{ with .Params.hero }}
+      {{ partial "page-hero.html" (dict
+        "page" $
+      ) }}
+    {{ end }}
+    <div class="container-md py-4 py-md-5">
+      <div class="row justify-content-center">
+        <section class="list-page col-12 col-lg-9" style="--list-date-width: {{ $listDateWidth }};">
+          <header class="mb-4">
+            <h1 class="h2 d-inline-flex align-items-center gap-2">
+              {{- partial "icons/icon-use-site-sprite.html" (dict "page" . "id" "custom:chevron-right" "class" "icon-xl") -}}
+              {{ .Title }}
+            </h1>
+            {{ with .Content }}
+              <div class="list-page-intro mt-3">{{ . }}</div>
+            {{ end }}
+          </header>
+
+          {{ if gt (len $articles) 0 }}
+            <div class="list-group list-group-flush">
+              {{ range $i, $article := $paginator.Pages }}
+                {{- $locations := slice -}}
+                {{- with $article.Params.locations -}}
+                  {{- if reflect.IsSlice . -}}
+                    {{- $locations = . -}}
+                  {{- else -}}
+                    {{- $locations = slice . -}}
+                  {{- end -}}
+                {{- else -}}
+                  {{- with $article.Params.location -}}
+                    {{- if reflect.IsSlice . -}}
+                      {{- $locations = . -}}
+                    {{- else -}}
+                      {{- $locations = slice . -}}
+                    {{- end -}}
+                  {{- end -}}
+                {{- end -}}
+
+                <article class="list-group-item border-0 border-bottom p-3{{ if eq $i 0 }} border-top{{ end }}">
+                  <div class="row g-2 g-md-3 gx-md-4 align-items-start">
+                    <div class="col-12 col-lg-4">
+                      <div class="list-meta d-flex flex-wrap align-items-center gap-1 gap-sm-2">
+                        <time class="list-date d-inline-block pe-1" datetime="{{ $article.Date.Format "2006-01-02" }}">{{ $article.Date.Format $pageDateFormat }}</time>
+                        {{ if gt (len $locations) 0 }}
+                          <div class="d-flex flex-wrap gap-1">
+                            {{ range $loc := $locations }}
+                              {{- $locKey := printf "%v" $loc -}}
+                              <span class="badge rounded-pill text-bg-secondary flex-shrink-0">{{ i18n $locKey }}</span>
+                            {{ end }}
+                          </div>
+                        {{ end }}
+                      </div>
+                    </div>
+                    <h2 class="col-12 col-lg-8 h6 mb-0">
+                      <a href="{{ $article.RelPermalink }}">{{ $article.Title }}</a>
+                    </h2>
+                  </div>
+                </article>
+              {{ end }}
+            </div>
+            {{ partial "pagination.html" (dict "page" . "paginator" $paginator) }}
+          {{ else }}
+            <p class="text-muted mb-0">{{ $labelNoArticles }}</p>
+          {{ end }}
+        </section>
+      </div>
+    </div>
+  </div>
+{{ end }}

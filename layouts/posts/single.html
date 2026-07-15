@@ -1,0 +1,42 @@
+{{ define "main" }}
+{{- if eq hugo.Environment "production-blog" -}}
+<article class="blog-post mx-auto my-5">
+  <header class="mb-4">
+    <h1 class="fw-semibold">{{ .Title }}</h1>
+    <div class="text-body-secondary mb-3">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (.Site.Params.dateFormat | default "2006-01-02") }}</time>
+    </div>
+    {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+    {{ partial "posts/taxonomy-badges.html" . }}
+  </header>
+  <div class="post-body">{{ .Content }}</div>
+</article>
+{{- else -}}
+<main class="posts-page">
+  <article class="container pb-5">
+    <header class="row justify-content-center mb-4">
+      <div class="col-lg-8">
+        <div class="post-meta text-body-secondary mb-2">
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (.Site.Params.dateFormat | default "2006-01-02") }}</time>
+        </div>
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}
+        <p class="lead">{{ . }}</p>
+        {{ end }}
+        {{ partial "posts/taxonomy-badges.html" . }}
+      </div>
+    </header>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8 post-body">
+        {{ .Content }}
+      </div>
+    </div>
+  </article>
+</main>
+{{- end -}}
+{{ end }}
+
+{{ define "back_to_top" }}
+  {{ partial "back-to-top.html" . }}
+{{ end }}

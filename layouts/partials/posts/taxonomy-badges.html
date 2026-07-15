@@ -1,0 +1,22 @@
+{{ $page := . }}
+{{ $groups := slice
+  (dict "key" "techs" "label" "Tech")
+  (dict "key" "capabilities" "label" "Capability")
+  (dict "key" "roles" "label" "Role")
+  (dict "key" "contexts" "label" "Context")
+}}
+<div class="post-taxonomy d-flex flex-wrap gap-2 text-body-secondary">
+  {{ range $groups }}
+    {{ $key := .key }}
+    {{ with index $page.Params $key }}
+      {{ range . }}
+        {{ $term := printf "%v" . }}
+        {{ with site.GetPage (printf "/%s/%s" $key ($term | urlize)) }}
+          <a class="badge rounded-pill text-bg-light border" href="{{ .RelPermalink }}">{{ $term }}</a>
+        {{ else }}
+          <span class="badge rounded-pill text-bg-light border">{{ $term }}</span>
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+</div>

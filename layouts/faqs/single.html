@@ -1,0 +1,92 @@
+{{ define "skip_target" }}#content-start{{ end }}
+
+{{ define "main" }}
+  {{- $langRaw := .Lang | default site.Language.Lang | default "en" -}}
+  {{- $lang := lower $langRaw -}}
+  {{- $langShort := $lang -}}
+  {{- if in $lang "-" -}}
+    {{- $langShort = index (split $lang "-") 0 -}}
+  {{- end -}}
+
+  {{- $items := slice -}}
+
+  {{/* Pattern A: data/faqs.<lang>.yaml -> hugo.Data.faqs.<lang> */}}
+  {{- $faqsRoot := index hugo.Data "faqs" -}}
+  {{- if and (eq (len $items) 0) $faqsRoot -}}
+    {{- range $candidate := (slice $lang $langShort "ja" "en") -}}
+      {{- $candidateData := index $faqsRoot $candidate -}}
+      {{- if and $candidateData (isset $candidateData "items") (gt (len $candidateData.items) 0) -}}
+        {{- $items = $candidateData.items -}}
+        {{- break -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{/* Pattern B: data/faqs.<lang>.yaml as flat key -> hugo.Data["faqs.<lang>"] */}}
+  {{- if eq (len $items) 0 -}}
+    {{- range $candidate := (slice $lang $langShort "ja" "en") -}}
+      {{- $flat := index hugo.Data (printf "faqs.%s" $candidate) -}}
+      {{- if and $flat (isset $flat "items") (gt (len $flat.items) 0) -}}
+        {{- $items = $flat.items -}}
+        {{- break -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $accordionID := printf "faq-accordion-%s" $langShort -}}
+
+  <div class="bg-body below-site-header flex-grow-1">
+    {{ partial "page-hero.html" (dict
+      "page" .
+    ) }}
+    <div class="container-md position-relative py-4 py-md-5">
+      <div class="row justify-content-center">
+        <article class="page-article mb-4 col-12 col-lg-9" aria-labelledby="content-start">
+          <header class="mb-4">
+            <h1 id="content-start" class="visually-hidden" tabindex="-1">{{ .Title }}</h1>
+            {{ with .Content }}
+              <div class="mt-3">{{ . }}</div>
+            {{ end }}
+          </header>
+
+          {{ if gt (len $items) 0 }}
+            <div class="accordion faq-accordion" id="{{ $accordionID }}">
+              {{ range $i, $item := $items }}
+                {{- $headingID := printf "%s-heading-%d" $accordionID $i -}}
+                {{- $collapseID := printf "%s-collapse-%d" $accordionID $i -}}
+                <article class="accordion-item">
+                  <h2 class="accordion-header" id="{{ $headingID }}">
+                    <button
+                      class="accordion-button {{ if ne $i 0 }}collapsed{{ end }}"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#{{ $collapseID }}"
+                      aria-expanded="{{ if eq $i 0 }}true{{ else }}false{{ end }}"
+                      aria-controls="{{ $collapseID }}">
+                      <span class="faq-q-number d-inline-block text-nowrap text-center text-primary fw-bold">{{ printf "%02d" (add $i 1) }}</span>
+                      <span class="faq-q-separator d-inline-block text-primary">|</span>
+                      <span class="faq-q-text px-1 fw-bold">{{ $item.question }}</span>
+                    </button>
+                  </h2>
+                  <div
+                    id="{{ $collapseID }}"
+                    class="accordion-collapse collapse {{ if eq $i 0 }}show{{ end }}"
+                    aria-labelledby="{{ $headingID }}"
+                    data-bs-parent="#{{ $accordionID }}">
+                    <div class="accordion-body">
+                      <div class="ps-4">
+                        {{ $item.answer | markdownify }}
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              {{ end }}
+            </div>
+          {{ else }}
+            <p class="text-muted mb-0">No FAQs found.</p>
+          {{ end }}
+        </article>
+      </div>
+    </div>
+  </div>
+{{ end }}

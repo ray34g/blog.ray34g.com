@@ -1,0 +1,8 @@
+# -- Languages English (US) --
+weight: 10
+
+locale: "en-US"
+label: "English"
+hasCJKLanguage: false
+
+direction: "ltr"

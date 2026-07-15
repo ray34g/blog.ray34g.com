@@ -1,0 +1,32 @@
+/* assets/css/features/header-overlay.css */
+
+:root {
+  --header-overlay-progress: 1;
+}
+
+.site-header[data-header-overlay] {
+  --header-glass-blur-max: var(--bg-overlay-glass-blur);
+  --header-glass-alpha-max: var(--bg-overlay-glass-alpha);
+}
+
+.site-header[data-header-overlay] {
+  --header-overlay-range-max: 240px;
+  --header-overlay-root-margin: 240px;
+  --header-overlay-px-end: 160px;
+}
+
+.site-header .navbar-bg.bg-overlay-glass {
+  opacity: calc(var(--header-glass-alpha-max) * var(--header-overlay-progress));
+  backdrop-filter:
+    blur(calc(var(--header-glass-blur-max) * var(--header-overlay-progress)))
+    saturate(calc(1 + 0.25 * var(--header-overlay-progress)));
+  -webkit-backdrop-filter:
+    blur(calc(var(--header-glass-blur-max) * var(--header-overlay-progress)))
+    saturate(calc(1 + 0.25 * var(--header-overlay-progress)));
+  border-bottom: 1px solid rgba(255,255,255, calc(0.18 * var(--header-overlay-progress)));
+  box-shadow: 0 0.25rem 0.75rem rgba(0,0,0, calc(0.18 * var(--header-overlay-progress)));
+}
+
+.site-header[data-header-overlay] .brand-wordmark {
+  opacity: var(--header-overlay-progress);
+}

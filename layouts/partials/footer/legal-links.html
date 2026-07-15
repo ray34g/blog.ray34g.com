@@ -1,0 +1,53 @@
+{{/* layouts/partials/footer/legal-links.html */}}
+{{ partial "menu/util.html" . }}
+
+{{- $menuKey := .menu | default "legal" -}}
+{{- $menu := index site.Menus $menuKey -}}
+
+{{- if not $menu -}}
+  {{- if .warnIfMissing -}}
+    {{- warnf "[footer/legal] menu '%s' not found (site.Menus.%s is nil)" $menuKey $menuKey -}}
+  {{- end -}}
+{{- else -}}
+
+  {{- $items := slice -}}
+  {{- range $it := $menu -}}
+    {{- $u := $it.URL -}}
+    {{- if $u -}}
+      {{- with $it.Params.icon -}}
+        {{- warnf "[footer/legal] icon is not allowed in legal links: menu=%s item=%q icon=%q" $menuKey (or $it.Name $it.Title) . -}}
+      {{- end -}}
+      {{- $items = $items | append (dict "item" $it "url" $u) -}}
+    {{- else -}}
+      {{- warnf "[footer/legal] item has no URL: menu=%s item=%q" $menuKey (or $it.Name $it.Title) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if gt (len $items) 0 -}}
+    <ul class="list-inline mx-auto small text-center">
+      {{- $n := len $items -}}
+      {{- range $i, $node := $items -}}
+        {{- $it := index $node "item" -}}
+        {{- $u := index $node "url" -}}
+
+        <li class="list-inline-item d-block d-md-inline-block w-md-auto">
+          {{/* xs (<sm): show | on both sides */}}
+          <span class="d-inline d-md-none text-body-emphasis px-1" aria-hidden="true">|</span>
+
+          <a class="small link-opacity-100 link-opacity-100-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-offset-2-hover"
+             {{ template "menu/util/linkAttrs" (dict "url" $u "isCurrent" false "title" $it.Title) }}>
+            {{- or (i18n $it.Name) $it.Name | markdownify -}}
+          </a>
+
+          <span class="d-inline d-md-none text-body-emphasis px-1" aria-hidden="true">|</span>
+        </li>
+
+        {{/* sm+: show separator between items */}}
+        {{- if lt (add $i 1) $n -}}
+          <li class="list-inline-item d-none d-md-inline" aria-hidden="true">|</li>
+        {{- end -}}
+      {{- end -}}
+    </ul>
+  {{- end -}}
+
+{{- end -}}

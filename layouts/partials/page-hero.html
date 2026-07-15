@@ -1,0 +1,175 @@
+{{- $page := .page | default . -}}
+{{- $hero := .hero | default ($page.Params.hero | default dict) -}}
+{{- $title := .title | default (index $hero "title") -}}
+{{- $titleImagePattern := .titleImage | default (index $hero "titleImage") -}}
+{{- $subtitle := .subtitle | default (index $hero "subtitle") -}}
+{{- $lead := .lead | default (index $hero "lead") -}}
+{{- $sectionClass := "page-hero position-relative overflow-visible z-0" -}}
+{{- $containerClass := .containerClass | default "container-md position-relative z-1" -}}
+{{- $contentClass := .contentClass | default "col-12 col-lg-9" -}}
+{{- $stageClass := .stageClass | default "page-hero-stage position-relative" -}}
+{{- $bodyClass := .bodyClass | default "page-hero-content d-flex flex-nowrap align-items-center gap-2 gap-md-3 py-5 py-md-4" -}}
+{{- $iconWrapClass := "page-hero-icon flex-shrink-0 w-25" -}}
+{{- $textClass := "page-hero-copy flex-grow-1 text-start" -}}
+{{- $leadClass := "fs-6 lh-lg mt-2 mb-0" -}}
+{{- $titleClass := "page-hero-title lh-1 mb-0" -}}
+{{- $subtitleClass := "page-hero-subtitle fw-bold mt-1 mb-0" -}}
+{{- $titleMin := float (.titleMax | default (index $hero "title_font_size_min") | default 2.0) -}}
+{{- $titleMax := float (.titleMax | default (index $hero "title_font_size_max") | default 3.9) -}}
+{{- $subtitleMin := float (.subtitleMin | default (index $hero "subtitle_font_size_min") | default 1.15) -}}
+{{- $subtitleMax := float (.subtitleMax | default (index $hero "subtitle_font_size_max") | default 2.2) -}}
+{{- $viewportMin := float 375.0 -}}
+{{- $viewportMax := float 768.0 -}}
+{{- $rootFontSize := float 16.0 -}}
+{{- $viewportRange := sub $viewportMax $viewportMin -}}
+{{- $titleSlope := div (mul (sub $titleMax $titleMin) (mul $rootFontSize 100.0)) $viewportRange -}}
+{{- $titleIntercept := sub $titleMin (div (mul $titleSlope $viewportMin) (mul $rootFontSize 100.0)) -}}
+{{- $titleStyle := printf "font-size: clamp(%.4grem, calc(%.4grem + %.4gvw), %.4grem);" $titleMin $titleIntercept $titleSlope $titleMax -}}
+{{- $subtitleSlope := div (mul (sub $subtitleMax $subtitleMin) (mul $rootFontSize 100.0)) $viewportRange -}}
+{{- $subtitleIntercept := sub $subtitleMin (div (mul $subtitleSlope $viewportMin) (mul $rootFontSize 100.0)) -}}
+{{- $subtitleStyle := printf "font-size: clamp(%.4grem, calc(%.4grem + %.4gvw), %.4grem);" $subtitleMin $subtitleIntercept $subtitleSlope $subtitleMax -}}
+{{- $titleImageURL := "" -}}
+{{- if $titleImagePattern -}}
+  {{- $resolvedTitleImage := partial "article/figure/resolve-image.html" (dict "page" $page "destination" $titleImagePattern) -}}
+  {{- if $resolvedTitleImage.found -}}
+    {{- $titleImageURL = $resolvedTitleImage.src -}}
+  {{- end -}}
+{{- end -}}
+{{- $backgroundPattern := .background | default (or (index $hero "background") (index $hero "background_base") ($page.Params.background) ($page.Params.background_base) "") -}}
+{{- $visualPattern := .visual | default (or (index $hero "visual") (index $hero "background_overlay") ($page.Params.visual) ($page.Params.background_overlay) "") -}}
+{{- $sharedBackgroundPattern := .sharedBackground | default (or (index $hero "preset_background") ($page.Params.preset_background) "") -}}
+{{- $sharedVisualPattern := .sharedVisual | default (or (index $hero "preset_visual") ($page.Params.preset_visual) "") -}}
+{{- $backgroundURL := "" -}}
+{{- with .bgBase -}}
+  {{- $backgroundURL = .RelPermalink -}}
+{{- end -}}
+{{- if and (not $backgroundURL) $backgroundPattern -}}
+  {{- $resolvedBackground := partial "article/figure/resolve-image.html" (dict "page" $page "destination" $backgroundPattern) -}}
+  {{- if $resolvedBackground.found -}}
+    {{- $backgroundURL = $resolvedBackground.src -}}
+  {{- end -}}
+{{- end -}}
+{{- if and (not $backgroundURL) $sharedBackgroundPattern -}}
+  {{- $resolvedSharedBackground := partial "article/figure/resolve-image.html" (dict "page" $page "destination" $sharedBackgroundPattern) -}}
+  {{- if $resolvedSharedBackground.found -}}
+    {{- $backgroundURL = $resolvedSharedBackground.src -}}
+  {{- end -}}
+{{- end -}}
+{{- $visualURL := "" -}}
+{{- with .visualResource -}}
+  {{- $visualURL = .RelPermalink -}}
+{{- end -}}
+{{- if and (not $visualURL) $visualPattern -}}
+  {{- $resolvedVisual := partial "article/figure/resolve-image.html" (dict "page" $page "destination" $visualPattern) -}}
+  {{- if $resolvedVisual.found -}}
+    {{- $visualURL = $resolvedVisual.src -}}
+  {{- end -}}
+{{- end -}}
+{{- if and (not $visualURL) $sharedVisualPattern -}}
+  {{- $resolvedSharedVisual := partial "article/figure/resolve-image.html" (dict "page" $page "destination" $sharedVisualPattern) -}}
+  {{- if $resolvedSharedVisual.found -}}
+    {{- $visualURL = $resolvedSharedVisual.src -}}
+  {{- end -}}
+{{- end -}}
+{{- if and (not $title) (not $visualURL) -}}
+  {{- $title = $page.Title -}}
+{{- end -}}
+{{- $hasTextContent := or $titleImageURL $title $subtitle $lead -}}
+{{- $iconPath := .iconPath | default (index $hero "icon") -}}
+{{- $iconURL := "" -}}
+{{- with .icon -}}
+  {{- $iconURL = .RelPermalink -}}
+{{- end -}}
+{{- if and (not $iconURL) $iconPath -}}
+  {{- $resolvedIcon := partial "article/figure/resolve-image.html" (dict "page" $page "destination" $iconPath) -}}
+  {{- if $resolvedIcon.found -}}
+    {{- $iconURL = $resolvedIcon.src -}}
+  {{- end -}}
+{{- end -}}
+{{- if and (not $iconURL) $hasTextContent -}}
+  {{- with resources.Get "images/clip-arts/giving-machine.svg" -}}
+    {{- $iconURL = .RelPermalink -}}
+  {{- end -}}
+{{- end -}}
+{{- $hasContent := or $iconURL $hasTextContent -}}
+
+<section class="{{ $sectionClass }}">
+  <div class="page-hero-background position-absolute top-0 start-0 w-100 h-100 z-n1 pointer-events-none" aria-hidden="true">
+    {{ with $backgroundURL }}
+      <img
+        class="page-hero-background-image position-absolute top-50 start-50 translate-middle w-100 h-100 object-fit-cover"
+        src="{{ . }}"
+        alt=""
+        loading="eager"
+        decoding="async"
+      >
+    {{ end }}
+    {{ if and (not $backgroundURL) $visualURL }}
+      <img
+        class="page-hero-background-image page-hero-background-image-derived position-absolute top-50 start-50 translate-middle w-100 h-100 object-fit-cover"
+        src="{{ $visualURL }}"
+        alt=""
+        loading="eager"
+        decoding="async"
+      >
+    {{ end }}
+  </div>
+
+  <div class="{{ $containerClass }}">
+    <div class="row justify-content-center">
+      <div class="{{ $contentClass }}">
+        <div class="{{ $stageClass }}">
+          {{ with $visualURL }}
+            <div class="page-hero-visual">
+              <img
+                class="page-hero-visual-image img-fluid w-100"
+                src="{{ . }}"
+                alt=""
+                loading="eager"
+                decoding="async"
+              >
+            </div>
+          {{ end }}
+          {{ if $hasContent }}
+            <div class="{{ $bodyClass }}{{ if $visualURL }} page-hero-content-overlay position-absolute top-0 start-0 w-100 h-100 z-1{{ else }} position-relative z-1{{ end }}">
+              {{ with $iconURL }}
+                <div class="{{ $iconWrapClass }}">
+                  <img
+                    class="img-fluid w-100"
+                    src="{{ . }}"
+                    alt=""
+                    loading="eager"
+                    decoding="async"
+                  >
+                </div>
+              {{ end }}
+              <div class="{{ $textClass }}">
+                {{ if $titleImageURL }}
+                  <img
+                    class="{{ $titleClass }} page-hero-title-image d-block img-fluid"
+                    src="{{ $titleImageURL }}"
+                    alt="{{ $title | default $page.Title }}"
+                    loading="eager"
+                    decoding="async"
+                  >
+                {{ else }}
+                  {{ with $title }}
+                    {{- $titleStyleAttr := cond $titleStyle (printf "style=%q" ($titleStyle | safeCSS) | safeHTMLAttr) "" }}
+                    <div class="{{ $titleClass }}"{{ $titleStyleAttr }} aria-hidden="true">{{ . }}</div>
+                  {{ end }}
+                {{ end }}
+                {{ with $subtitle }}
+                  {{- $subtitleStyleAttr := cond $subtitleStyle (printf "style=%q" ($subtitleStyle | safeCSS) | safeHTMLAttr) "" }}
+                  <p class="{{ $subtitleClass }}"{{ $subtitleStyleAttr }}>{{ . }}</p>
+                {{ end }}
+                {{ with $lead }}
+                  <p class="{{ $leadClass }}">{{ . }}</p>
+                {{ end }}
+              </div>
+            </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

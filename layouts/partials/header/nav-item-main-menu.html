@@ -1,0 +1,38 @@
+{{/* partials/header/nav-item-main-menu.html */}}
+{{ $page := .page | default $ }}
+{{ $order := .order | default "" }}
+{{ $menu := slice }}
+
+{{ range site.Menus.main }}
+  {{ $hideWhenCurrent := .Params.hideWhenCurrent | default false }}
+  {{ $isCurrent := $page.IsMenuCurrent "main" . }}
+
+  {{ if not (and $hideWhenCurrent $isCurrent) }}
+    {{ $menu = $menu | append . }}
+  {{ end }}
+{{ end }}
+
+{{/* ===== shared helpers ===== */}}
+{{ partial "menu/util.html" . }}
+{{ partial "menu/main.html" . }}
+
+{{/* ===== render main menu ===== */}}
+
+{{ if $menu }}
+  {{ $n := len $menu }}
+  {{ range $i, $item := $menu }}
+    {{ $next := cond (lt (add $i 1) $n) (index $menu (add $i 1)) nil }}
+
+    {{ $odd1based := eq (mod $i 2) 0 }}
+    {{ $forceFull := or $item.HasChildren (and $odd1based (and $next $next.HasChildren)) }}
+    {{ $col := cond $forceFull "col-12" "col-6" }}
+
+    {{ template "menu/main/topLevelItem" (dict
+      "item" $item
+      "page" $page
+      "index" $i
+      "col" $col
+      "order" $order
+    ) }}
+  {{ end }}
+{{ end }}
