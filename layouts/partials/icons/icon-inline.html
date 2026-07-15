@@ -1,0 +1,62 @@
+{{/* layouts/partials/icons/icon-inline.html
+  params:
+    id    : "vendor:name" 例: "fa-brand:github" / "fab:github" / "bootstrap:arrow-up" / "lucide:bot"
+    class : extra classes
+    iconSize : optional fallback size for width/height (default: "1em"); prefer class-based sizing
+    title : optional aria-label
+*/}}
+
+{{- $id := .id | default "" -}}
+{{- $class := .class | default "" -}}
+{{- $iconSize := printf "%v" (.iconSize | default "1em") -}}
+{{- $title := .title | default "" -}}
+{{- if not $id -}}{{- return -}}{{- end -}}
+
+{{- $normalized := partial "icons/functions/icon-meta.html" (dict "id" $id) -}}
+{{- if not $normalized -}}{{- return -}}{{- end -}}
+{{- $resourcePath := strings.TrimPrefix "assets/" $normalized.path -}}
+{{- $resource := resources.Get $resourcePath -}}
+{{- if not $resource -}}
+  {{- warnf "icons/icon-inline: file not found (id=%q path=%q)" $id $normalized.path -}}
+  {{- return -}}
+{{- end -}}
+
+{{- with $resource.Content -}}
+  {{- $svg := . -}}
+  {{- $openMatch := findRE `(?s)<svg\b[^>]*>` $svg 1 -}}
+  {{- if eq (len $openMatch) 0 -}}
+    {{- warnf "icons/icon-inline: invalid svg markup for id=%q" $id -}}
+    {{- return -}}
+  {{- end -}}
+
+  {{- $openTag := index $openMatch 0 -}}
+  {{- $existingClass := "" -}}
+  {{- $classMatch := findRE `\sclass="[^"]*"` $openTag 1 -}}
+  {{- if gt (len $classMatch) 0 -}}
+    {{- $existingClass = replaceRE `^\sclass="([^"]*)"$` `$1` (index $classMatch 0) -}}
+  {{- end -}}
+
+  {{- $mergedClass := "icon" -}}
+  {{- with $existingClass -}}
+    {{- $mergedClass = printf "%s %s" $mergedClass . -}}
+  {{- end -}}
+  {{- with $class -}}
+    {{- $mergedClass = printf "%s %s" $mergedClass . -}}
+  {{- end -}}
+  {{- $mergedClass = trim $mergedClass " " -}}
+
+  {{- $attrs := $openTag
+    | replaceRE `(?s)^<svg\b` ""
+    | replaceRE `>$` ""
+    | replaceRE `\s(?:class|role|aria-label|aria-hidden|focusable|width|height)=(?:"[^"]*"|'[^']*')` ""
+  -}}
+
+  {{- $aria := ` aria-hidden="true"` -}}
+  {{- if $title -}}
+    {{- $aria = printf ` role="img" aria-label="%s"` ($title | plainify) -}}
+  {{- end -}}
+
+  {{- $replacement := printf `<svg%s class="%s" width="%s" height="%s"%s focusable="false">` $attrs $mergedClass $iconSize $iconSize $aria -}}
+  {{- $svg = replaceRE `(?s)<svg\b[^>]*>` $replacement $svg 1 -}}
+  {{- $svg | safeHTML -}}
+{{- end -}}

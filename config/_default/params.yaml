@@ -1,0 +1,32 @@
+description: Computer graphics and web design.
+author: Go Ray
+copyright: Go Ray
+primaryColor: '#212529'
+enableSearch: true
+enableTheme: true
+icons:
+  # Keep icons used by conditional theme features available even when a
+  # particular build has no page that exercises those branches.
+  siteSprite:
+  - custom:chevron-right
+  - fab:github
+appearance:
+  useHeaderOverlay: true
+  themeLock: ''
+  mainMenu:
+    primaryColorUse: background
+    theme: dark
+    useLightThemeOnDropdownMenu: true
+header:
+  brand:
+    logo: images/logo.jpg
+    class: rounded-circle
+    maxHeight: 2rem
+    label: ray34g.com
+    alt: ray34g.com
+footer:
+  note: ''
+  copyright:
+    holder: Go Ray
+    since: 2010
+    shorten: false

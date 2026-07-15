@@ -1,0 +1,16 @@
+{{ $copyright := (site.Params.footer.copyright.holder) | default (site.Params.copyright) }}
+
+{{- with $copyright }}
+<div class="small">
+  {{- if ne site.Params.footer.copyright.shorten true -}}
+  <span class="d-none d-md-inline">Copyright</span>
+  {{- end -}}
+  &copy;
+  {{ with site.Params.footer.copyright.since -}}
+  {{.}}-{{ end -}}
+  {{- now.Format "2006" }} {{ . -}}
+  {{- if ne site.Params.footer.copyright.shorten true -}}
+  <span class="d-none d-md-inline"> All Rights Reserved.</span>
+  {{- end -}}
+</div>
+{{- end }}

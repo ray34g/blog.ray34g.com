@@ -1,0 +1,183 @@
+{{- $page := .page -}}
+{{- $destination := .destination | default "" -}}
+{{- $alt := .alt | default "" -}}
+{{- $linkRaw := .link | default "" -}}
+{{- $zoomRaw := .zoom | default "" -}}
+{{- $target := .target | default "" -}}
+{{- $rel := .rel | default "" -}}
+{{- $attrs := .attributes | default dict -}}
+
+{{- $srcsetRaw := index $attrs "srcset" -}}
+{{- $sizes := index $attrs "sizes" -}}
+{{- $mobileDestination := index $attrs "mobileSrc" -}}
+{{- $mobileWidthRaw := index $attrs "mobileWidth" -}}
+{{- $mobileHeightRaw := index $attrs "mobileHeight" -}}
+{{- $width := .width | default "" -}}
+{{- $height := .height | default "" -}}
+{{- $warnRaw := index $attrs "warn" | default "" -}}
+{{- /* Bootstrap 5.3 `md` starts at 768px, so "mobile" means below `md`. */ -}}
+{{- $mobileBreakpoint := "(max-width: 767.98px)" -}}
+
+{{- $warnEnabled := true -}}
+{{- with $warnRaw -}}
+  {{- $warnEnabled = not (in (slice "false" "0" "off" "no") (lower (printf "%v" .))) -}}
+{{- end -}}
+
+{{- $desktopImage := partial "article/figure/resolve-image.html" (dict "page" $page "destination" $destination) -}}
+{{- $mobileImage := partial "article/figure/resolve-image.html" (dict "page" $page "destination" $mobileDestination) -}}
+
+{{- $desktopResource := index $desktopImage "resource" -}}
+{{- $mobileResource := index $mobileImage "resource" -}}
+{{- $imgSrc := index $desktopImage "src" -}}
+{{- $mobileSrc := index $mobileImage "src" -}}
+{{- $desktopStaticWidth := index $desktopImage "width" -}}
+{{- $desktopStaticHeight := index $desktopImage "height" -}}
+{{- $mobileStaticWidth := index $mobileImage "width" -}}
+{{- $mobileStaticHeight := index $mobileImage "height" -}}
+
+{{- $resolvedWidth := or $width (and $desktopResource $desktopResource.Width) $desktopStaticWidth -}}
+{{- $resolvedHeight := or $height (and $desktopResource $desktopResource.Height) $desktopStaticHeight -}}
+{{- $mobileResolvedWidth := or $mobileWidthRaw (and $mobileResource $mobileResource.Width) $mobileStaticWidth -}}
+{{- $mobileResolvedHeight := or $mobileHeightRaw (and $mobileResource $mobileResource.Height) $mobileStaticHeight -}}
+
+{{- $hasSource := index $desktopImage "hasSource" -}}
+{{- $hasResolvedImage := index $desktopImage "found" -}}
+{{- $imageStatus := "ready" -}}
+{{- $placeholderLabel := "" -}}
+{{- if not $hasSource -}}
+  {{- $imageStatus = "coming-soon" -}}
+  {{- $placeholderLabel = i18n "figure_image_coming_soon" -}}
+{{- else if not $hasResolvedImage -}}
+  {{- $imageStatus = "broken" -}}
+  {{- $placeholderLabel = i18n "figure_broken_image" -}}
+{{- end -}}
+
+{{- $responsiveSources := slice -}}
+{{- if and (eq $imageStatus "ready") $mobileSrc -}}
+  {{- $responsiveSources = $responsiveSources | append (dict
+    "media" $mobileBreakpoint
+    "src" $mobileSrc
+  ) -}}
+{{- end -}}
+{{- $hasResponsiveSources := gt (len $responsiveSources) 0 -}}
+
+{{- $linkSpecified := ne (trim (printf "%v" $linkRaw) " \t\r\n") "" -}}
+{{- $zoomSpecified := ne (trim (printf "%v" $zoomRaw) " \t\r\n") "" -}}
+{{- $resolvedHeightText := replaceRE `[^0-9]` "" (printf "%v" $resolvedHeight) -}}
+{{- $resolvedHeightPx := 0 -}}
+{{- if ne $resolvedHeightText "" -}}
+  {{- $resolvedHeightPx = int $resolvedHeightText -}}
+{{- end -}}
+{{- $autoZoomEligible := and (eq $imageStatus "ready") (not $hasResponsiveSources) (ge $resolvedHeightPx 720) -}}
+{{- $link := $linkRaw -}}
+{{- if and $autoZoomEligible (not $linkSpecified) -}}
+  {{- $link = "self" -}}
+{{- end -}}
+{{- $zoomEffective := $zoomRaw -}}
+{{- if and $autoZoomEligible (not $zoomSpecified) -}}
+  {{- $zoomEffective = "true" -}}
+{{- end -}}
+
+{{- $caption := index $attrs "caption" -}}
+{{- $figureClasses := "figure image-placement d-block my-4" -}}
+{{- with index $attrs "class" -}}
+  {{- $figureClasses = printf "%s %s" $figureClasses . -}}
+{{- end -}}
+
+{{- $imgClass := "figure-img img-fluid mb-0" -}}
+{{- with index $attrs "imgClass" -}}
+  {{- $imgClass = printf "%s %s" $imgClass . -}}
+{{- end -}}
+{{- if $autoZoomEligible -}}
+  {{- $imgClass = printf "%s is-clamped-height" $imgClass -}}
+{{- end -}}
+{{- $loading := or (index $attrs "loading") "lazy" -}}
+{{- $decoding := or (index $attrs "decoding") "async" -}}
+
+{{- $imgAlt := $alt -}}
+{{- if and (eq $imgAlt "") $caption -}}
+  {{- $imgAlt = $caption -}}
+{{- end -}}
+
+{{- $imgStyleAttr := "" -}}
+{{- $mediaClass := "image-media d-block overflow-hidden" -}}
+{{- if ne $imageStatus "ready" -}}
+  {{- $mediaClass = printf "%s has-placeholder is-%s" $mediaClass $imageStatus -}}
+{{- end -}}
+{{- with index $attrs "mediaClass" -}}
+  {{- $mediaClass = printf "%s %s" $mediaClass . -}}
+{{- end -}}
+{{- $mediaStyleAttr := "" -}}
+{{- if and (ne $imageStatus "ready") $resolvedWidth $resolvedHeight -}}
+  {{- $mediaStyleAttr = printf "width: %spx; max-width: 100%%; aspect-ratio: %s / %s;" $resolvedWidth $resolvedWidth $resolvedHeight -}}
+{{- end -}}
+
+{{- $linkData := partial "article/figure/link.html" (dict
+  "link" $link
+  "imgSrc" $imgSrc
+  "zoomRaw" $zoomEffective
+  "imageStatus" $imageStatus
+  "target" $target
+  "rel" $rel
+) -}}
+{{- $linkHref := index $linkData "linkHref" -}}
+{{- $linkClass := index $linkData "linkClass" -}}
+{{- $linkTargetAttr := index $linkData "linkTargetAttr" -}}
+{{- $linkRelAttr := index $linkData "linkRelAttr" -}}
+{{- $linkZoomAttrs := index $linkData "linkZoomAttrs" -}}
+
+{{- $figureIdAttr := "" -}}
+{{- with index $attrs "id" -}}
+  {{- $figureIdAttr = printf ` id="%s"` . -}}
+{{- end -}}
+{{- $placeholderAttr := "" -}}
+{{- with $placeholderLabel -}}
+  {{- $placeholderAttr = printf ` data-placeholder-label="%s"` . -}}
+{{- end -}}
+
+<figure class="{{ $figureClasses }}" data-image-status="{{ $imageStatus }}" itemscope="itemscope" itemtype="https://schema.org/ImageObject"{{ $figureIdAttr | safeHTMLAttr }}>
+  {{- with $linkHref -}}
+    <a class="{{ $linkClass }}" href="{{ . | safeURL }}"{{ $linkTargetAttr | safeHTMLAttr }}{{ $linkRelAttr | safeHTMLAttr }}{{ $linkZoomAttrs | safeHTMLAttr }}>
+  {{- end -}}
+  <span class="{{ $mediaClass }}" data-image-status="{{ $imageStatus }}"{{ $placeholderAttr | safeHTMLAttr }}{{ with $mediaStyleAttr }} style="{{ . | safeCSS }}"{{ end }}>
+    {{- if eq $imageStatus "ready" -}}
+      {{- partial "article/figure/ready-media.html" (dict
+        "sources" $responsiveSources
+        "imgClass" $imgClass
+        "imgSrc" $imgSrc
+        "imgAlt" $imgAlt
+        "loading" $loading
+        "decoding" $decoding
+        "imgStyleAttr" $imgStyleAttr
+        "srcsetRaw" $srcsetRaw
+        "sizes" $sizes
+        "resolvedWidth" $resolvedWidth
+        "resolvedHeight" $resolvedHeight
+      ) -}}
+    {{- else -}}
+      <span class="visually-hidden">{{ $imgAlt }}</span>
+    {{- end -}}
+  </span>
+  {{- with $linkHref }}</a>{{ end -}}
+  {{- partial "article/figure/caption.html" (dict "caption" $caption) -}}
+</figure>
+
+{{- $pagePath := $page.Path | default $page.RelPermalink | default "(unknown page)" -}}
+{{- partial "article/figure/warnings.html" (dict
+  "warnEnabled" $warnEnabled
+  "pagePath" $pagePath
+  "destination" $destination
+  "mobileDestination" $mobileDestination
+  "imgAlt" $imgAlt
+  "srcsetRaw" $srcsetRaw
+  "sizes" $sizes
+  "mobileImage" $mobileImage
+  "hasResponsiveSources" $hasResponsiveSources
+  "mobileResolvedWidth" $mobileResolvedWidth
+  "mobileResolvedHeight" $mobileResolvedHeight
+  "resolvedWidth" $resolvedWidth
+  "resolvedHeight" $resolvedHeight
+  "hasSource" $hasSource
+  "hasResolvedImage" $hasResolvedImage
+  "desktopImage" $desktopImage
+) -}}

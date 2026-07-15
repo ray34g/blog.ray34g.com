@@ -1,0 +1,53 @@
+baseURL: //www.ray34g.com/
+title: ray34g.com
+defaultContentLanguage: ja
+defaultContentLanguageInSubdir: false
+canonifyURLs: false
+enableRobotsTXT: true
+summaryLength: 0
+buildDrafts: false
+buildFuture: false
+enableGitInfo: true
+pagination:
+  pagerSize: 12
+permalinks:
+  posts: /:section/:year/:month/:contentbasename/
+frontmatter:
+  date:
+  - date
+  - publishDate
+  - :git
+  - lastmod
+  lastmod:
+  - lastmod
+  - :git
+  - date
+  - publishDate
+  - :fileModTime
+taxonomies:
+  tech: techs
+  role: roles
+  capability: capabilities
+  context: contexts
+sitemap:
+  changefreq: monthly
+  filename: sitemap.xml
+  priority: 0.5
+mediaTypes:
+  application/atom+xml:
+    suffixes:
+    - xml
+outputFormats:
+  Atom:
+    mediaType: application/atom+xml
+    baseName: atom
+    path: feeds
+    isPlainText: true
+    rel: alternate
+outputs:
+  page:
+  - HTML
+  home:
+  - HTML
+  - RSS
+  - JSON

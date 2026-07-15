@@ -1,0 +1,49 @@
+{{/*
+  Favicons (assets 管理)
+  - params.favicons.* で差し替え可能
+  - ファイルが無ければ、そのlinkは出さない（壊れない）
+  - 変換生成はしない（SVG→PNG/ICOは外部で用意）
+*/}}
+
+{{- $cfg := site.Params.favicons | default (dict) -}}
+
+{{- $svgPath   := (index $cfg "faviconSVG")       | default "images/icon.svg" -}}
+{{- $icoPath   := (index $cfg "favicon")          | default "images/favicon.ico" -}}
+{{- $p16       := (index $cfg "favicon16x16")     | default "images/favicon-16x16.png" -}}
+{{- $p32       := (index $cfg "favicon32x32")     | default "images/favicon-32x32.png" -}}
+{{- $p192      := (index $cfg "favicon192x192")   | default "images/android-chrome-192x192.png" -}}
+{{- $p512      := (index $cfg "favicon512x512")   | default "images/android-chrome-512x512.png" -}}
+{{- $applePath := (index $cfg "faviconAppleTouch")| default "images/apple-touch-icon.png" -}}
+
+{{- $svg   := resources.Get $svgPath -}}
+{{- $ico   := resources.Get $icoPath -}}
+{{- $i16   := resources.Get $p16 -}}
+{{- $i32   := resources.Get $p32 -}}
+{{- $i192  := resources.Get $p192 -}}
+{{- $i512  := resources.Get $p512 -}}
+{{- $apple := resources.Get $applePath -}}
+
+{{/* SVG（モダンブラウザ向け） */}}
+{{- with $svg }}
+<link rel="icon" href="{{ .RelPermalink }}" type="{{ .MediaType.Type }}">
+{{- end }}
+
+{{/* ICO（互換。必要ならルート /favicon.ico にコピーする） */}}
+{{- with $ico }}
+  {{- $out := . -}}
+  {{- if (index $cfg "copyToRoot") | default true -}}
+    {{- $out = resources.Copy "favicon.ico" . -}}
+  {{- end -}}
+<link rel="icon" href="{{ $out.RelPermalink }}" type="{{ $out.MediaType.Type }}">
+{{- end }}
+
+{{/* PNG */}}
+{{- with $i16 }}<link rel="icon" href="{{ .RelPermalink }}" type="{{ .MediaType.Type }}" sizes="16x16">{{- end }}
+{{- with $i32 }}<link rel="icon" href="{{ .RelPermalink }}" type="{{ .MediaType.Type }}" sizes="32x32">{{- end }}
+{{- with $i192 }}<link rel="icon" href="{{ .RelPermalink }}" type="{{ .MediaType.Type }}" sizes="192x192">{{- end }}
+{{- with $i512 }}<link rel="icon" href="{{ .RelPermalink }}" type="{{ .MediaType.Type }}" sizes="512x512">{{- end }}
+
+{{/* Apple Touch */}}
+{{- with $apple }}
+<link rel="apple-touch-icon" href="{{ .RelPermalink }}" sizes="180x180">
+{{- end }}

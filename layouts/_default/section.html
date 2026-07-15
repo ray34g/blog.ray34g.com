@@ -1,0 +1,54 @@
+{{ define "main" }}
+<main class="{{ .Kind }} overflow-auto">
+  <section class="banner text-light bg-dark">
+    <div class="container">
+      <div class="row">
+        <div class="col-6 col-md-6 m-md-auto m-auto p-4 text-center">
+
+          {{ $profileImage := resources.GetMatch (.Site.Params.profile.src | default "/images/profile.*") }}
+          {{- with $profileImage -}}
+          {{- with cond (gt .Width 512) ($profileImage.Resize "512x webp") ($profileImage.Resize (printf "%dx%d webp" .Height .Width)) }}
+          <img class="profile float-md-end" src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="Profile Image"
+            style="border-radius: 50%; width: 30vmin; height: auto; max-width: 240px;">
+          {{- end -}}
+          {{- end -}}
+        </div>
+        <div class="col-12 col-sm-6 m-sm-auto p-4 text-left">
+          <h1>{{ .Params.title }}</h1>
+          {{ .Content }}
+          <div class="social-links">
+            <a class="text-light text-decoration-none" href="https://twitter.com/ray34g" target="_blank"
+              title="Twitter">
+              {{ partial "icons/icon-use-site-sprite.html" (dict "page" . "id" "fab:twitter" "class" "icon-lg") }}
+            </a>
+            <a class="text-light text-decoration-none" href="https://linkedin.com/in/ray34g" target="_blank"
+              title="LinkedIn">
+              {{ partial "icons/icon-use-site-sprite.html" (dict "page" . "id" "fab:linkedin" "class" "icon-lg") }}
+            </a>
+            <a class="text-light text-decoration-none" href="https://www.instagram.com/ray34g" target="_blank"
+              title="Instagram">
+              {{ partial "icons/icon-use-site-sprite.html" (dict "page" . "id" "fab:instagram" "class" "icon-lg") }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="banner-border">
+      <svg id="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 32" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#wave" x="0" y="0" fill-opacity="0.7"></use>
+          <use xlink:href="#wave" x="0" y="4" fill-opacity="0.5"></use>
+          <use xlink:href="#wave" x="0" y="8" fill-opacity="0.3"></use>
+          <use xlink:href="#wave" x="0" y="0" fill-opacity="0.1"></use>
+          <use xlink:href="#wave" x="0" y="12" fill-opacity="1.0"></use>
+        </g>
+      </svg>
+    </div>
+  </section>
+</main>
+
+{{ end }}

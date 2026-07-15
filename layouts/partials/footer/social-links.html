@@ -1,0 +1,42 @@
+{{- $platforms := index hugo.Data "social-platforms" -}}
+{{- with site.Params.social -}}
+{{- $links := . -}}
+{{- if eq (len $links) 0 -}}
+  {{- return -}}
+{{- end -}}
+
+<div class="col-12">
+  <ul class="list-inline d-flex justify-content-center align-items-center gap-4 mb-4">
+    {{- range $links }}
+      {{- $platform := index $platforms .id -}}
+      {{- if not $platform -}}
+        {{- warnf "[footer/social-links] social platform %q is not defined in data/social-platforms.yaml" .id -}}
+        {{- continue -}}
+      {{- end -}}
+      {{- if not .url -}}
+        {{- warnf "[footer/social-links] social link %q has no url" .id -}}
+        {{- continue -}}
+      {{- end -}}
+      {{- $label := $platform.label | default "" -}}
+      {{- with $platform.label_i18n -}}
+        {{- $label = i18n . | default $label -}}
+      {{- end -}}
+      <li class="list-inline-item m-0">
+        <a
+          href="{{ .url }}"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="{{ $label }}"
+          class="d-inline-flex align-items-center justify-content-center text-body-emphasis text-decoration-none"
+        >
+          {{ partial "icons/icon-use-site-sprite.html" (dict
+            "page" $
+            "id" $platform.icon
+            "class" "text-body-emphasis icon-lg icon-at-md-xl"
+          ) }}
+        </a>
+      </li>
+    {{- end }}
+  </ul>
+</div>
+{{- end -}}

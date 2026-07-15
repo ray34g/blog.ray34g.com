@@ -1,0 +1,130 @@
+{{/* layouts/partials/header.html */}}
+{{- $useHeaderOverlay := site.Params.appearance.useHeaderOverlay | default false -}}
+{{- $mainMenuAppearance := site.Params.appearance.mainMenu | default dict -}}
+{{- $primaryColorUse := $mainMenuAppearance.primaryColorUse | default "none" -}}
+{{- $usePrimaryForeground := eq $primaryColorUse "foreground" -}}
+{{- $usePrimaryBackground := eq $primaryColorUse "background" -}}
+{{- $theme := $mainMenuAppearance.theme | default "auto" -}}
+{{- $themeLock := lower (site.Params.appearance.themeLock | default "") -}}
+{{- $usesDarkTheme := or (eq $theme "dark") (and (eq $theme "auto") $usePrimaryBackground) -}}
+{{- $usesLightTheme := eq $theme "light" -}}
+
+<header class="site-header fixed-top" id="site-header" {{- if $useHeaderOverlay }} data-header-overlay{{ end }}>
+  <nav class="navbar navbar-expand-lg h-100 border-0 position-relative
+       {{- if $usePrimaryForeground }} navbar-primary-color{{ else }} text-body{{ end }}
+       {{- if and $usePrimaryBackground $usesDarkTheme }} link-on-primary{{ end }}"
+       {{- if $usesDarkTheme }} data-bs-theme="dark"{{ else if $usesLightTheme }} data-bs-theme="light"{{ end }}
+       aria-label="Main navigation">
+
+    {{/*  Desktop/Mobile: Background overlay  */}}
+    <div class="navbar-bg {{- if $usePrimaryBackground }} bg-primary{{ else }} bg-body-tertiary{{- end }}
+                          {{- if $useHeaderOverlay }} bg-overlay-glass{{ end }}"
+         aria-hidden="true"></div>
+
+    <div class="container-xxl d-flex align-items-center">
+
+      {{/* Desktop/Mobile: Left buttons */}}
+      <ul class="navbar-nav d-flex flex-row flex-nowrap gap-1 align-items-center
+          flex-grow-1 flex-lg-grow-0 me-0 me-lg-2">
+        {{/* Desktop/Mobile: Brand */}}
+        <li class="nav-item">
+          {{ partial "header/navbar-brand.html" . }}
+        </li>
+      </ul>
+
+      {{/* Desktop/Mobile: Main menu */}}
+      <div class="offcanvas-lg offcanvas-end flex-grow-1"
+          tabindex="-1"
+          id="mainMenu"
+          aria-labelledby="mainMenuLabel">
+
+        <div class="offcanvas-header px-4 d-lg-none {{- if $usePrimaryBackground }} bg-primary {{ else }} bg-body-tertiary{{- end }}">
+          <h5 class="offcanvas-title" id="mainMenuLabel">{{ site.Params.nav.mainMenu.Title | default site.Title }}</h5>
+          <button type="button" class="btn-close"
+                  data-bs-dismiss="offcanvas" aria-label="Close"
+                  data-bs-target="#mainMenu"></button>
+        </div><!-- div.offcanvas-header -->
+
+        <div class="offcanvas-body p-4 pt-0 p-lg-0 {{- if $usePrimaryBackground }} bg-primary{{ else }} bg-body-tertiary{{- end }}">
+
+          <hr class="d-lg-none mt-0">
+
+          <ul class="navbar-nav flex-row flex-wrap flex-lg-nowrap w-100 mb-0">
+
+            <li class="nav-item d-none d-lg-block flex-grow-1 order-lg-1">
+              {{- /*  */ -}}
+            </li><!-- navbar-spacer -->
+
+            {{ if site.Params.enableSearch | default false }}
+              <li class="nav-item col-12 col-lg-auto my-lg-auto order-lg-2">
+                {{ partial "header/nav-item-search.html" . }}
+              </li><!-- search -->
+
+              <li class="nav-item d-lg-none col-12 col-lg-auto">
+                <hr>
+              </li><!-- offcanvas-spacer -->
+
+              <li class="nav-item d-none d-lg-block flex-grow-1 order-lg-3">
+                {{- /*  */ -}}
+              </li><!-- navbar-spacer -->
+            {{ end }}
+
+            {{ partial "header/nav-item-main-menu.html" (dict "page" . "order" "order-lg-4") }}
+
+            <li class="nav-item d-lg-none col-12 col-lg-auto order-4">
+              <hr>
+            </li><!-- offcanvas-spacer -->
+
+            {{ if and (site.Params.enableTheme | default false) (eq $themeLock "") }}
+              <li class="nav-item col-12 col-lg-auto my-lg-auto order-4">
+                {{ partial "header/nav-item-theme.html" . }}
+              </li><!-- theme -->
+            {{ end }}
+
+            {{ if hugo.IsMultilingual }}
+              <li class="nav-item col-12 col-lg-auto my-lg-auto order-4">
+                {{ partial "header/nav-item-language-switch.html" . }}
+              </li><!-- language -->
+            {{ end }}
+
+            <li class="nav-item d-lg-none col-12 col-lg-auto order-5">
+              <hr class="text-white-50">
+            </li><!-- spacer -->
+
+            {{ range (site.Params.header.externalLinks | default (slice)) }}
+              <li class="nav-item col-6 col-lg-auto my-lg-auto order-5">
+                {{ partial "header/nav-item-external-link.html" (dict "link" . "page" $) }}
+              </li><!-- external-link.{{ .Name }} -->
+            {{ end }}
+          </ul>
+        </div><!-- div.offcanvas-body -->
+      </div><!-- div.offcanvas-lg -->
+
+      {{/* Mobile: Right buttons */}}
+      <ul class="navbar-nav d-flex flex-row flex-nowrap gap-1 align-items-center
+                flex-grow-1 flex-lg-grow-0 justify-content-end ms-0 ms-lg-2">
+        {{ if site.Params.enableSearch | default false -}}
+        <li class="nav-item d-lg-none">
+          {{ partial "header/nav-item-icon-button.html" (dict
+            "page"   .
+            "toggle" "modal"
+            "target" "#searchModal"
+            "label"  "Search"
+            "title"  (i18n "search_open_button_title")
+            "icon"   "fas:magnifying-glass")
+          }}
+        </li>
+        {{ end -}}
+        <li class="nav-item d-lg-none">
+          {{ partial "header/nav-item-icon-button.html" (dict
+            "page"   .
+            "target" "#mainMenu"
+            "label"  "Open main menu"
+            "icon"   "custom:bars")
+          }}
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+</header>

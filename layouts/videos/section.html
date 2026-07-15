@@ -1,0 +1,21 @@
+{{ define "main" }}
+<div class="blog-posts mx-auto my-5">
+  <header class="mb-5">
+    <h2 class="h1">{{ .Title }}</h2>
+    {{ with .Description }}<p class="lead text-body-secondary">{{ . }}</p>{{ end }}
+  </header>
+  {{- $videos := where (where site.RegularPages "Section" "posts") ".Params.video" "!=" nil -}}
+  <div class="row g-4">
+    {{- range $videos }}
+    <article class="col-sm-6 col-md-4">
+      <h3 class="h5 mb-1"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      <time class="small text-body-secondary" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+    </article>
+    {{- else }}
+    <p class="text-body-secondary">{{ i18n "blog_no_videos" }}</p>
+    {{- end }}
+  </div>
+</div>
+{{ end }}
+
+{{ define "back_to_top" }}{{ partial "back-to-top.html" . }}{{ end }}

@@ -1,0 +1,38 @@
+{{- $anchor := anchorize .Anchor -}}
+{{- $spacingClass := cond (le .Level 3) "mt-5 mb-4" "mt-4 mb-4" -}}
+{{- $extraClasses := slice "content-heading" $spacingClass -}}
+{{- $showHeadingAnchors := .Page.Params.showHeadingAnchors | default (.Page.Site.Params.article.showHeadingAnchors | default true) -}}
+{{- $showLeadingIcon := false -}}
+
+{{- with index .Attributes "class" -}}
+  {{- $extraClasses = $extraClasses | append . -}}
+  {{- if in (printf " %v " .) " no-heading-anchor " -}}
+    {{- $showHeadingAnchors = false -}}
+  {{- end -}}
+  {{- if and (eq $.Level 2) (in (printf " %v " .) " heading-icon ") -}}
+    {{- $showLeadingIcon = true -}}
+  {{- end -}}
+  {{- if in (printf " %v " .) " no-heading-icon " -}}
+    {{- $showLeadingIcon = false -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $showLeadingIcon -}}
+  {{- $extraClasses = $extraClasses | append "d-inline-flex" "align-items-center" "gap-1" -}}
+{{- end -}}
+
+<h{{ .Level }} id="{{ $anchor }}" class="{{ delimit $extraClasses " " }}">
+  {{- if $showLeadingIcon -}}
+    <span class="content-heading-prefix" aria-hidden="true">
+      {{- partial "icons/icon-use-site-sprite.html" (dict "page" $.Page "id" "custom:chevron-right" "class" "heading-prefix-icon icon-xl") -}}
+    </span>
+  {{- end -}}
+  {{- .Text -}}
+  {{- if $showHeadingAnchors -}}
+    <a class="anchor-link heading-anchor d-inline align-items-center ms-2 text-body-secondary text-decoration-none"
+       href="#{{ $anchor }}"
+       aria-label="{{ i18n "article_anchor_label" }}: {{ .PlainText }}">
+      {{- partial "icons/icon-use-site-sprite.html" (dict "page" $.Page "id" "fas:link" "class" "heading-anchor-icon small") -}}
+    </a>
+  {{- end -}}
+</h{{ .Level }}>

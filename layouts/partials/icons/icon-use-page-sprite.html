@@ -1,0 +1,40 @@
+{{- /* layouts/partials/icons/icon-use-page-sprite.html
+  params:
+    page  : page context (.)
+    id    : "vendor:name" 例: "fa-brand:github" / "fab:github" / "bootstrap:arrow-up" / "lucide:bot"
+    class : extra classes
+    iconSize : optional fallback size for width/height (default: "1em"); prefer class-based sizing
+    title : optional aria-label
+*/ -}}
+
+{{- $p := .page -}}
+{{- $id := .id | default "" -}}
+{{- $class := .class | default "" -}}
+{{- $iconSize := printf "%v" (.iconSize | default "1em") -}}
+{{- $title := .title | default "" -}}
+{{- if or (not $p) (not $id) -}}{{- return -}}{{- end -}}
+
+{{- $normalized := partial "icons/functions/icon-meta.html" (dict "id" $id) -}}
+{{- if not $normalized -}}{{- return -}}{{- end -}}
+{{- $resourcePath := strings.TrimPrefix "assets/" $normalized.path -}}
+{{- $svg := "" -}}
+{{- with resources.Get $resourcePath -}}
+  {{- $svg = .Content -}}
+{{- else -}}
+  {{- warnf "icons/icon-use-page-sprite: file not found (id=%q path=%q)" $id $normalized.path -}}
+{{- end -}}
+{{- if not $svg -}}{{- return -}}{{- end -}}
+{{- $symbolMarkup := partial "icons/functions/symbol-markup.html" (dict "symbol" $normalized.symbol "svg" $svg) -}}
+{{- if not $symbolMarkup -}}{{- return -}}{{- end -}}
+
+{{- $key := "icon:page-sprite:ids" -}}
+{{- $p.Store.SetInMap $key $normalized.id $symbolMarkup -}}
+
+<svg class="icon {{ $class }}"
+     width="{{ $iconSize }}"
+     height="{{ $iconSize }}"
+     {{- if $title -}} role="img" aria-label="{{ $title | plainify }}"
+     {{- else -}} aria-hidden="true"
+     {{- end }} focusable="false">
+  <use href="#{{ $normalized.symbol }}"></use>
+</svg>

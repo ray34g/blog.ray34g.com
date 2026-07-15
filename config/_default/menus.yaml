@@ -1,0 +1,32 @@
+# Main menu
+#
+# The main menu is displayed in the page header. Supported fields include
+# name, pageRef, page, url, title, parent, pre, and weight. Lower weights are
+# displayed first. Uncomment and adapt entries such as these when defining a
+# shared menu (language-specific menus live below config/_default/<language>):
+#
+# main:
+#   - name: example sub-menu 1
+#     parent: Parent
+#     pageRef: posts
+#     weight: 20
+#   - name: Categories
+#     pageRef: categories
+#     weight: 20
+#   - name: Tags
+#     pageRef: tags
+#     weight: 30
+#
+# subnavigation:
+#   - name: An interesting topic
+#     pageRef: tags/interesting-topic
+#     weight: 10
+#
+# Footer menu
+#
+# footer:
+#   - name: Tags
+#     pageRef: tags
+#     weight: 10
+
+{}

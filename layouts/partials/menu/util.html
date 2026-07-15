@@ -1,0 +1,84 @@
+{{/* layouts/partials/menu/util.html */}}
+
+{{ define "menu/util/linkAttrs" }}
+  {{- $url := .url | default "" -}}
+  {{- $isCurrent := .isCurrent | default false -}}
+  {{- $isExternal := or (strings.HasPrefix $url "http:") (strings.HasPrefix $url "https:") -}}
+
+  {{- if $url -}}href="{{ $url }}"{{ end -}}
+  {{- if $isCurrent -}} aria-current="page"{{ end -}}
+  {{- if $isExternal -}} target="_blank" rel="noopener"{{ end -}}
+  {{- with .title -}} title="{{ . }}"{{ end -}}
+{{ end }}
+
+{{ define "menu/util/iconAndLabel" }}
+  {{- $item := .item -}}
+  {{- $page := .page -}}
+  {{- $iconClass := .iconClass | default "" -}}
+
+  {{- with $item.Params.icon -}}
+    {{- partial "icons/icon-use-site-sprite.html" (dict "page" $page "id" . "class" $iconClass) -}}
+  {{- end -}}
+  {{- $item.Name | markdownify -}}
+{{ end }}
+
+{{ define "menu/util/link" }}
+  {{- $item := .item -}}
+  {{- $page := .page -}}
+  {{- $class := .class | default "" -}}
+  {{- $isCurrent := .isCurrent | default false -}}
+  {{- $isActive := .isActive | default false -}}
+  {{- $iconClass := .iconClass | default "" -}}
+
+  <a class="{{ $class }}{{ if $isActive }} active{{ end }}"
+     {{ template "menu/util/linkAttrs" (dict "url" .url "isCurrent" $isCurrent "title" $item.Title) }}>
+    {{ template "menu/util/iconAndLabel" (dict "item" $item "page" $page "iconClass" $iconClass) }}
+  </a>
+{{ end }}
+
+{{ define "menu/util/headerOrLink" }}
+  {{- $item := .item -}}
+  {{- $page := .page -}}
+  {{- $url := .url | default "" -}}
+  {{- $classHeader := .classHeader | default "" -}}
+  {{- $classLink := .classLink | default "" -}}
+  {{- $iconClass := .iconClass | default "" -}}
+
+  {{- if $url -}}
+    {{ template "menu/util/link" (dict
+      "item" $item "page" $page "url" $url
+      "class" $classLink "isCurrent" false "isActive" false
+      "iconClass" $iconClass
+    ) }}
+  {{- else -}}
+    <div class="{{ $classHeader }}" {{ with $item.Title }}title="{{ . }}"{{ end }}>
+      {{ template "menu/util/iconAndLabel" (dict "item" $item "page" $page "iconClass" $iconClass) }}
+    </div>
+  {{- end -}}
+{{ end }}
+
+{{ define "menu/util/itemOrText" }}
+  {{- $item := .item -}}
+  {{- $page := .page -}}
+  {{- $isCurrent := .isCurrent | default false -}}
+  {{- $isActive := .isActive | default false -}}
+  {{- $classItem := .classItem | default "dropdown-item" -}}
+  {{- $classText := .classText | default "dropdown-item-text" -}}
+  {{- $iconClass := .iconClass | default "" -}}
+
+  {{- if $item.URL -}}
+    {{ template "menu/util/link" (dict
+      "item" $item
+      "page" $page
+      "url" $item.URL
+      "class" $classItem
+      "isCurrent" $isCurrent
+      "isActive" $isActive
+      "iconClass" $iconClass
+    ) }}
+  {{- else -}}
+    <span class="{{ $classText }}">
+      {{ template "menu/util/iconAndLabel" (dict "item" $item "page" $page "iconClass" $iconClass) }}
+    </span>
+  {{- end -}}
+{{ end }}

@@ -1,0 +1,211 @@
+{{ define "skip_target" }}#content-start{{ end }}
+
+{{ define "main" }}
+  {{- $page := . -}}
+  {{- $lang := .Lang | default "ja" -}}
+  {{- $videoGalleryLabel := i18n "video_gallery" | default (cond (eq $lang "ja") "動画ギャラリー" "Video Gallery") -}}
+  {{- $videoTitleDesktop := .Resources.GetMatch "media-video-title@x2.png" -}}
+  {{- if eq $lang "en" -}}
+    {{- $videoTitleDesktop = or (.Resources.GetMatch "media-video-title-eng@x2.png") $videoTitleDesktop -}}
+  {{- end -}}
+  {{- $videoTitleMobile := .Resources.GetMatch "media-video-title-mb@x2.png" -}}
+  {{- if eq $lang "en" -}}
+    {{- $videoTitleMobile = or (.Resources.GetMatch "media-video-title-mb-eng@x2.png") $videoTitleMobile -}}
+  {{- end -}}
+  {{- $relatedLinks := .Params.related_links | default slice -}}
+  {{- $videos := slice -}}
+  {{- range .Params.media_video_gallery | default slice -}}
+    {{- $thumb := "" -}}
+    {{- with .thumb -}}
+      {{- $resolvedThumb := partial "article/figure/resolve-image.html" (dict "page" $page "destination" .) -}}
+      {{- if $resolvedThumb.found -}}
+        {{- $thumb = $resolvedThumb.src -}}
+      {{- end -}}
+      {{- if and (not $thumb) (not (strings.Contains . "/")) -}}
+        {{- $resolvedUploadsThumb := partial "article/figure/resolve-image.html" (dict "page" $page "destination" (printf "uploads/%s" .)) -}}
+        {{- if $resolvedUploadsThumb.found -}}
+          {{- $thumb = $resolvedUploadsThumb.src -}}
+        {{- end -}}
+      {{- end -}}
+      {{- if not $thumb -}}
+        {{- warnf "[media] video thumb %q not found for %s" . $page.File.Path -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $videos = $videos | append (dict
+      "title" .title
+      "youtube" .youtube
+      "embed" .embed
+      "thumb" $thumb
+    ) -}}
+  {{- end -}}
+  {{- $videoCta := .Params.video_cta | default dict -}}
+
+  <div class="bg-body below-site-header flex-grow-1">
+    {{ partial "page-hero.html" (dict
+      "page" .
+    ) }}
+    <div class="container-md position-relative py-4 py-md-5">
+      <div class="row justify-content-center">
+        <article class="page-article media-page col-12 col-lg-9" aria-labelledby="content-start">
+          <h1 id="content-start" class="visually-hidden" tabindex="-1">{{ .Title }}</h1>
+        {{ with .Content }}
+          <section class="content">
+            {{ . }}
+          </section>
+        {{ end }}
+
+        <div class="row row-cols-1 row-cols-md-2 g-3 py-3">
+          {{- range site.Params.social | default slice -}}
+            <div class="col">
+              {{- $surfaceClass := "" -}}
+              {{- if eq .id "instagram" -}}
+                {{- $surfaceClass = "btn-surface-instagram" -}}
+              {{- else if eq .id "facebook" -}}
+                {{- $surfaceClass = "btn-surface-facebook" -}}
+              {{- else if eq .id "x" -}}
+                {{- $surfaceClass = "btn-surface-x" -}}
+              {{- end -}}
+              {{ partial "cta/link.html" (dict
+                "page" $page
+                "platform" .id
+                "href" .url
+                "newTab" true
+                "buttonClass" (delimit (slice "btn" "btn-lg" "btn-secondary" "btn-surface" "border-0" "rounded-pill" "w-100" "d-inline-flex" "align-items-center" "justify-content-start" "gap-2" "text-start" "shadow-sm" $surfaceClass) " ")
+                "iconWrapClass" "rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0 p-2 lh-1"
+                "labelClass" "fw-semibold"
+              ) }}
+            </div>
+          {{- end -}}
+        </div>
+
+          <section class="media-video-section mb-5" aria-labelledby="media-video-heading">
+            <div class="media-video-section-inner">
+              {{ with $videoTitleDesktop }}
+                <picture class="media-page-picture media-video-section-title d-flex justify-content-center">
+                  {{ with $videoTitleMobile }}
+                    <source media="(max-width: 767.98px)" srcset="{{ .RelPermalink }}">
+                  {{ end }}
+                  <img
+                    src="{{ $videoTitleDesktop.RelPermalink }}"
+                    alt="{{ $videoGalleryLabel }}"
+                    class="media-page-img media-video-section-title-img d-block mx-auto w-auto"
+                    id="media-video-heading"
+                    loading="lazy"
+                  >
+                </picture>
+              {{ else }}
+                <h2 class="h3 media-video-section-title d-flex align-items-center justify-content-center text-center text-white" id="media-video-heading">{{ $videoGalleryLabel }}</h2>
+              {{ end }}
+            </div>
+
+            <section class="full-bleed-band media-video-section-band">
+              <div class="full-bleed-band__bleed bg-primary"></div>
+              <div class="full-bleed-band__content media-video-section-inner">
+                <div class="full-bleed-band__content-inner">
+                  <div class="media-video-gallery text-white" data-bs-theme="dark">
+                    <div class="ratio ratio-16x9 mb-3">
+                      <iframe
+                        id="media-video-player"
+                        class="bg-black border-0 rounded-0 d-block w-100 h-100 overflow-hidden"
+                        src="{{ (index $videos 0).embed }}"
+                        title="{{ (index $videos 0).title }}"
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                      ></iframe>
+                    </div>
+
+                    <div class="tab-content visually-hidden" aria-hidden="true">
+                      {{ range $idx, $_ := $videos }}
+                        <div
+                          class="tab-pane fade{{ if eq $idx 0 }} show active{{ end }}"
+                          id="media-video-pane-{{ $idx }}"
+                          role="tabpanel"
+                          aria-labelledby="media-video-tab-{{ $idx }}"
+                          tabindex="0"
+                        ></div>
+                      {{ end }}
+                    </div>
+
+                    <div class="nav row row-cols-3 g-1 mb-2" id="media-video-tabs" role="tablist" aria-label="{{ i18n "video_selection" }}">
+                      {{ range $idx, $video := $videos }}
+                        <div class="col" role="presentation">
+                          <button
+                            type="button"
+                            class="nav-link{{ if eq $idx 0 }} active{{ end }} p-0 border-0 bg-transparent rounded-0 w-100 text-white text-center"
+                            id="media-video-tab-{{ $idx }}"
+                            data-bs-toggle="pill"
+                            data-bs-target="#media-video-pane-{{ $idx }}"
+                            role="tab"
+                            aria-controls="media-video-pane-{{ $idx }}"
+                            aria-selected="{{ if eq $idx 0 }}true{{ else }}false{{ end }}"
+                            data-video-embed="{{ $video.embed }}"
+                            data-video-title="{{ $video.title }}"
+                          >
+                            {{ with $video.thumb }}
+                              <span class="ratio ratio-16x9 d-block">
+                                <img src="{{ . }}" alt="" class="w-100 h-100 object-fit-cover" loading="lazy">
+                              </span>
+                            {{ end }}
+                            <span class="d-block small lh-sm text-center text-white pt-2 px-2">{{ $video.title }}</span>
+                          </button>
+                        </div>
+                      {{ end }}
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-2">
+                      {{ partial "cta/link.html" (dict
+                        "page" $page
+                        "href" ($videoCta.url | default "")
+                        "label" ($videoCta.label | default "YouTube")
+                        "newTab" true
+                        "trailingIcon" "custom:arrow-right"
+                        "buttonClass" "btn btn-primary-dark btn-lg rounded-pill d-inline-flex align-items-center gap-2 mt-3 ms-auto px-4"
+                        "trailingIconClass" "icon-lg flex-shrink-0"
+                      ) }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <section class="mb-5" aria-labelledby="media-links-heading">
+            <h2 class="h2 d-inline-flex align-items-center gap-2 mb-3" id="media-links-heading">
+              {{- partial "icons/icon-use-site-sprite.html" (dict "page" . "id" "custom:chevron-right" "class" "icon-xl") -}}
+              {{ i18n "related_links" | default (cond (eq $lang "ja") "関連リンク" "Related Links") }}
+            </h2>
+            <ul class="mb-0 border border-2 rounded-3 px-3 py-4 ps-5 px-md-5">
+              {{ range $idx, $link := $relatedLinks }}
+                {{- $itemSpacingClass := cond (gt $idx 0) "mt-3" "" -}}
+                <li {{ with $itemSpacingClass }}class="{{ $itemSpacingClass }}"{{ end }}><a href="{{ $link.url }}" target="_blank" rel="noreferrer" class="fs-5 lh-lg text-decoration-underline">{{ $link.title }}</a></li>
+              {{ end }}
+            </ul>
+          </section>
+
+        </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const player = document.getElementById("media-video-player");
+      const buttons = Array.from(document.querySelectorAll("#media-video-tabs [data-bs-toggle='pill']"));
+
+      if (!player || buttons.length === 0) return;
+
+      buttons.forEach(function (button) {
+        button.addEventListener("shown.bs.tab", function (event) {
+          const currentButton = event.target;
+          const nextSrc = currentButton.getAttribute("data-video-embed");
+          const nextTitle = currentButton.getAttribute("data-video-title");
+
+          if (nextSrc) player.src = nextSrc;
+          if (nextTitle) player.title = nextTitle;
+        });
+      });
+    });
+  </script>
+{{ end }}

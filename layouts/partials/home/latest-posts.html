@@ -1,0 +1,36 @@
+{{- $postsPage := site.GetPage "/posts" -}}
+{{- $posts := slice -}}
+{{- with $postsPage -}}
+  {{- $posts = first 3 ((where .RegularPagesRecursive "Lang" $.Lang).ByDate.Reverse) -}}
+{{- end -}}
+<section class="bg-body-tertiary py-5" aria-labelledby="home-posts-title">
+  <div class="container-xxl py-lg-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+      <div>
+        <p class="text-uppercase small fw-semibold text-body-secondary mb-2">Posts</p>
+        <h2 id="home-posts-title" class="display-6 fw-bold mb-0">{{ i18n "home_latest_posts" }}</h2>
+      </div>
+      {{- with $postsPage -}}
+        <a class="btn btn-outline-primary rounded-pill px-4" href="{{ .RelPermalink }}">{{ i18n "home_view_all_posts" }}</a>
+      {{- end -}}
+    </div>
+
+    {{- if gt (len $posts) 0 -}}
+      <div class="row g-4">
+        {{- range $posts -}}
+          <article class="col-12 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+              <div class="card-body p-4">
+                <time class="small text-body-secondary" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (site.Params.dateFormat | default "2006-01-02") }}</time>
+                <h3 class="h4 mt-2 mb-3"><a class="stretched-link text-decoration-none" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                {{- with .Description -}}<p class="card-text text-body-secondary">{{ . }}</p>{{- end -}}
+              </div>
+            </div>
+          </article>
+        {{- end -}}
+      </div>
+    {{- else -}}
+      <p class="text-body-secondary mb-0">{{ i18n "list_no_articles" (dict "Section" "Posts") }}</p>
+    {{- end -}}
+  </div>
+</section>

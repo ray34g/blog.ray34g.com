@@ -1,0 +1,15 @@
+{{- $contactPage := site.GetPage "/contact-us" -}}
+{{- if not $contactPage -}}
+  {{- warnf "[footer/contact-cta] page /contact-us not found" -}}
+  {{- return -}}
+{{- end -}}
+
+<div class="col-12 d-flex justify-content-center mb-4">
+  {{ partial "cta/link.html" (dict
+    "page" .
+    "href" $contactPage.RelPermalink
+    "label" $contactPage.LinkTitle
+    "buttonClass" "btn btn-outline-primary rounded-pill d-inline-flex align-items-center justify-content-center px-4"
+    "labelClass" "fw-regular"
+  ) }}
+</div>

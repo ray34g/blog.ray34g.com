@@ -1,0 +1,5 @@
+/* assets/css/features/search.css */
+.search-button {
+  background-color: rgba(0, 0, 0, .1);
+  min-width: 6rem;
+}

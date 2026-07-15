@@ -1,0 +1,85 @@
+{{- $page := .page -}}
+{{- $destination := .destination | default "" -}}
+{{- $isRemote := or (hasPrefix $destination "http://") (hasPrefix $destination "https://") (hasPrefix $destination "//") (hasPrefix $destination "data:") -}}
+{{- $hasSource := ne (trim $destination " \t\r\n") "" -}}
+{{- $resource := "" -}}
+{{- $destinationKey := strings.TrimPrefix "/" (strings.TrimPrefix "./" $destination) -}}
+{{- $publicKey := strings.TrimPrefix "static/" $destinationKey -}}
+{{- $assetKey := strings.TrimPrefix "assets/" $destinationKey -}}
+{{- $candidates := slice $destination $destinationKey $publicKey $assetKey -}}
+{{- $staticFound := false -}}
+{{- $staticPath := "" -}}
+{{- $staticURLKey := "" -}}
+
+{{- range $candidate := $candidates -}}
+  {{- if or $resource (eq $candidate "") -}}
+    {{- continue -}}
+  {{- end -}}
+  {{- with $page.Resources.Get $candidate -}}
+    {{- $resource = . -}}
+  {{- else -}}
+    {{- with $page.Resources.GetMatch $candidate -}}
+      {{- $resource = . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $resource -}}
+  {{- range $candidate := $candidates -}}
+    {{- if or $resource (eq $candidate "") -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- with resources.Get $candidate -}}
+      {{- $resource = . -}}
+    {{- else -}}
+      {{- with resources.GetMatch $candidate -}}
+        {{- $resource = . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $src := $destination -}}
+{{- with $resource -}}
+  {{- $src = .RelPermalink -}}
+{{- end -}}
+
+{{- if and (not $resource) (not $isRemote) $hasSource -}}
+  {{- range $candidate := $candidates -}}
+    {{- if or $staticFound (eq $candidate "") -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- if fileExists (printf "static/%s" $candidate) -}}
+      {{- $staticFound = true -}}
+      {{- $staticPath = printf "static/%s" $candidate -}}
+      {{- $staticURLKey = $candidate -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and (not $resource) $staticFound -}}
+  {{- $src = relURL $staticURLKey -}}
+{{- end -}}
+
+{{- $staticWidth := 0 -}}
+{{- $staticHeight := 0 -}}
+{{- if $staticPath -}}
+  {{- $staticExt := lower (path.Ext $staticPath) -}}
+  {{- if in (slice ".jpg" ".jpeg" ".png" ".gif" ".webp" ".tif" ".tiff" ".bmp" ".avif") $staticExt -}}
+    {{- with imageConfig $staticPath -}}
+      {{- $staticWidth = .Width -}}
+      {{- $staticHeight = .Height -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return (dict
+  "destination" $destination
+  "hasSource" $hasSource
+  "isRemote" $isRemote
+  "resource" $resource
+  "src" $src
+  "width" $staticWidth
+  "height" $staticHeight
+  "found" (or $resource $isRemote $staticFound)
+) -}}

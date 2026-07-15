@@ -1,0 +1,61 @@
+{{- $page := .page -}}
+{{- if not $page -}}{{- return -}}{{- end -}}
+{{- $youtube := .youtube | default dict -}}
+{{- $videoID := index $youtube "videoId" | default "" -}}
+{{- if eq $videoID "" -}}
+  {{- warnf "youtube facade requires videoId on %s" $page.File.Path -}}
+  {{- return -}}
+{{- end -}}
+{{- $title := index $youtube "title" | default $page.Title | default "YouTube video" -}}
+{{- $watchURL := printf "https://www.youtube.com/watch?v=%s" $videoID -}}
+{{- $embedURL := printf "https://www.youtube-nocookie.com/embed/%s?autoplay=1&playsinline=1" $videoID -}}
+{{- $thumbnail := printf "https://i.ytimg.com/vi_webp/%s/sddefault.webp" $videoID -}}
+{{- $i18nData := dict "Title" $title -}}
+{{- $watchLabel := i18n "youtube_watch_on_youtube" -}}
+{{- $watchAria := i18n "youtube_watch_aria" $i18nData -}}
+{{- $playAria := i18n "youtube_play_aria" $i18nData -}}
+
+<div class="youtube-facade position-relative text-white bg-black rounded-4 w-100 h-100 overflow-hidden p-0">
+  <img
+    class="youtube-facade__thumbnail position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
+    src="{{ $thumbnail }}"
+    alt=""
+    loading="lazy"
+    decoding="async"
+  >
+  <span class="youtube-facade__shade" aria-hidden="true"></span>
+  <div class="youtube-facade__chrome position-absolute top-0 start-0 w-100 h-100 pe-none">
+    <div class="youtube-facade__title position-absolute top-0 start-0 p-3 fw-bold text-truncate">{{ $title }}</div>
+    <div class="youtube-facade__actions position-absolute bottom-0 end-0 p-3 pe-auto">
+      <a
+        class="youtube-facade__action d-inline-flex rounded-pill p-2 px-4 align-items-center text-white text-decoration-none"
+        href="{{ $watchURL }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="{{ $watchAria }}"
+      >
+        {{ $watchLabel }} {{ partial "icons/icon-use-page-sprite.html" (dict "page" $page "id" "custom:arrow-right" "class" "fs-4 ms-2") -}}
+      </a>
+    </div>
+  </div>
+  <button
+    class="youtube-facade__play d-flex align-items-center justify-content-center position-absolute top-0 start-0 w-100 h-100 p-0 border-0 bg-transparent text-white"
+    type="button"
+    data-youtube-embed="{{ $videoID }}"
+    data-youtube-title="{{ $title }}"
+    aria-label="{{ $playAria }}"
+  >
+    {{- partial "icons/icon-use-page-sprite.html" (dict "page" $page "id" "fab:youtube" "class" "youtube-facade__icon") -}}
+  </button>
+  <noscript>
+    <iframe
+      class="youtube-embed bg-black border-0 rounded-4 d-block w-100 h-100 overflow-hidden"
+      src="{{ $embedURL }}"
+      title="{{ $title }}"
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+  </noscript>
+</div>

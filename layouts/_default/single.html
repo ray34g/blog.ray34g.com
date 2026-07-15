@@ -1,0 +1,25 @@
+{{ define "main" }}
+<main class="posts-page">
+  <article class="container pb-5">
+    <header class="row justify-content-center mb-4">
+      <div class="col-lg-8">
+        {{ with .Date }}
+        <div class="post-meta text-body-secondary mb-2">
+          <time datetime="{{ .Format "2006-01-02" }}">{{ .Format ($.Site.Params.dateFormat | default "2006-01-02") }}</time>
+        </div>
+        {{ end }}
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}
+        <p class="lead">{{ . }}</p>
+        {{ end }}
+      </div>
+    </header>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8 post-body">
+        {{ .Content }}
+      </div>
+    </div>
+  </article>
+</main>
+{{ end }}

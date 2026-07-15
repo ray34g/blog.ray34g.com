@@ -1,0 +1,29 @@
+instagram:
+  label: "Instagram"
+  label_i18n: "social_platform_instagram"
+  icon: "fab:instagram"
+
+facebook:
+  label: "Facebook"
+  label_i18n: "social_platform_facebook"
+  icon: "fab:facebook"
+
+x:
+  label: "X (Twitter)"
+  label_i18n: "social_platform_x"
+  icon: "fab:x-twitter"
+
+email:
+  label: "Email"
+  label_i18n: "social_platform_email"
+  icon: "fas:envelope"
+
+rss:
+  label: "RSS"
+  label_i18n: "social_platform_rss"
+  icon: "fas:rss"
+
+print:
+  label: "Print"
+  label_i18n: "social_platform_print"
+  icon: "fas:print"

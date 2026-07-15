@@ -1,0 +1,20 @@
+{{/* layouts/partials/icons/functions/page-sprite-resource.html
+  params:
+    page: page context (.)
+  renders:
+    inline SVG sprite markup
+*/}}
+
+{{- $page := .page -}}
+{{- if not $page -}}{{- return -}}{{- end -}}
+
+{{- $key := "icon:page-sprite:ids" -}}
+{{- $symbols := $page.Store.GetSortedMapValues $key | default (slice) -}}
+{{- if eq (len $symbols) 0 -}}{{- return -}}{{- end -}}
+
+{{- $markup := printf `<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"><defs>%s</defs></svg>` (delimit $symbols "") -}}
+{{- $markup = $markup
+  | replaceRE `[\r\n\t]+` " "
+  | replaceRE ` {2,}` " "
+-}}
+{{- $markup | safeHTML -}}

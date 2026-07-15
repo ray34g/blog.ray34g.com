@@ -1,0 +1,16 @@
+{{- $pages := .pages -}}
+<div class="blog-posts mx-auto my-5">
+  <h2 class="visually-hidden">{{ i18n "blog_all_posts" }}</h2>
+  {{- range $pages }}
+  <article class="blog-post mb-5 pb-4 border-bottom">
+    <h2 class="fw-semibold"><a class="text-decoration-none" href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    <div class="text-body-secondary mb-3">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (.Site.Params.dateFormat | default "2006-01-02") }}</time>
+    </div>
+    {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+    {{ partial "posts/taxonomy-badges.html" . }}
+  </article>
+  {{- else }}
+  <p class="text-body-secondary">{{ i18n "blog_no_posts" }}</p>
+  {{- end }}
+</div>

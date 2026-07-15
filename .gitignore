@@ -1,0 +1,75 @@
+# ------------------------------------------------------------
+# Hugo (generated output / build cache)
+# ------------------------------------------------------------
+/public/
+/public-*/
+/resources/
+hugo_stats.json
+.hugo_build.lock
+
+# Derived build inputs. Production builds regenerate these before the final
+# Hugo pass; only the placeholder keeping the subset mount exists in Git.
+/data/font_weight_usage.json
+/data/site_sprite_usage.json
+/assets/fonts/subsets/*
+!/assets/fonts/subsets/.gitkeep
+/ci/sbom/*.json
+!/ci/sbom/.gitkeep
+
+# If you use Hugo Modules, you typically DON'T commit downloaded themes.
+/themes/
+
+# ------------------------------------------------------------
+# Node.js / package managers
+# ------------------------------------------------------------
+/node_modules/
+/.pnpm-store/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# ------------------------------------------------------------
+# CI / tooling artifacts
+# ------------------------------------------------------------
+__pycache__/
+*.py[cod]
+/.lighthouseci/
+/.cache/
+/.turbo/
+/.report-build/
+
+# Visual diff report images are generated and can be large.
+/static/reports/visual-diff-current/assets/
+/public/reports/*/screenshots/
+/public/reports/*/diffs/
+/public/reports/*/*.zip
+
+# ------------------------------------------------------------
+# Environment / secrets (never commit)
+# ------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# ------------------------------------------------------------
+# Editor / OS junk
+# ------------------------------------------------------------
+.DS_Store
+Thumbs.db
+
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/scripts/
+!.vscode/scripts/*.sh
+
+.idea/
+*.swp
+*~

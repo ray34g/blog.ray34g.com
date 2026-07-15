@@ -1,0 +1,20 @@
+{{- if and .IsHome (eq hugo.Environment "production-blog") -}}
+  {{- $title := site.Title -}}
+  {{- $description := site.Params.description -}}
+  {{- with site.GetPage "section" "posts" -}}
+    {{- $title = .Title -}}
+    {{- $description = .Description | default $description -}}
+  {{- end -}}
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:locale" content="{{ replace (site.Language.Locale | default "en-US") "-" "_" }}">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ $title }}">
+<meta name="twitter:description" content="{{ $description }}">
+{{- else -}}
+  {{ template "_internal/opengraph.html" . -}}
+  {{ template "_internal/twitter_cards.html" . }}
+{{- end -}}

@@ -1,0 +1,30 @@
+{{ define "main" }}
+<main class="posts-page">
+  <section class="container pb-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h1>{{ .Title }}</h1>
+        <div class="row g-4 mt-2">
+          {{ range .Pages.ByDate.Reverse }}
+          <article class="col-12">
+            <div class="post-card bg-body border p-4 h-100">
+              <div class="post-meta text-body-secondary mb-2">
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (.Site.Params.dateFormat | default "2006-01-02") }}</time>
+              </div>
+              <h2 class="h4"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+              {{ with .Description }}
+              <p class="mb-0">{{ . }}</p>
+              {{ end }}
+            </div>
+          </article>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{{ end }}
+
+{{ define "back_to_top" }}
+  {{ partial "back-to-top.html" . }}
+{{ end }}

@@ -1,0 +1,62 @@
+{{/* layouts/partials/icons/functions/icon-meta.html
+  input:
+    dict "id" "fas:house"
+    or dict "vendor" "fas" "name" "house"
+  returns:
+    dict "id" "fas:house" "vendor" "fas" "name" "house" "symbol" "icon-fas-house" "path" "assets/icons/fa/solid/house.svg"
+*/}}
+
+{{- $id := .id | default "" -}}
+{{- $vendor := .vendor | default "" -}}
+{{- $name := .name | default "" -}}
+
+{{- if $id -}}
+  {{- $parts := split $id ":" -}}
+  {{- if lt (len $parts) 2 -}}
+    {{- warnf "icons/icon-meta: invalid id=%q (expected vendor:name)" $id -}}
+    {{- return -}}
+  {{- end -}}
+  {{- $vendor = lower (index $parts 0) -}}
+  {{- $name = lower (index $parts 1) -}}
+{{- else -}}
+  {{- $vendor = lower $vendor -}}
+  {{- $name = lower $name -}}
+{{- end -}}
+
+{{- if or (not $vendor) (not $name) -}}{{- return -}}{{- end -}}
+
+{{- if or (eq $vendor "fab") (eq $vendor "fa-brands") -}}
+  {{- $vendor = "fab" -}}
+{{- else if or (eq $vendor "fas") (eq $vendor "fa-solid") -}}
+  {{- $vendor = "fas" -}}
+{{- else if or (eq $vendor "far") (eq $vendor "fa-regular") -}}
+  {{- $vendor = "far" -}}
+{{- else if or (eq $vendor "bi") (eq $vendor "bootstrap") (eq $vendor "bootstrap-icons") -}}
+  {{- $vendor = "bi" -}}
+{{- else if or (eq $vendor "lucide") -}}
+  {{- $vendor = "lucide" -}}
+{{- else -}}
+  {{- $vendor = "custom" -}}
+{{- end -}}
+
+{{- $idN := printf "%s:%s" $vendor $name -}}
+{{- $symbol := printf "icon-%s-%s" $vendor $name -}}
+
+{{- $patterns := dict
+  "fas" "assets/icons/fa/solid/%s.svg"
+  "far" "assets/icons/fa/regular/%s.svg"
+  "fab" "assets/icons/fa/brands/%s.svg"
+  "bi" "assets/icons/bi/%s.svg"
+  "lucide" "assets/icons/lucide/%s.svg"
+  "custom" "assets/icons/custom/%s.svg"
+-}}
+
+{{- $path := printf (index $patterns $vendor) $name -}}
+
+{{- return (dict
+  "id" $idN
+  "vendor" $vendor
+  "name" $name
+  "symbol" $symbol
+  "path" $path
+) -}}

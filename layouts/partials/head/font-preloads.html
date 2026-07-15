@@ -1,0 +1,59 @@
+{{- $usage := hugo.Data.font_weight_usage -}}
+{{- if $usage -}}
+  {{- $pageKey := .RelPermalink -}}
+  {{- $candidateKeys := slice $pageKey -}}
+  {{- if eq $pageKey "/" -}}
+    {{- $candidateKeys = $candidateKeys | append "/index.html" -}}
+  {{- else if hasSuffix $pageKey "/" -}}
+    {{- $candidateKeys = $candidateKeys | append (printf "%sindex.html" $pageKey) -}}
+  {{- else -}}
+    {{- $candidateKeys = $candidateKeys | append (printf "%s/" $pageKey) -}}
+  {{- end -}}
+
+  {{- $lang := .Site.Language.Lang -}}
+  {{- $preloadCandidates := slice "400" "500" "700" "800" "900" -}}
+  {{- $fontFiles := dict
+    "Poppins" (dict
+      "300" (printf "fonts/subsets/poppins-300.%s.woff2" $lang)
+      "400" (printf "fonts/subsets/poppins-400.%s.woff2" $lang)
+      "500" (printf "fonts/subsets/poppins-500.%s.woff2" $lang)
+      "600" (printf "fonts/subsets/poppins-600.%s.woff2" $lang)
+      "700" (printf "fonts/subsets/poppins-700.%s.woff2" $lang)
+      "800" (printf "fonts/subsets/poppins-800.%s.woff2" $lang)
+    )
+    "Noto Sans JP" (dict
+      "300" (printf "fonts/subsets/noto-sans-jp-300.%s.woff2" $lang)
+      "400" (printf "fonts/subsets/noto-sans-jp-400.%s.woff2" $lang)
+      "500" (printf "fonts/subsets/noto-sans-jp-500.%s.woff2" $lang)
+      "600" (printf "fonts/subsets/noto-sans-jp-600.%s.woff2" $lang)
+      "700" (printf "fonts/subsets/noto-sans-jp-700.%s.woff2" $lang)
+      "900" (printf "fonts/subsets/noto-sans-jp-900.%s.woff2" $lang)
+    )
+    "LINE Seed JP" (dict
+      "300" (printf "fonts/subsets/line-seed-jp-300.%s.woff2" $lang)
+      "400" (printf "fonts/subsets/line-seed-jp-400.%s.woff2" $lang)
+      "500" (printf "fonts/subsets/line-seed-jp-500.%s.woff2" $lang)
+      "600" (printf "fonts/subsets/line-seed-jp-600.%s.woff2" $lang)
+      "700" (printf "fonts/subsets/line-seed-jp-700.%s.woff2" $lang)
+    )
+  -}}
+
+  {{- range $page := $usage.pages -}}
+    {{- if in $candidateKeys $page.rel_permalink -}}
+      {{- range $family, $payload := $page.fonts -}}
+        {{- $files := index $fontFiles $family -}}
+        {{- if $files -}}
+          {{- range $weight := $payload.weights -}}
+            {{- $weightKey := printf "%v" $weight -}}
+            {{- if in $preloadCandidates $weightKey -}}
+              {{- $path := index $files $weightKey -}}
+              {{- if $path -}}
+<link rel="preload" href="{{ $path | relURL }}" as="font" type="font/woff2" crossorigin>
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

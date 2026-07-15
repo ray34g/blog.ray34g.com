@@ -1,0 +1,22 @@
+{{ define "skip_target" }}#content-start{{ end }}
+
+{{ define "main" }}
+  <div class="bg-body below-site-header flex-grow-1">
+    {{ partial "page-hero.html" (dict
+      "page" .
+    ) }}
+    <div class="container-md position-relative py-4 py-md-5">
+      <div class="row justify-content-center">
+        <article class="page-article col-12 col-lg-9" aria-labelledby="content-start">
+          <h1 id="content-start" class="visually-hidden" tabindex="-1">{{ .Title }}</h1>
+          <section class="content text-body-secondary">
+            {{ .Content }}
+          </section>
+          {{ partial "functions/contact-us-mailto-form.html" (dict
+            "page" .
+          ) }}
+        </article>
+      </div>
+    </div>
+  </div>
+{{ end }}

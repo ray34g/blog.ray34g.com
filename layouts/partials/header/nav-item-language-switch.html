@@ -1,0 +1,121 @@
+{{- /*
+  Language switcher:
+  - If <= 3 languages: show segmented toggle (always visible)
+  - Else: fallback to dropdown
+
+  Requirements:
+  - default lang (ja) may omit /ja/ in URL (handled by RelPermalink)
+  - show non-current languages as links when available
+  - when translation missing: disable + tooltip + optional warnf
+  - 404: link to each language home
+*/ -}}
+
+{{- $currentLang := .Language.Lang -}}
+{{- $is404 := eq .Kind "404" -}}
+{{- $sites := hugo.Sites -}}
+{{- $numLang := len $sites -}}
+
+{{- $items := slice -}}
+
+{{- range $sites -}}
+  {{- $targetSite := . -}}
+  {{- $lang := $targetSite.Language.Lang -}}
+  {{- $isCurrent := eq $lang $currentLang -}}
+
+  {{- $targetHomePrefix := $targetSite.Home.RelPermalink -}}
+
+  {{- /* この言語の翻訳ページ（存在すれば）を拾う */ -}}
+  {{- $targetPage := false -}}
+  {{- if not $is404 -}}
+    {{- range $.AllTranslations -}}
+      {{- if eq .Language.Lang $lang -}}
+        {{- $targetPage = . -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if $isCurrent -}}
+      {{- $targetPage = $ -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $hasTranslation := and $targetPage (ne $targetPage false) -}}
+
+  {{- /* 未翻訳表示用（ターゲット言語側 params） */ -}}
+  {{- $badgeText := $targetSite.Params.translationNotAvailableBadge | default "N/A" -}}
+  {{- $notAvailableMessage := $targetSite.Params.translationNotAvailableMessage | default "Not available in this language." -}}
+
+  {{- /* href/disabled/title（B） */ -}}
+  {{- $href := "#" -}}
+  {{- $disabled := false -}}
+  {{- $title := "" -}}
+
+  {{- if $isCurrent -}}
+    {{- $disabled = true -}}
+    {{- $title = $.Title -}}
+
+  {{- else if $is404 -}}
+    {{- $href = $targetHomePrefix -}}
+
+  {{- else if $hasTranslation -}}
+    {{- $href = $targetPage.RelPermalink -}}
+    {{- $title = $targetPage.Title -}}
+
+  {{- else -}}
+    {{- $disabled = true -}}
+    {{- $title = $notAvailableMessage -}}
+
+  {{- end -}}
+
+  {{- /* 表示ラベル：短い言語コードを優先（例: JA/EN）。無ければ Label */ -}}
+  {{- $short := $targetSite.Params.languageShortName | default (upper $lang) -}}
+  {{- $name := $targetSite.Language.Label | default $short -}}
+
+  {{- $items = $items | append (dict
+    "lang" $lang
+    "isCurrent" $isCurrent
+    "href" $href
+    "disabled" $disabled
+    "title" $title
+    "short" $short
+    "name" $name
+    "badgeText" $badgeText
+    "hasTranslation" $hasTranslation
+  ) -}}
+{{- end -}}
+
+{{- /* UI: segmented toggle */ -}}
+<div class="nav-link align-items-center d-inline-flex gap-2"
+    role="group"
+    aria-label="{{ i18n "preferences_language" | default "Languages" }}">
+
+  {{ partial "icons/icon-use-site-sprite.html" (dict "page" $ "id" "fas:earth-asia" "class" "opacity-75") }}
+
+  <span class="language-switch-options d-inline-flex align-items-center gap-1">
+  {{- range $i, $it := $items -}}
+    {{- if gt $i 0 -}}
+      <span class="opacity-50" aria-hidden="true">/</span>
+    {{- end -}}
+
+    {{- if $it.isCurrent -}}
+      <span class="fw-semibold"
+            aria-current="true"
+            {{- if ne $it.title "" }} title="{{ $it.title }}"{{- end -}}>
+        {{ $it.short }}
+      </span>
+    {{- else -}}
+      <a class="link-body-emphasis{{ if $it.disabled }} text-decoration-line-through link-underline-opacity-0 disabled{{ end }}"
+        href="{{ $it.href }}"
+        aria-current="false"
+        {{- if $it.disabled }} tabindex="-1" aria-disabled="true"{{- end -}}
+        {{- if ne $it.title "" }} title="{{ $it.title }}"{{- end -}}>
+        {{ $it.short }}
+        {{- if and (not $is404) (not $it.hasTranslation) -}}
+          <span class="opacity-75" aria-hidden="true">
+            {{ partial "icons/icon-use-site-sprite.html" (dict "page" $ "id" "fas:triangle-exclamation") }}
+          </span>
+          <span class="visually-hidden">{{ $it.badgeText }}</span>
+        {{- end -}}
+      </a>
+    {{- end -}}
+  {{- end -}}
+  </span>
+</div>

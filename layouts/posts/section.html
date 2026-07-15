@@ -1,0 +1,11 @@
+{{ define "main" }}
+  {{- if eq hugo.Environment "production-blog" -}}
+    {{ partial "blog/archive-list.html" . }}
+  {{- else -}}
+    {{ partial "posts/list-content.html" (dict "page" . "pages" .Pages) }}
+  {{- end -}}
+{{ end }}
+
+{{ define "back_to_top" }}
+  {{ partial "back-to-top.html" . }}
+{{ end }}

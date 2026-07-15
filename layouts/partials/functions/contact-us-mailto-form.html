@@ -1,0 +1,152 @@
+{{/*
+Renders a contact form that injects user input into a mailto template.
+
+Expected front matter:
+
+contact:
+  email:
+  form:
+    description:
+    submit_label:
+    name:
+      label:
+      placeholder:
+    reply:
+      label:
+      placeholder:
+    message:
+      label:
+      placeholder:
+  mail:
+    inquiry_id_placeholder:
+    subject:
+    body:
+*/}}
+
+{{- $page := .page | default .Page -}}
+{{- if not $page -}}
+  {{- errorf "functions/contact-us-mailto-form.html: page context is required" -}}
+{{- end -}}
+
+{{- $contact := $page.Params.contact | default dict -}}
+{{- $form := index $contact "form" | default dict -}}
+{{- $mail := index $contact "mail" | default dict -}}
+
+{{- $nameField := index $form "name" | default dict -}}
+{{- $replyField := index $form "reply" | default dict -}}
+{{- $messageField := index $form "message" | default dict -}}
+
+{{- $to := index $contact "email" | default "" -}}
+{{- $description := index $form "description" | default "" -}}
+{{- $submitText := index $form "submit_label" | default "" -}}
+
+{{- $inquiryIdPlaceholder := index $mail "inquiry_id_placeholder" | default "" -}}
+{{- $subject := index $mail "subject" | default "" -}}
+{{- $body := index $mail "body" | default "" -}}
+
+{{- $nameLabel := index $nameField "label" | default "" -}}
+{{- $namePlaceholder := index $nameField "placeholder" | default "" -}}
+
+{{- $replyLabel := index $replyField "label" | default "" -}}
+{{- $replyPlaceholder := index $replyField "placeholder" | default "" -}}
+
+{{- $messageLabel := index $messageField "label" | default "" -}}
+{{- $messagePlaceholder := index $messageField "placeholder" | default "" -}}
+
+{{- if not $to -}}
+  {{- errorf "functions/contact-us-mailto-form.html: contact.email is required in %s" $page.File.Path -}}
+{{- end -}}
+
+{{- if or (not $description) (not $submitText) -}}
+  {{- errorf "functions/contact-us-mailto-form.html: contact.form.description and contact.form.submit_label are required in %s" $page.File.Path -}}
+{{- end -}}
+
+{{- if or (not $inquiryIdPlaceholder) (not $subject) (not $body) -}}
+  {{- errorf "functions/contact-us-mailto-form.html: contact.mail.inquiry_id_placeholder, contact.mail.subject, and contact.mail.body are required in %s" $page.File.Path -}}
+{{- end -}}
+
+{{- if or (not $nameLabel) (not $namePlaceholder) -}}
+  {{- errorf "functions/contact-us-mailto-form.html: contact.form.name.label and contact.form.name.placeholder are required in %s" $page.File.Path -}}
+{{- end -}}
+
+{{- if or (not $replyLabel) (not $replyPlaceholder) -}}
+  {{- errorf "functions/contact-us-mailto-form.html: contact.form.reply.label and contact.form.reply.placeholder are required in %s" $page.File.Path -}}
+{{- end -}}
+
+{{- if or (not $messageLabel) (not $messagePlaceholder) -}}
+  {{- errorf "functions/contact-us-mailto-form.html: contact.form.message.label and contact.form.message.placeholder are required in %s" $page.File.Path -}}
+{{- end -}}
+
+{{- $idBase := printf "%s-%s" $page.RelPermalink $page.Lang | md5 | truncate 8 "" -}}
+{{- $nameInputId := printf "contact-mailto-name-%s" $idBase -}}
+{{- $replyInputId := printf "contact-mailto-reply-%s" $idBase -}}
+{{- $messageInputId := printf "contact-mailto-message-%s" $idBase -}}
+
+<section class="contact-mailto-form mt-4">
+  <p class="text-body-secondary mb-3">{{ $description }}</p>
+
+  <form class="js-contact-mailto-form row g-3" autocomplete="on">
+    <div class="col-12">
+      <label class="form-label" for="{{ $nameInputId }}">{{ $nameLabel }}</label>
+      <input
+        id="{{ $nameInputId }}"
+        class="form-control rounded-0 bg-primary-subtle border-0 contact-mailto-input"
+        type="text"
+        name="name"
+        required
+        maxlength="120"
+        data-mailto-token="[[NAME]]"
+        placeholder="{{ $namePlaceholder }}"
+      >
+    </div>
+
+    <div class="col-12">
+      <label class="form-label" for="{{ $replyInputId }}">{{ $replyLabel }}</label>
+      <input
+        id="{{ $replyInputId }}"
+        class="form-control rounded-0 bg-primary-subtle border-0 contact-mailto-input"
+        type="text"
+        name="reply_to"
+        autocomplete="email"
+        inputmode="email"
+        autocapitalize="off"
+        spellcheck="false"
+        maxlength="200"
+        data-mailto-token="[[REPLY_TO]]"
+        placeholder="{{ $replyPlaceholder }}"
+      >
+    </div>
+
+    <div class="col-12">
+      <label class="form-label" for="{{ $messageInputId }}">{{ $messageLabel }}</label>
+      <textarea
+        id="{{ $messageInputId }}"
+        class="form-control rounded-0 bg-primary-subtle border-0 contact-mailto-input"
+        name="message"
+        rows="6"
+        required
+        maxlength="4000"
+        data-mailto-token="[[MESSAGE]]"
+        placeholder="{{ $messagePlaceholder }}"
+      ></textarea>
+    </div>
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary rounded-pill px-4 mt-2">
+        {{ $submitText }}
+      </button>
+
+      {{ partial "functions/obfuscate-link.html" (dict
+        "to" $to
+        "text" "-"
+        "class" "d-none js-contact-mailto-form-link"
+        "subject" $subject
+        "body" $body
+        "data" (dict
+          "contact-mailto" "1"
+          "inquiry-id-placeholder" $inquiryIdPlaceholder
+        )
+      ) }}
+    </div>
+  </form>
+</section>

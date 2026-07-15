@@ -1,0 +1,53 @@
+{{- $tableClass := "table table-bordered table-striped align-middle mb-0" -}}
+{{- with index .Attributes "class" -}}
+  {{- $tableClass = printf "%s %v" $tableClass . -}}
+{{- end -}}
+{{- $alignmentClasses := dict "left" "text-start" "center" "text-center" "right" "text-end" -}}
+{{- $wrapperStyles := slice -}}
+{{- with index .Attributes "wrap-width" -}}
+  {{- $wrapperStyles = $wrapperStyles | append (printf "--table-wrap-width: %v" .) -}}
+{{- end -}}
+{{- with index .Attributes "cell-max" -}}
+  {{- $wrapperStyles = $wrapperStyles | append (printf "--table-cell-max: %v" .) -}}
+{{- end -}}
+{{- with index .Attributes "first-col-max" -}}
+  {{- $wrapperStyles = $wrapperStyles | append (printf "--table-first-col-max: %v" .) -}}
+{{- end -}}
+{{- with index .Attributes "wrapper-style" -}}
+  {{- $wrapperStyles = $wrapperStyles | append (printf "%v" .) -}}
+{{- end -}}
+
+<div class="content-table-wrap my-4 px-0 px-md-3"{{ with $wrapperStyles }} style="{{ printf "%s;" (delimit . "; ") | safeCSS }}"{{ end }}>
+  <table
+    class="{{ $tableClass }}"
+    {{- range $k, $v := .Attributes }}
+      {{- if and $v (not (in (slice "class" "wrap-width" "cell-max" "first-col-max" "wrapper-style") $k)) }}
+        {{- printf " %s=%q" $k $v | safeHTMLAttr }}
+      {{- end }}
+    {{- end }}>
+    {{- with .THead }}
+      <thead>
+        {{- range . }}
+          <tr>
+            {{- range . }}
+              {{- $alignmentClass := index $alignmentClasses .Alignment -}}
+              <th{{ with $alignmentClass }} class="{{ . }}"{{ end }} scope="col">{{ .Text }}</th>
+            {{- end }}
+          </tr>
+        {{- end }}
+      </thead>
+    {{- end }}
+    {{- with .TBody }}
+      <tbody>
+        {{- range . }}
+          <tr>
+            {{- range . }}
+              {{- $alignmentClass := index $alignmentClasses .Alignment -}}
+              <td{{ with $alignmentClass }} class="{{ . }}"{{ end }}>{{ .Text }}</td>
+            {{- end }}
+          </tr>
+        {{- end }}
+      </tbody>
+    {{- end }}
+  </table>
+</div>

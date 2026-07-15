@@ -1,0 +1,47 @@
+{{- /*
+  Bootstrap column for use inside row.
+
+  Defaults to a two-column layout from md and up:
+    col-12 col-md-6
+
+  Params:
+    class
+    cols / sm / md / lg / xl / xxl
+    values may be 1-12 or "auto"
+*/ -}}
+{{- $classParts := slice -}}
+{{- $sizes := slice
+  (dict "prefix" "col" "value" (.Get "cols" | default "12"))
+  (dict "prefix" "col-sm" "value" (.Get "sm"))
+  (dict "prefix" "col-md" "value" (.Get "md" | default "6"))
+  (dict "prefix" "col-lg" "value" (.Get "lg"))
+  (dict "prefix" "col-xl" "value" (.Get "xl"))
+  (dict "prefix" "col-xxl" "value" (.Get "xxl"))
+-}}
+{{- range $item := $sizes -}}
+  {{- with ($item.value | default "" | printf "%v" | strings.TrimSpace) -}}
+    {{- if eq . "auto" -}}
+      {{- $classParts = $classParts | append $item.prefix -}}
+    {{- else -}}
+      {{- $classParts = $classParts | append (printf "%s-%s" $item.prefix .) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with (.Get "class" | strings.TrimSpace) -}}
+  {{- $classParts = $classParts | append . -}}
+{{- end -}}
+
+{{- $segments := split (.Inner | strings.TrimSpace) "\n\n" -}}
+{{- $bodyParts := slice -}}
+{{- range $segment := $segments -}}
+  {{- $trimmed := $segment | strings.TrimSpace -}}
+  {{- if $trimmed -}}
+    {{- if hasPrefix $trimmed "<" -}}
+      {{- $bodyParts = $bodyParts | append $trimmed -}}
+    {{- else -}}
+      {{- $bodyParts = $bodyParts | append ($.Page.RenderString (dict "display" "block") $trimmed) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- printf `<div class="%s">%s</div>` (delimit $classParts " ") (delimit $bodyParts "\n") | safeHTML -}}

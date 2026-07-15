@@ -1,0 +1,44 @@
+[nav_home]
+other = "Home"
+
+[nav_posts]
+other = "Posts"
+
+[nav_github]
+other = "GitHub"
+
+[footer_powered_by]
+other = "Powered by Hugo"
+
+[a11y_main_navigation]
+other = "Main navigation"
+
+[blog_title]
+other = "The ray34g.com Blog"
+
+[blog_description]
+other = "Notes on computer graphics, web design, and operating static sites."
+
+[blog_navigation]
+other = "Blog navigation"
+
+[blog_all_posts]
+other = "All posts"
+
+[blog_archive]
+other = "Archive"
+
+[blog_videos]
+other = "Videos"
+
+[blog_subscribe]
+other = "Subscribe"
+
+[blog_no_posts]
+other = "There are no posts yet."
+
+[blog_no_videos]
+other = "There are no posts with videos yet."
+
+[opens_in_new_tab]
+other = "opens in a new tab"

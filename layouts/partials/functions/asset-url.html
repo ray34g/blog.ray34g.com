@@ -1,0 +1,42 @@
+{{- $page := .page -}}
+{{- $path := .path | default "" -}}
+{{- $trimmed := trim (printf "%v" $path) " \t\r\n" -}}
+{{- $isRemote := or (hasPrefix $trimmed "http://") (hasPrefix $trimmed "https://") (hasPrefix $trimmed "//") (hasPrefix $trimmed "data:") -}}
+{{- $url := $trimmed -}}
+
+{{- if and $trimmed (not $isRemote) -}}
+  {{- $key := strings.TrimPrefix "/" (strings.TrimPrefix "./" $trimmed) -}}
+  {{- $resource := "" -}}
+
+  {{- with $page -}}
+    {{- with .Resources.GetMatch $trimmed -}}
+      {{- $resource = . -}}
+    {{- else -}}
+      {{- with .Resources.GetMatch $key -}}
+        {{- $resource = . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if not $resource -}}
+    {{- with resources.Get $key -}}
+      {{- $resource = . -}}
+    {{- else -}}
+      {{- with resources.GetMatch $key -}}
+        {{- $resource = . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if $resource -}}
+    {{- $url = $resource.RelPermalink -}}
+  {{- else -}}
+    {{- if fileExists (printf "static/%s" $key) -}}
+      {{- $url = $key | relURL -}}
+    {{- else -}}
+      {{- $url = "" -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $url -}}

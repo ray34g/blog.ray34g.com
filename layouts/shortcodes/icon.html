@@ -1,0 +1,22 @@
+{{- $id := .Get "id" | default "" -}}
+{{- $class := .Get "class" | default "" -}}
+{{- $iconSize := .Get "iconSize" -}}
+{{- $title := .Get "title" | default "" -}}
+{{- $sprite := lower (.Get "sprite" | default "site") -}}
+{{- if not $id -}}{{- return -}}{{- end -}}
+
+{{- $params := dict
+  "page" .Page
+  "id" $id
+  "class" $class
+  "title" $title
+-}}
+{{- with $iconSize -}}
+  {{- $params = merge $params (dict "iconSize" .) -}}
+{{- end -}}
+
+{{- if eq $sprite "page" -}}
+  {{- partial "icons/icon-use-page-sprite.html" $params -}}
+{{- else -}}
+  {{- partial "icons/icon-use-site-sprite.html" $params -}}
+{{- end -}}

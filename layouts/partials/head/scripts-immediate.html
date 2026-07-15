@@ -1,0 +1,33 @@
+{{/* layouts/partials/head/scripts-immediate.html */}}
+<script data-theme-lock="{{ site.Params.appearance.themeLock | default "" }}">
+(function initAppearance() {
+  try {
+    var currentScript = document.currentScript;
+    var lockedMode = currentScript && currentScript.dataset ? (currentScript.dataset.themeLock || "") : "";
+    var storageKey = "appearance";
+    var root = document.documentElement;
+    var normalizedLock = (typeof lockedMode === "string" ? lockedMode.toLowerCase() : "");
+
+    if (normalizedLock === "light" || normalizedLock === "dark") {
+      root.setAttribute("data-bs-theme", normalizedLock);
+      root.style.colorScheme = normalizedLock;
+      root.setAttribute("data-theme-mode", normalizedLock);
+      root.setAttribute("data-theme-lock", normalizedLock);
+      try { localStorage.removeItem(storageKey); } catch (e) {}
+      return;
+    }
+
+    var stored = localStorage.getItem(storageKey);
+    var mode = stored || "system";
+    if (mode !== "system" && mode !== "light" && mode !== "dark") mode = "system";
+
+    var preferDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var theme = (mode === "system") ? (preferDark ? "dark" : "light") : mode;
+
+    root.setAttribute("data-bs-theme", theme);
+    root.style.colorScheme = theme;
+    root.setAttribute("data-theme-mode", mode);
+    root.setAttribute("data-theme-lock", "");
+  } catch (e) {}
+})();
+</script>

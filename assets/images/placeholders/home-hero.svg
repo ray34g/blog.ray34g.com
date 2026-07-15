@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="Placeholder hero background">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#111315"/>
+      <stop offset="1" stop-color="#495057"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop stop-color="#adb5bd" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#adb5bd" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <circle cx="1510" cy="260" r="560" fill="url(#glow)"/>
+  <circle cx="280" cy="930" r="460" fill="url(#glow)" opacity=".55"/>
+  <g fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2">
+    <path d="M0 180h1920M0 540h1920M0 900h1920"/>
+    <path d="M320 0v1080M960 0v1080M1600 0v1080"/>
+  </g>
+</svg>

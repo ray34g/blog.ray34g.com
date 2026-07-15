@@ -1,0 +1,30 @@
+{{- $sources := .sources | default slice -}}
+{{- $hasSources := gt (len $sources) 0 -}}
+{{- if $hasSources -}}
+  <picture>
+    {{- range $sources -}}
+      <source {{- with .media }} media="{{ . }}"{{ end }} srcset="{{ .src | safeURL }}">
+    {{- end -}}
+{{- end -}}
+<img
+  class="{{ .imgClass }}"
+  src="{{ .imgSrc | safeURL }}"
+  alt="{{ .imgAlt }}"
+  itemprop="contentUrl"
+  loading="{{ .loading }}"
+  decoding="{{ .decoding }}"
+  {{- with .imgStyleAttr }} style="{{ . | safeCSS }}"{{ end -}}
+  {{- if not $hasSources -}}
+    {{- with .srcsetRaw }} srcset="{{ . }}"{{ end -}}
+    {{- with .sizes }} sizes="{{ . }}"{{ end -}}
+  {{- end -}}
+  {{- with .resolvedWidth }}
+    width="{{ . }}"
+  {{- end -}}
+  {{- with .resolvedHeight }}
+    height="{{ . }}"
+  {{- end -}}
+>
+{{- if $hasSources -}}
+  </picture>
+{{- end -}}

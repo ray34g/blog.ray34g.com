@@ -1,0 +1,20 @@
+{{- $src := .Get "src" -}}
+{{- $title := .Get "title" | default "Google Map" -}}
+{{- $class := .Get "class" -}}
+{{- $wrapperClass := "google-map-embed ratio ratio-1x1 overflow-hidden" -}}
+{{- with $class -}}
+  {{- $wrapperClass = printf "%s %s" $wrapperClass . -}}
+{{- end -}}
+
+{{- with $src -}}
+  <div class="{{ $wrapperClass }}">
+    <iframe
+      class="border-0"
+      src="{{ . }}"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="{{ $title }}"
+    ></iframe>
+  </div>
+{{- end -}}

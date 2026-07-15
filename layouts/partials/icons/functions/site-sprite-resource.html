@@ -1,0 +1,52 @@
+{{/* layouts/partials/icons/functions/site-sprite-resource.html
+  params:
+    site: site context (.Site)
+  renders:
+    nothing (generates images/site-sprite.svg)
+*/}}
+
+{{- $site := .site -}}
+{{- if not $site -}}{{- return -}}{{- end -}}
+
+{{- $iconIDs := hugo.Data.site_sprite_usage.icons | default (slice) -}}
+{{- $configuredIconIDs := $site.Params.icons.siteSprite | default (slice) -}}
+{{- range $configuredIconIDs -}}
+  {{- if not (in $iconIDs .) -}}
+    {{- $iconIDs = $iconIDs | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- $iconIDs = sort $iconIDs -}}
+{{- if eq (len $iconIDs) 0 -}}{{- return -}}{{- end -}}
+
+{{- $symbols := slice -}}
+{{- range $iconID := $iconIDs -}}
+  {{- $normalized := partial "icons/functions/icon-meta.html" (dict "id" $iconID) -}}
+  {{- if not $normalized -}}
+    {{- warnf "icons/site-sprite-resource: invalid icon id=%q" $iconID -}}
+    {{- continue -}}
+  {{- end -}}
+  {{- $resourcePath := strings.TrimPrefix "assets/" $normalized.path -}}
+  {{- $resource := resources.Get $resourcePath -}}
+  {{- if not $resource -}}
+    {{- warnf "icons/site-sprite-resource: file not found (id=%q path=%q)" $iconID $normalized.path -}}
+    {{- continue -}}
+  {{- end -}}
+  {{- $svg := $resource.Content -}}
+  {{- $symbolMarkup := partial "icons/functions/symbol-markup.html" (dict "symbol" $normalized.symbol "svg" $svg) -}}
+  {{- if $symbolMarkup -}}
+    {{- $symbols = $symbols | append $symbolMarkup -}}
+  {{- end -}}
+{{- end -}}
+{{- if eq (len $symbols) 0 -}}{{- return -}}{{- end -}}
+
+{{- $markup := printf `<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>%s</defs></svg>` (delimit $symbols "") -}}
+{{- $markup = $markup
+  | replaceRE `[\r\n\t]+` " "
+  | replaceRE ` {2,}` " "
+-}}
+{{- $generatedPath := printf "images/site-sprite.%s.svg" (md5 $markup) -}}
+{{- $resource := resources.FromString $generatedPath $markup -}}
+{{- with (resources.Copy "images/site-sprite.svg" $resource) -}}
+  {{- $noop := .RelPermalink -}}
+  {{- "" -}}
+{{- end -}}

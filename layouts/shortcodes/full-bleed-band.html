@@ -1,0 +1,21 @@
+{{- $content := .Inner | strings.TrimSpace -}}
+{{- $body := .Page.RenderString (dict "display" "block") $content -}}
+
+{{- partial "sections/full-bleed-band.html" (dict
+  "page" .Page
+  "contentHTML" $body
+  "sectionClass" (.Get "sectionClass")
+  "contentClass" (.Get "contentClass")
+  "contentInnerClass" (.Get "contentInnerClass")
+  "bleedClass" (.Get "bleedClass")
+  "mediaClass" (.Get "mediaClass")
+  "mediaImgClass" (.Get "mediaImgClass")
+  "styleAttr" (.Get "style")
+  "bleedStyleAttr" (.Get "bleedStyle")
+  "desktopSrc" (.Get "src")
+  "mobileSrc" (.Get "mobileSrc")
+  "mobileMedia" (.Get "mobileMedia")
+  "alt" (.Get "alt")
+  "loading" (.Get "loading")
+  "decoding" (.Get "decoding")
+) -}}

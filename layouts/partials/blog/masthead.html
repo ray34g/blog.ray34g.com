@@ -1,0 +1,46 @@
+{{- $home := site.Home -}}
+{{- $feed := $home.OutputFormats.Get "Atom" -}}
+{{- $brandLogo := site.Params.header.brand.logo | default "images/logo.jpg" -}}
+{{- $logo := resources.Get $brandLogo -}}
+<div class="blog-masthead py-5">
+  <div class="mb-4 text-center text-lg-start">
+    <a class="d-inline-block mb-3 text-decoration-none" href="{{ $home.RelPermalink }}" aria-label="{{ site.Title }}">
+      {{- with $logo -}}
+        {{- $image := . -}}
+        {{- if ne .MediaType.SubType "svg" -}}
+          {{- $image = .Resize "144x webp" -}}
+        {{- end -}}
+        <img class="blog-mark d-block mx-auto mx-lg-0 rounded-circle" src="{{ $image.RelPermalink }}" width="72" height="72" alt="">
+      {{- end -}}
+    </a>
+    <div class="ms-3 ms-lg-0">
+      <h1 class="h2 mb-1 mb-lg-2 fw-semibold">{{ i18n "blog_title" }}</h1>
+      <p class="col-sm-8 col-lg-12 mx-auto mb-0 mb-lg-4 text-body-secondary">
+        {{ i18n "blog_description" | markdownify }}
+      </p>
+    </div>
+  </div>
+
+  <nav class="nav nav-pills justify-content-center flex-lg-column justify-content-lg-start gap-1 blog-sidebar-nav" aria-label="{{ i18n "blog_navigation" }}">
+    {{- range site.Menus.blog }}
+      {{- $isFeed := .Params.feed | default false -}}
+      {{- $newTab := .Params.new_tab | default false -}}
+      {{- $externalIndicator := .Params.external_indicator | default false -}}
+      {{- $href := .URL -}}
+      {{- if and $isFeed $feed -}}{{- $href = $feed.RelPermalink -}}{{- end -}}
+      {{- $isCurrent := and (not $isFeed) (eq $href $.RelPermalink) -}}
+      <a class="nav-link d-flex align-items-center{{ if $isCurrent }} active fw-semibold{{ end }}" href="{{ $href }}"
+         {{- if $isCurrent }} aria-current="page"{{ end }}
+         {{- if $newTab }} target="_blank" rel="noopener{{ if $isFeed }} alternate{{ end }}"{{ end }}>
+        {{- with .Params.icon }}
+          {{ partial "icons/icon-use-page-sprite.html" (dict "page" $ "id" . "class" "icon-sm me-2") }}
+        {{- end }}
+        <span>{{ .Name }}</span>
+        {{- if $externalIndicator }}
+          {{ partial "icons/icon-use-page-sprite.html" (dict "page" $ "id" "bi:box-arrow-up-right" "class" "blog-external-indicator icon-xs ms-2") }}
+          <span class="visually-hidden">（{{ i18n "opens_in_new_tab" }}）</span>
+        {{- end }}
+      </a>
+    {{- end }}
+  </nav>
+</div>

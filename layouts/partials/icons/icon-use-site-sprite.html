@@ -1,0 +1,38 @@
+{{- /* layouts/partials/icons/icon-use-site-sprite.html
+  params:
+    page  : page context (.)
+    id    : "vendor:name" 例: "fa-brand:github" / "fab:github" / "bootstrap:arrow-up" / "lucide:bot"
+    class : extra classes
+    iconSize : optional fallback size for width/height (default: "1em"); prefer class-based sizing
+    title : optional aria-label
+*/ -}}
+
+{{- $p := .page -}}
+{{- $id := .id | default "" -}}
+{{- $class := .class | default "" -}}
+{{- $iconSize := printf "%v" (.iconSize | default "1em") -}}
+{{- $title := .title | default "" -}}
+{{- if or (not $p) (not $id) -}}{{- return -}}{{- end -}}
+
+{{- $normalized := partial "icons/functions/icon-meta.html" (dict "id" $id) -}}
+{{- if not $normalized -}}{{- return -}}{{- end -}}
+{{- $resourcePath := strings.TrimPrefix "assets/" $normalized.path -}}
+{{- if not (resources.Get $resourcePath) -}}
+  {{- warnf "icons/icon-use-site-sprite: file not found (id=%q path=%q)" $id $normalized.path -}}
+  {{- return -}}
+{{- end -}}
+{{- $symbolsPath := "images/site-sprite.svg" | relURL -}}
+{{- with site.Home.GitInfo -}}
+  {{- $symbolsPath = printf "%s?v=%s" $symbolsPath (substr .Hash 0 12) -}}
+{{- else with site.Home.Lastmod -}}
+  {{- $symbolsPath = printf "%s?v=%d" $symbolsPath .Unix -}}
+{{- end -}}
+
+<svg class="icon {{ $class }}"
+     width="{{ $iconSize }}"
+     height="{{ $iconSize }}"
+     {{- if $title -}} role="img" aria-label="{{ $title | plainify }}"
+     {{- else -}} aria-hidden="true"
+     {{- end }} focusable="false">
+  <use href="{{ printf "%s#%s" $symbolsPath $normalized.symbol | safeURL }}"></use>
+</svg>

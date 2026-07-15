@@ -1,0 +1,4 @@
+params:
+  robots: noindex, nofollow
+fonts:
+  useSourceFontsInDev: true

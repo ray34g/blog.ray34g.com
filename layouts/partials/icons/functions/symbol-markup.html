@@ -1,0 +1,29 @@
+{{/* layouts/partials/icons/functions/symbol-markup.html
+  input:
+    dict "symbol" "icon-fas-house" "svg" "<svg...>"
+  returns:
+    string (<symbol>...</symbol>)
+*/}}
+
+{{- $symbol := .symbol | default "" -}}
+{{- $svg := .svg | default "" -}}
+{{- if or (not $symbol) (not $svg) -}}{{- return -}}{{- end -}}
+
+{{- $viewBox := "" -}}
+{{- $matched := findRE `viewBox="([^"]+)"` $svg 1 -}}
+{{- if gt (len $matched) 0 -}}
+  {{- $viewBox = replaceRE `.*viewBox="([^"]+)".*` `$1` (index $matched 0) -}}
+{{- end -}}
+
+{{- $inner := $svg
+  | replaceRE `(?s)^.*?<svg[^>]*>` ""
+  | replaceRE `(?s)</svg>.*$` ""
+  | replaceRE `(?s)<!--.*?-->` ""
+-}}
+
+{{- $symbolOpen := print `<symbol id="` $symbol `"` -}}
+{{- if $viewBox -}}
+  {{- $symbolOpen = print $symbolOpen ` viewBox="` $viewBox `"` -}}
+{{- end -}}
+{{- $symbolOpen = print $symbolOpen `>` -}}
+{{- return (print $symbolOpen $inner `</symbol>`) -}}

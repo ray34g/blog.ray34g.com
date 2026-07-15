@@ -1,0 +1,35 @@
+main:
+  - name: "Home"
+    pageRef: "/"
+    weight: 100
+    # params:
+    #   hideWhenCurrent: true
+
+blog:
+  - identifier: all_posts
+    name: All posts
+    url: /en/
+    weight: 10
+    params:
+      icon: bi:file-earmark-richtext
+  - identifier: archive
+    name: Archive
+    url: /en/archive/
+    weight: 20
+    params:
+      icon: bi:archive
+  - identifier: videos
+    name: Videos
+    url: /en/videos/
+    weight: 30
+    params:
+      icon: bi:film
+  - identifier: subscribe
+    name: Subscribe
+    url: /en/feeds/atom.xml
+    weight: 40
+    params:
+      icon: bi:rss
+      feed: true
+      new_tab: true
+      external_indicator: true

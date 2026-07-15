@@ -1,0 +1,8 @@
+
+dateFormat: 2006年01月02日
+numberFormat: -|.|, # Doc: https://gohugo.io/functions/numfmt/
+
+translationNotAvailableBadge: 未対応
+translationNotAvailableMessage: このページの日本語版はありません。
+
+languageShortName: JA

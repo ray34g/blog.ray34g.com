@@ -1,0 +1,35 @@
+main:
+  - name: "ホーム"
+    pageRef: "/"
+    weight: 100
+    # params:
+    #   hideWhenCurrent: true
+
+blog:
+  - identifier: all_posts
+    name: すべての記事
+    url: /
+    weight: 10
+    params:
+      icon: bi:file-earmark-richtext
+  - identifier: archive
+    name: アーカイブ
+    url: /archive/
+    weight: 20
+    params:
+      icon: bi:archive
+  - identifier: videos
+    name: 動画
+    url: /videos/
+    weight: 30
+    params:
+      icon: bi:film
+  - identifier: subscribe
+    name: 購読
+    url: /feeds/atom.xml
+    weight: 40
+    params:
+      icon: bi:rss
+      feed: true
+      new_tab: true
+      external_indicator: true

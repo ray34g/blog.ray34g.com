@@ -1,0 +1,326 @@
+{{- $poppinsLight := resources.Get "fonts/source/poppins/Poppins-Light.ttf" -}}
+{{- $poppinsRegular := resources.Get "fonts/source/poppins/Poppins-Regular.ttf" -}}
+{{- $poppinsItalic := resources.Get "fonts/source/poppins/Poppins-Italic.ttf" -}}
+{{- $poppinsMedium := resources.Get "fonts/source/poppins/Poppins-Medium.ttf" -}}
+{{- $poppinsSemiBold := resources.Get "fonts/source/poppins/Poppins-SemiBold.ttf" -}}
+{{- $poppinsBold := resources.Get "fonts/source/poppins/Poppins-Bold.ttf" -}}
+{{- $poppinsExtraBold := resources.Get "fonts/source/poppins/Poppins-ExtraBold.ttf" -}}
+{{- $poppins300 := printf "fonts/subsets/poppins-300.%s.woff2" .lang | relURL -}}
+{{- $poppins400 := printf "fonts/subsets/poppins-400.%s.woff2" .lang | relURL -}}
+{{- $poppins400Italic := printf "fonts/subsets/poppins-400-italic.%s.woff2" .lang | relURL -}}
+{{- $poppins500 := printf "fonts/subsets/poppins-500.%s.woff2" .lang | relURL -}}
+{{- $poppins600 := printf "fonts/subsets/poppins-600.%s.woff2" .lang | relURL -}}
+{{- $poppins700 := printf "fonts/subsets/poppins-700.%s.woff2" .lang | relURL -}}
+{{- $poppins800 := printf "fonts/subsets/poppins-800.%s.woff2" .lang | relURL -}}
+{{- $noto300 := printf "fonts/subsets/noto-sans-jp-300.%s.woff2" .lang | relURL -}}
+{{- $noto400 := printf "fonts/subsets/noto-sans-jp-400.%s.woff2" .lang | relURL -}}
+{{- $noto500 := printf "fonts/subsets/noto-sans-jp-500.%s.woff2" .lang | relURL -}}
+{{- $noto600 := printf "fonts/subsets/noto-sans-jp-600.%s.woff2" .lang | relURL -}}
+{{- $noto700 := printf "fonts/subsets/noto-sans-jp-700.%s.woff2" .lang | relURL -}}
+{{- $noto900 := printf "fonts/subsets/noto-sans-jp-900.%s.woff2" .lang | relURL -}}
+{{- $line300 := printf "fonts/subsets/line-seed-jp-300.%s.woff2" .lang | relURL -}}
+{{- $line400 := printf "fonts/subsets/line-seed-jp-400.%s.woff2" .lang | relURL -}}
+{{- $line500 := printf "fonts/subsets/line-seed-jp-500.%s.woff2" .lang | relURL -}}
+{{- $line600 := printf "fonts/subsets/line-seed-jp-600.%s.woff2" .lang | relURL -}}
+{{- $line700 := printf "fonts/subsets/line-seed-jp-700.%s.woff2" .lang | relURL -}}
+{{- $notoVariable := resources.Get "fonts/source/noto-sans-jp/NotoSansJP-VariableFont_wght.ttf" -}}
+{{- $lineThin := resources.Get "fonts/source/line-seed-jp/LINESeedJP-Thin.ttf" -}}
+{{- $lineRegular := resources.Get "fonts/source/line-seed-jp/LINESeedJP-Regular.ttf" -}}
+{{- $lineBold := resources.Get "fonts/source/line-seed-jp/LINESeedJP-Bold.ttf" -}}
+{{- $lineExtraBold := resources.Get "fonts/source/line-seed-jp/LINESeedJP-ExtraBold.ttf" -}}
+{{- $noto300Format := "woff2" -}}
+{{- $noto400Format := "woff2" -}}
+{{- $noto500Format := "woff2" -}}
+{{- $noto600Format := "woff2" -}}
+{{- $noto700Format := "woff2" -}}
+{{- $noto900Format := "woff2" -}}
+{{- $line300Format := "woff2" -}}
+{{- $line400Format := "woff2" -}}
+{{- $line500Format := "woff2" -}}
+{{- $line600Format := "woff2" -}}
+{{- $line700Format := "woff2" -}}
+{{- $poppinsFormat := "woff2" -}}
+{{- $hasFontUsage := false -}}
+{{- $poppinsWeights := slice -}}
+{{- $poppinsItalicWeights := slice -}}
+{{- with hugo.Data.font_weight_usage -}}
+  {{- $hasFontUsage = true -}}
+  {{- range .pages -}}
+    {{- $pageLang := cond (hasPrefix .rel_permalink "/en/") "en" "ja" -}}
+    {{- if eq $pageLang $.lang -}}
+      {{- with index .fonts "Poppins" -}}
+        {{- $poppinsPayload := . -}}
+        {{- range .weights -}}
+          {{- $weight := printf "%v" . -}}
+          {{- $poppinsWeights = $poppinsWeights | append $weight -}}
+          {{- if and (eq $weight "400") (in $poppinsPayload.styles "italic") -}}
+            {{- $poppinsItalicWeights = $poppinsItalicWeights | append $weight -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $poppinsWeights = $poppinsWeights | uniq -}}
+{{- $poppinsItalicWeights = $poppinsItalicWeights | uniq -}}
+{{- if .useSourceFontsInDev -}}
+  {{- $poppins300 = $poppinsLight.RelPermalink -}}
+  {{- $poppins400 = $poppinsRegular.RelPermalink -}}
+  {{- $poppins400Italic = $poppinsItalic.RelPermalink -}}
+  {{- $poppins500 = $poppinsMedium.RelPermalink -}}
+  {{- $poppins600 = $poppinsSemiBold.RelPermalink -}}
+  {{- $poppins700 = $poppinsBold.RelPermalink -}}
+  {{- $poppins800 = $poppinsExtraBold.RelPermalink -}}
+  {{- $noto300 = $notoVariable.RelPermalink -}}
+  {{- $noto400 = $notoVariable.RelPermalink -}}
+  {{- $noto500 = $notoVariable.RelPermalink -}}
+  {{- $noto600 = $notoVariable.RelPermalink -}}
+  {{- $noto700 = $notoVariable.RelPermalink -}}
+  {{- $noto900 = $notoVariable.RelPermalink -}}
+  {{- $line300 = $lineThin.RelPermalink -}}
+  {{- $line400 = $lineRegular.RelPermalink -}}
+  {{- $line500 = $lineRegular.RelPermalink -}}
+  {{- $line600 = $lineBold.RelPermalink -}}
+  {{- $line700 = $lineExtraBold.RelPermalink -}}
+  {{- $noto300Format = "truetype" -}}
+  {{- $noto400Format = "truetype" -}}
+  {{- $noto500Format = "truetype" -}}
+  {{- $noto600Format = "truetype" -}}
+  {{- $noto700Format = "truetype" -}}
+  {{- $noto900Format = "truetype" -}}
+  {{- $line300Format = "truetype" -}}
+  {{- $line400Format = "truetype" -}}
+  {{- $line500Format = "truetype" -}}
+  {{- $line600Format = "truetype" -}}
+  {{- $line700Format = "truetype" -}}
+  {{- $poppinsFormat = "truetype" -}}
+{{- end -}}
+
+{{- if or (not $hasFontUsage) (in $poppinsWeights "300") }}
+@font-face {
+  font-family: "Poppins";
+  src:
+    local("Poppins Light"),
+    local("Poppins-Light"),
+    local("Poppins"),
+    url("{{ $poppins300 }}") format("{{ $poppinsFormat }}");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+{{- end }}
+
+{{- if or (not $hasFontUsage) (in $poppinsWeights "400") }}
+@font-face {
+  font-family: "Poppins";
+  src:
+    local("Poppins Regular"),
+    local("Poppins-Regular"),
+    local("Poppins"),
+    url("{{ $poppins400 }}") format("{{ $poppinsFormat }}");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+{{- end }}
+
+{{- if or (not $hasFontUsage) (in $poppinsItalicWeights "400") }}
+@font-face {
+  font-family: "Poppins";
+  src:
+    local("Poppins Italic"),
+    local("Poppins-Italic"),
+    local("Poppins"),
+    url("{{ $poppins400Italic }}") format("{{ $poppinsFormat }}");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+{{- end }}
+
+{{- if or (not $hasFontUsage) (in $poppinsWeights "500") }}
+@font-face {
+  font-family: "Poppins";
+  src:
+    local("Poppins Medium"),
+    local("Poppins-Medium"),
+    local("Poppins"),
+    url("{{ $poppins500 }}") format("{{ $poppinsFormat }}");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+{{- end }}
+
+{{- if or (not $hasFontUsage) (in $poppinsWeights "600") }}
+@font-face {
+  font-family: "Poppins";
+  src:
+    local("Poppins SemiBold"),
+    local("Poppins-SemiBold"),
+    local("Poppins"),
+    url("{{ $poppins600 }}") format("{{ $poppinsFormat }}");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+{{- end }}
+
+{{- if or (not $hasFontUsage) (in $poppinsWeights "700") }}
+@font-face {
+  font-family: "Poppins";
+  src:
+    local("Poppins Bold"),
+    local("Poppins-Bold"),
+    local("Poppins"),
+    url("{{ $poppins700 }}") format("{{ $poppinsFormat }}");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+{{- end }}
+
+{{- if or (not $hasFontUsage) (in $poppinsWeights "800") }}
+@font-face {
+  font-family: "Poppins";
+  src:
+    local("Poppins ExtraBold"),
+    local("Poppins-ExtraBold"),
+    local("Poppins"),
+    url("{{ $poppins800 }}") format("{{ $poppinsFormat }}");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+{{- end }}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src:
+    local("Noto Sans JP Light"),
+    local("NotoSansJP-Light"),
+    local("Noto Sans JP"),
+    url("{{ $noto300 }}") format("{{ $noto300Format }}");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src:
+    local("Noto Sans JP Regular"),
+    local("NotoSansJP-Regular"),
+    local("Noto Sans JP"),
+    url("{{ $noto400 }}") format("{{ $noto400Format }}");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src:
+    local("Noto Sans JP Medium"),
+    local("NotoSansJP-Medium"),
+    local("Noto Sans JP"),
+    url("{{ $noto500 }}") format("{{ $noto500Format }}");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src:
+    local("Noto Sans JP SemiBold"),
+    local("NotoSansJP-SemiBold"),
+    local("Noto Sans JP"),
+    url("{{ $noto600 }}") format("{{ $noto600Format }}");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src:
+    local("Noto Sans JP Bold"),
+    local("NotoSansJP-Bold"),
+    local("Noto Sans JP"),
+    url("{{ $noto700 }}") format("{{ $noto700Format }}");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src:
+    local("Noto Sans JP Black"),
+    local("NotoSansJP-Black"),
+    local("Noto Sans JP"),
+    url("{{ $noto900 }}") format("{{ $noto900Format }}");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "LINE Seed JP";
+  src:
+    local("LINE Seed JP Thin"),
+    local("LINESeedJP-Thin"),
+    local("LINE Seed JP"),
+    url("{{ $line300 }}") format("{{ $line300Format }}");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "LINE Seed JP";
+  src:
+    local("LINE Seed JP Regular"),
+    local("LINESeedJP-Regular"),
+    local("LINE Seed JP"),
+    url("{{ $line400 }}") format("{{ $line400Format }}");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "LINE Seed JP";
+  src:
+    local("LINE Seed JP"),
+    local("LINESeedJP-Regular"),
+    url("{{ $line500 }}") format("{{ $line500Format }}");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "LINE Seed JP";
+  src:
+    local("LINE Seed JP Bold"),
+    local("LINESeedJP-Bold"),
+    local("LINE Seed JP"),
+    url("{{ $line600 }}") format("{{ $line600Format }}");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "LINE Seed JP";
+  src:
+    local("LINE Seed JP ExtraBold"),
+    local("LINESeedJP-ExtraBold"),
+    local("LINE Seed JP"),
+    url("{{ $line700 }}") format("{{ $line700Format }}");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

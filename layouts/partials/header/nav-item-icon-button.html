@@ -1,0 +1,29 @@
+{{- /*
+  Icon button
+  Args:
+    toggle: "offcanvas" | "modal" (optional, default "offcanvas")
+    target: "#mainMenu" "#searchModal" etc
+    label:  aria-label
+    title:  title (optional)
+    icon:     "fa-solid:magnifying-glass" (optional)
+*/ -}}
+
+{{- $page := .page -}}
+{{- $toggle := .toggle | default "offcanvas" -}}
+{{- $target := .target | default "#mainMenu" -}}
+{{- $label := .label | default "Open" -}}
+{{- $title := .title | default "" -}}
+{{- $icon := .icon | default "" -}}
+
+{{/* aria-controls は offcanvas/modal 両方で持っててOK */}}
+{{- $controls := (replace $target "#" "") -}}
+
+<button type="button"
+        class="nav-link p-2 d-inline-flex align-items-center"
+        data-bs-toggle="{{ $toggle }}"
+        data-bs-target="{{ $target }}"
+        aria-controls="{{ $controls }}"
+        aria-label="{{ $label }}"
+        {{ with $title }}title="{{ . }}"{{ end }}>
+  {{ partial "icons/icon-use-site-sprite.html" (dict "page" $page "id" $icon "class" "icon-xs") }}
+</button>

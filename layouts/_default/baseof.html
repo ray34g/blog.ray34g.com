@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="{{ with (.Site.Language.Locale | default "en") -}}{{ . }}{{- end }}" dir="{{ with (.Site.Language.Direction | default "ltr") -}}{{ . }}{{- end }}">
+{{- partial "head.html" . -}}
+<body id="top" class="d-flex flex-column min-vh-100">
+  {{- partial "skip-to-content.html" . -}}
+  {{- partial "header.html" . -}}
+  {{- if eq hugo.Environment "production-blog" -}}
+  <div class="main-content-wrapper d-flex flex-column flex-grow-1 bg-body" data-bs-theme="light">
+    <div class="container-xxl px-4 px-xxl-2 below-site-header">
+      <div class="blog-content-grid d-lg-grid">
+        <aside class="blog-sidebar">
+          {{ partial "blog/masthead.html" . }}
+        </aside>
+        <main id="main-content" tabindex="-1" class="blog-main">
+          {{ block "main" . }}{{ end }}
+        </main>
+      </div>
+    </div>
+    {{ block "back_to_top" . }}{{ end }}
+  </div>
+  {{- else -}}
+  <div id="main-content" tabindex="-1" class="main-content-wrapper d-flex flex-column flex-grow-1 bg-body" data-bs-theme="light">
+    {{ block "main" . }}{{ end }}
+    {{ block "back_to_top" . }}{{ end }}
+  </div>
+  {{- end -}}
+  {{- partial "footer.html" . -}}
+  {{ block "scripts" . }}
+    {{ partial "scripts.html" . }}
+  {{ end }}
+  {{- partial "icons/functions/page-sprite-resource.html" (dict "page" .) -}}
+  {{- partial "icons/functions/site-sprite-resource.html" (dict "site" .Site) -}}
+  {{- if site.Params.enableSearch | default false -}}
+    {{ partial "search.html" . }}
+  {{- end }}
+</body>
+</html>

@@ -1,0 +1,25 @@
+{{ define "main" }}
+<main class="posts-page">
+  <section class="container pb-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h1>{{ .Title }}</h1>
+        {{ with .Content }}
+        <div class="lead">{{ . }}</div>
+        {{ end }}
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          {{ range .Data.Terms.Alphabetical }}
+          <a class="badge rounded-pill text-bg-light border text-decoration-none" href="{{ .Page.RelPermalink }}">
+            {{ .Page.Title }} <span class="text-muted">{{ .Count }}</span>
+          </a>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{{ end }}
+
+{{ define "back_to_top" }}
+  {{ partial "back-to-top.html" . }}
+{{ end }}

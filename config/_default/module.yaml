@@ -1,0 +1,10 @@
+mounts:
+- source: static
+  target: static
+- source: assets/fonts/subsets
+  target: static/fonts/subsets
+  files:
+  - '*.woff2'
+# Self-host the lockfile-pinned CMS bundle instead of loading mutable CDN code.
+- source: node_modules/@sveltia/cms/dist/sveltia-cms.js
+  target: static/admin/sveltia-cms.js

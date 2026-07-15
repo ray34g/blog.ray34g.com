@@ -1,0 +1,94 @@
+{{- $page := .page -}}
+{{- $platformID := .platform | default "" -}}
+{{- $platforms := index hugo.Data "social-platforms" | default dict -}}
+{{- $platform := dict -}}
+{{- if $platformID -}}
+  {{- with index $platforms $platformID -}}
+    {{- $platform = . -}}
+  {{- else -}}
+    {{- warnf "[cta/link] social platform %q is not defined in data/social-platforms.yaml" $platformID -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $href := .href | default "" -}}
+{{- if and (not $href) $platformID -}}
+  {{- range site.Params.social | default slice -}}
+    {{- if and (eq .id $platformID) .url -}}
+      {{- $href = .url -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $platformLabel := $platform.label | default "" -}}
+{{- with $platform.label_i18n -}}
+  {{- $platformLabel = i18n . | default $platformLabel -}}
+{{- end -}}
+{{- $label := .label | default $platformLabel -}}
+{{- $icon := .icon | default ($platform.icon | default "") -}}
+{{- $ariaLabel := .ariaLabel | default $label -}}
+{{- $newTab := eq (printf "%v" (.newTab | default false)) "true" -}}
+{{- $target := .target | default "" -}}
+{{- $rel := .rel | default "" -}}
+{{- if $newTab -}}
+  {{- $target = "_blank" -}}
+  {{- if not $rel -}}
+    {{- $rel = "noreferrer noopener" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $href -}}
+  {{- warnf "[cta/link] missing href for label=%q platform=%q" $label $platformID -}}
+  {{- return -}}
+{{- end -}}
+
+{{- $buttonClass := .buttonClass | default "btn btn-primary rounded-pill w-100 d-inline-flex align-items-center justify-content-start gap-2 px-4 py-2 text-start" -}}
+{{- $iconWrapClass := .iconWrapClass | default "d-inline-flex align-items-center justify-content-center flex-shrink-0 lh-1" -}}
+{{- $iconClass := .iconClass | default "" -}}
+{{- $labelClass := .labelClass | default "fw-semibold lh-sm" -}}
+{{- $trailingIcon := .trailingIcon | default "" -}}
+{{- $trailingIconClass := .trailingIconClass | default "flex-shrink-0" -}}
+{{- $trailingIconGapClass := .trailingIconGapClass | default "" -}}
+
+<a
+  href="{{ $href }}"
+  aria-label="{{ $ariaLabel }}"
+  class="{{ $buttonClass }}"
+  {{- with $target }} target="{{ . }}"{{ end -}}
+  {{- with $rel }} rel="{{ . }}"{{ end -}}
+>
+  {{- if $icon -}}
+    <span class="{{ $iconWrapClass }}">
+      {{- if $page -}}
+        {{ partial "icons/icon-use-page-sprite.html" (dict
+          "page" $page
+          "id" $icon
+          "class" $iconClass
+        ) }}
+      {{- else -}}
+        {{ partial "icons/icon-inline.html" (dict
+          "id" $icon
+          "class" $iconClass
+        ) }}
+      {{- end -}}
+    </span>
+  {{- end -}}
+  <span class="cta-label-group d-inline-flex align-items-center gap-2">
+    <span class="{{ $labelClass }}">{{ $label }}</span>
+    {{- if $trailingIcon -}}
+      <span class="cta-trailing-icon d-inline-flex align-items-center lh-1{{ with $trailingIconGapClass }} {{ . }}{{ end }}">
+        {{- if $page -}}
+          {{ partial "icons/icon-use-page-sprite.html" (dict
+            "page" $page
+            "id" $trailingIcon
+            "class" $trailingIconClass
+          ) }}
+        {{- else -}}
+          {{ partial "icons/icon-inline.html" (dict
+            "id" $trailingIcon
+            "class" $trailingIconClass
+          ) }}
+        {{- end -}}
+      </span>
+    {{- end -}}
+  </span>
+</a>

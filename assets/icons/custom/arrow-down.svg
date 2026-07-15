@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg">
+ <g fill="currentColor" transform="rotate(90 320 320)">
+  <path d="M64 310h48v20h-48z"/>
+  <path d="M144 310v20h416v-20z"/>
+  <path d="M560 320l-160-160l14.142 -14.142l174.142 174.142l-174.142 174.142l-14.142-14.142l160-160z"/>
+ </g>
+</svg>
