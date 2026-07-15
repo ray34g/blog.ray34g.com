@@ -19,9 +19,7 @@ required=(
   "posts/index.html"
   "posts/index.xml"
   "archive/index.html"
-  "videos/index.html"
   "en/archive/index.html"
-  "en/videos/index.html"
   "feeds/atom.xml"
   "sitemap.xml"
   "robots.txt"
@@ -37,14 +35,14 @@ for f in "${required[@]}"; do
   fi
 done
 
-for label in "All posts" "Archive" "Videos" "Subscribe"; do
+for label in "All posts" "Archive" "Subscribe"; do
   if ! rg -q "${label}" "${PUBLIC_DIR}/en/index.html"; then
     echo "[verify-blog] ERROR: English blog navigation is missing: ${label}" >&2
     exit 1
   fi
 done
 
-for symbol in icon-bi-file-earmark-richtext icon-bi-archive icon-bi-film icon-bi-rss icon-bi-box-arrow-up-right; do
+for symbol in icon-bi-file-earmark-richtext icon-bi-archive icon-bi-rss icon-bi-box-arrow-up-right; do
   if ! rg -q "id=.?${symbol}\\b" "${PUBLIC_DIR}/en/index.html"; then
     echo "[verify-blog] ERROR: blog page sprite is missing: ${symbol}" >&2
     exit 1

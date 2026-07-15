@@ -18,12 +18,6 @@ blog:
     weight: 20
     params:
       icon: bi:archive
-  - identifier: videos
-    name: 動画
-    url: /videos/
-    weight: 30
-    params:
-      icon: bi:film
   - identifier: subscribe
     name: 購読
     url: /feeds/atom.xml
