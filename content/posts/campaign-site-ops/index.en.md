@@ -1,6 +1,7 @@
 ---
 title: Operating a Short-Running Campaign Site as a Static Site
 date: 2026-06-28
+draft: true
 description: An anonymized architecture note about running a multilingual campaign site with static-site generation and editor-friendly workflows.
 techs:
   - Hugo

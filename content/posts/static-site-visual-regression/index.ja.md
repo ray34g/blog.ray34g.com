@@ -1,6 +1,7 @@
 ---
 title: 静的サイトの変更レポートを Playwright で作る
 date: 2026-06-28
+draft: true
 description: preview と release の静的出力を比較し、スクリーンショット、差分、補助レポートをまとめるための設計メモ。
 techs:
   - Playwright
