@@ -1,6 +1,13 @@
 nav:
   mainMenu:
     title: ray34g.com
+header:
+  brand:
+    label: ray34g.com
+    alt: ray34g.com
+    homeURL: https://www.ray34g.com/
+search:
+  indexBaseURL: https://www.ray34g.com
 feed:
   sections:
   - posts

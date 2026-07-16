@@ -1,6 +1,7 @@
 {{/* layouts/partials/header/navbar-brand.html */}}
 
 {{- $brand := site.Params.header.brand | default dict -}}
+{{- $brandHomeURL := $brand.homeURL | default .Site.Home.RelPermalink -}}
 {{- $mainMenuAppearance := site.Params.appearance.mainMenu | default dict -}}
 {{- $usePrimaryForeground := eq ($mainMenuAppearance.primaryColorUse | default "none") "foreground" -}}
 
@@ -26,5 +27,5 @@
   "wordmarkClass" $wordmarkClass
   "textClass" $textClass
   "markProcess" "64x64 webp q80"
-  "href" .Site.Home.RelPermalink
+  "href" $brandHomeURL
 ) }}

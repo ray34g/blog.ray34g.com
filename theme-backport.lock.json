@@ -1,13 +1,25 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.0.0",
+  "contractVersion": "1.1.0",
   "sourceRepository": "ray34g/ray34g-personal-website",
-  "sourceCommit": "9e0bc140a14c394fe5cabf7b24cd1e954b887121",
+  "sourceCommit": "63144d1af2e47e5d236a361ceb7878fd7073a5e2",
   "bootstrapVersion": "5.3.8",
   "files": [
     {
       "path": "assets/css/base/tokens.css",
       "sha256": "420725e76c76a17f3321d2896734c1bcf173ef188ee965064955fd77cbbdfa06"
+    },
+    {
+      "path": "assets/css/base/fonts.css",
+      "sha256": "c5ad56fd4c885d75057eb4182f2e8729ca563f18134a910085a57584b6d5efaf"
+    },
+    {
+      "path": "assets/js/app.entry.js",
+      "sha256": "60f9d838255c26639266020756daa4312145ba913432c89920f0984fb339e7b3"
+    },
+    {
+      "path": "assets/js/search-fuse.js",
+      "sha256": "b29225844b6ca742ee2dd3a1c0d4599b3210691f319c166c911c2c716b23d858"
     },
     {
       "path": "assets/js/theme.js",
@@ -16,6 +28,34 @@
     {
       "path": "layouts/_default/baseof.html",
       "sha256": "f8f45fd1cb1f85986d17876e99185443d81d6d6aa28e3352e6df0430c19fe09a"
+    },
+    {
+      "path": "layouts/partials/functions/fingerprinted-font-url.html",
+      "sha256": "f5efff658f4eec6fb807d0edc18dcf755498ece61000f750bb96743b7059d1aa"
+    },
+    {
+      "path": "layouts/partials/functions/is-public-environment.html",
+      "sha256": "565cecdf6dbe2f9fbdbc3f526881df831e565af5241a526b9b59fce02439d135"
+    },
+    {
+      "path": "layouts/partials/head/font-preloads.html",
+      "sha256": "b83571db74023cc347f1e649d2ecb5224e1970fd6c4097f67cde749a92d90994"
+    },
+    {
+      "path": "layouts/partials/head/styles.html",
+      "sha256": "f29d512cdfc1f971c86bb2148d007d004919b676f53199712a411f972549f354"
+    },
+    {
+      "path": "layouts/partials/header/navbar-brand.html",
+      "sha256": "a21f7e50c223904e2bf0389bf7a199042761f4cc9658d29a6333193852582a22"
+    },
+    {
+      "path": "layouts/partials/scripts.html",
+      "sha256": "0d3c9afce0e03df384504bea06e6c6c7d31371dffe4f26a30e2bae59c5dc6090"
+    },
+    {
+      "path": "layouts/robots.txt",
+      "sha256": "895b39e2e09c1d257e9ce7423b6662c2a64403eac696fc852d920e51efb0167b"
     }
   ]
 }

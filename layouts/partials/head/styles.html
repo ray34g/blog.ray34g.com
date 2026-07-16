@@ -7,7 +7,8 @@
 {{- $base = $base | append (resources.Get "css/base/layout.css") -}}
 {{- $lang := .Site.Language.Lang -}}
 {{- $fontParams := site.Params.fonts | default dict -}}
-{{- $useSourceFontsInDev := and (not hugo.IsProduction) ((index $fontParams "useSourceFontsInDev") | default false) -}}
+{{- $isPublicEnvironment := partial "functions/is-public-environment.html" . -}}
+{{- $useSourceFontsInDev := and (not $isPublicEnvironment) ((index $fontParams "useSourceFontsInDev") | default false) -}}
 {{- $fontsContext := dict "lang" $lang "useSourceFontsInDev" $useSourceFontsInDev -}}
 {{- $fonts := resources.Get "css/base/fonts.css" | resources.ExecuteAsTemplate (printf "css/base/fonts.%s.css" $lang) $fontsContext -}}
 {{- $base = $base | append $fonts -}}
@@ -52,7 +53,7 @@
 {{- $custom := slice -}}
 {{- $custom = $custom | append (resources.Get "css/main.css") -}}
 
-{{- if hugo.IsProduction -}}
+{{- if $isPublicEnvironment -}}
   {{- partial "head/font-preloads.html" . -}}
   {{- $bundleAll := slice -}}
   {{- $bundleAll = $bundleAll | append $bootstrap -}}
@@ -76,7 +77,13 @@
     {{- $bundleAll = $bundleAll | append $css -}}
   {{- end -}}
   {{- $bundle := $bundleAll | resources.Concat (printf "css/main.%s.bundle.css" $lang) | minify | fingerprint -}}
+  {{- $performance := site.Params.performance | default dict -}}
+  {{- $inlineFullCSSOnHome := (index $performance "inlineFullCSSOnHome") | default false -}}
+  {{- if and .IsHome $inlineFullCSSOnHome -}}
+  <style data-inline-full-css>{{ $bundle.Content | safeCSS }}</style>
+  {{- else -}}
   <link rel="stylesheet" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous">
+  {{- end -}}
 {{- else -}}
   <link rel="stylesheet" href="{{ $bootstrap.RelPermalink }}" crossorigin="anonymous">
 

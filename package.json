@@ -7,7 +7,8 @@
   "scripts": {
     "build": "HUGO_ENVIRONMENT=production-blog ci/scripts/build_pages.sh public",
     "build:fast": "ci/scripts/build_blog_fast.sh public",
-    "serve": "hugo server --environment production-blog --disableFastRender --bind=0.0.0.0 --port=1315",
+    "serve": "hugo server --environment development --disableFastRender --bind=0.0.0.0 --port=1315",
+    "serve:preview": "hugo server --environment production-blog --buildDrafts --buildFuture --disableFastRender --bind=0.0.0.0 --port=1315",
     "verify": "ci/scripts/verify_blog.sh public",
     "verify:theme": "node scripts/verify-theme-backport.mjs",
     "check:i18n": "ci/scripts/check_i18n_keys.sh",
@@ -18,8 +19,8 @@
     "visual:diff:local": "npm run build-diff-report",
     "icons:sync": "node scripts/sync-icons.mjs",
     "cms:local": "decap-server",
-    "lhci": "lhci autorun",
-    "check:links": "linkinator http://localhost:1313/ --recurse --skip '^https?://(?!localhost:1313)'",
+    "lhci": "lhci autorun --config=.lighthouserc.cjs",
+    "check:links": "ci/scripts/check_links.sh",
     "sbom": "ci/scripts/generate_sbom.sh",
     "test": "npm run verify:theme && npm run build && npm run verify"
   },
@@ -27,6 +28,7 @@
   "license": "",
   "devDependencies": {
     "@fortawesome/fontawesome-free": "7.3.0",
+    "@lhci/cli": "0.15.1",
     "@sveltia/cms": "0.170.7",
     "bootstrap": "5.3.8",
     "bootstrap-icons": "1.13.1",
