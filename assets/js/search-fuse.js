@@ -8,7 +8,9 @@ export function initFuseSearch(options = {}) {
   if (!modalEl || !inputEl || !resultsEl) return;
 
   const lang = (options.lang || document.documentElement.lang || "ja").toLowerCase();
-  const INDEX_URL = lang.startsWith("en") ? "/en/index.json" : "/index.json";
+  const indexBaseURL = String(options.indexBaseURL || "").replace(/\/$/, "");
+  const indexPath = lang.startsWith("en") ? "/en/index.json" : "/index.json";
+  const INDEX_URL = `${indexBaseURL}${indexPath}`;
   let indexPromise = null;
   let indexData = null;
   let fuse = null;
@@ -51,7 +53,9 @@ export function initFuseSearch(options = {}) {
   async function loadIndex() {
     if (indexData) return indexData;
     if (!indexPromise) {
-      indexPromise = fetch(INDEX_URL, { credentials: "same-origin" })
+      // Search indexes change independently from fingerprinted assets. Always
+      // revalidate so a browser cannot retain stale cross-site destinations.
+      indexPromise = fetch(INDEX_URL, { credentials: "same-origin", cache: "no-cache" })
         .then((r) => r.ok ? r.json() : Promise.reject(new Error(String(r.status))))
         .then((data) => {
           indexData = Array.isArray(data) ? data : [];

@@ -24,13 +24,18 @@ required=(
   "sitemap.xml"
   "robots.txt"
   "images/site-sprite.svg"
-  "fonts/subsets/noto-sans-jp-500.ja.woff2"
-  "fonts/subsets/noto-sans-jp-500.en.woff2"
 )
 
 for f in "${required[@]}"; do
   if [[ ! -f "${PUBLIC_DIR}/${f}" ]]; then
     echo "[verify-blog] ERROR: missing required output: ${PUBLIC_DIR}/${f}" >&2
+    exit 1
+  fi
+done
+
+for lang in ja en; do
+  if ! find "${PUBLIC_DIR}/fonts/subsets" -maxdepth 1 -type f -name "noto-sans-jp-500.${lang}.*.woff2" | rg -q .; then
+    echo "[verify-blog] ERROR: missing fingerprinted Noto Sans JP subset for ${lang}" >&2
     exit 1
   fi
 done
@@ -70,6 +75,21 @@ fi
 
 if ! rg -q 'data-back-to-top' "${PUBLIC_DIR}/posts/index.html"; then
   echo "[verify-blog] ERROR: posts index is missing the contextual back-to-top action" >&2
+  exit 1
+fi
+
+if ! rg -q 'href=https://www\.ray34g\.com/[^>]*>.*ray34g\.com' "${PUBLIC_DIR}/index.html"; then
+  echo "[verify-blog] ERROR: global brand must link to https://www.ray34g.com/" >&2
+  exit 1
+fi
+
+if ! rg -q '/css/main\.ja\.bundle\.min\.[[:xdigit:]]+\.css' "${PUBLIC_DIR}/index.html"; then
+  echo "[verify-blog] ERROR: public blog CSS is not bundled and fingerprinted" >&2
+  exit 1
+fi
+
+if ! rg -q 'https://www\.ray34g\.com' "${PUBLIC_DIR}/js/"; then
+  echo "[verify-blog] ERROR: public blog search does not use the canonical shared index" >&2
   exit 1
 fi
 

@@ -2,6 +2,10 @@
 {{- $alg := "sha384" -}}
 
 {{- $lang := .Site.Language.Lang | default "ja" -}}
+{{- $searchIndexBaseURL := "" -}}
+{{- if not hugo.IsServer -}}
+  {{- $searchIndexBaseURL = site.Params.search.indexBaseURL | default "" -}}
+{{- end -}}
 
 {{- $jsResources := slice -}}
 {{- $jsResources = $jsResources | append (resources.Get "vendor/bootstrap/bootstrap.bundle.min.js") -}}
@@ -17,6 +21,7 @@
     "minify" true
     "params" (dict
       "lang" (.Site.Language.Lang | default "ja")
+      "searchIndexBaseURL" $searchIndexBaseURL
       )
     )
 -}}

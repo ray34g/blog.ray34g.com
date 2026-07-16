@@ -1,4 +1,4 @@
-{{- if or (eq hugo.Environment "development") (eq hugo.Environment "preview") -}}
+{{- if not (partial "functions/is-public-environment.html" .) -}}
 User-agent: *
 Disallow: /
 {{- else -}}

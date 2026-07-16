@@ -14,11 +14,14 @@ npm run serve
 ```
 
 The server listens on <http://localhost:1315>.
+Use `npm run serve:preview` to include draft and future-dated posts.
 
 ## Validation
 
 ```sh
 npm test
+npm run check:links
+npm run lhci
 ```
 
 `npm run build:fast` performs the immediate single-pass build when reviewed

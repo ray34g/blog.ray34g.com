@@ -1,0 +1,7 @@
+{{- $resource := resources.Get . -}}
+{{- $url := . | relURL -}}
+{{- if $resource -}}
+  {{- $url = ($resource | fingerprint).RelPermalink -}}
+{{- end -}}
+{{- /* The analysis pass runs before generated subsets exist on a clean clone. */ -}}
+{{- return $url -}}
