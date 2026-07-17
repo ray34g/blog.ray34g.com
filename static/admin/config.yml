@@ -4,8 +4,8 @@ backend:
   name: github
   repo: ray34g/blog.ray34g.com
   branch: main
-  # Replace with [oauth] and add base_url after the private OAuth broker is deployed.
-  auth_methods: [token]
+  base_url: https://cms-auth.ray34g.com
+  auth_methods: [oauth]
   squash_merges: true
 
 site_url: https://blog.ray34g.com
