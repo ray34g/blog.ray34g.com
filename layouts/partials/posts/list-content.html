@@ -21,12 +21,14 @@
     <div class="container">
       <div class="row g-4">
         {{ range $pages.ByDate.Reverse }}
+        {{- $postURL := .Params.externalUrl | default .RelPermalink -}}
+        {{- $external := ne (.Params.externalUrl | default "") "" -}}
         <article class="col-12">
           <div class="post-card bg-body border p-4 h-100">
             <div class="post-meta text-body-secondary mb-2">
               <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (.Site.Params.dateFormat | default "2006-01-02") }}</time>
             </div>
-            <h2 class="h3"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+            <h2 class="h3"><a href="{{ $postURL }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>{{ .Title }}{{ if $external }} <span class="visually-hidden">({{ cond (eq .Lang "ja") "外部リンク" "external link" }})</span>{{ end }}</a></h2>
             {{ with .Description }}
             <p class="mb-3">{{ . }}</p>
             {{ end }}

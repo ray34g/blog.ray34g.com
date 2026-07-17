@@ -24,6 +24,12 @@ npm run check:links
 npm run lhci
 ```
 
+## Content management
+
+The lockfile-pinned Sveltia CMS editor is published at `/admin/` and writes to
+this repository. It manages multilingual Posts and external-link Videos under
+`content/posts/`; the private OAuth broker URL will be configured separately.
+
 `npm run build:fast` performs the immediate single-pass build when reviewed
 derived assets are available. `npm run build` performs the full two-pass asset and
 font refresh. The migration Pages workflow intentionally uses the full path until

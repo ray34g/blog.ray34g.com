@@ -7,8 +7,10 @@
   {{- $videos := where (where site.RegularPages "Section" "posts") ".Params.video" "!=" nil -}}
   <div class="row g-4">
     {{- range $videos }}
+    {{- $videoURL := .Params.externalUrl | default .RelPermalink -}}
+    {{- $external := ne (.Params.externalUrl | default "") "" -}}
     <article class="col-sm-6 col-md-4">
-      <h3 class="h5 mb-1"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      <h3 class="h5 mb-1"><a href="{{ $videoURL }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>{{ .Title }}{{ if $external }} <span class="visually-hidden">({{ cond (eq .Lang "ja") "外部リンク" "external link" }})</span>{{ end }}</a></h3>
       <time class="small text-body-secondary" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
     </article>
     {{- else }}

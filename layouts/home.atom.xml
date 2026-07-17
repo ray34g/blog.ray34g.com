@@ -23,10 +23,11 @@
   </author>
   <generator uri="https://gohugo.io/">Hugo</generator>
   {{- range $pages }}
+  {{- $entryURL := .Params.externalUrl | default .Permalink -}}
   <entry>
     <title>{{ .Title | transform.XMLEscape }}</title>
-    <id>{{ .Permalink | transform.XMLEscape }}</id>
-    <link href="{{ .Permalink | transform.XMLEscape }}" rel="alternate" type="text/html"/>
+    <id>{{ $entryURL | transform.XMLEscape }}</id>
+    <link href="{{ $entryURL | transform.XMLEscape }}" rel="alternate" type="text/html"/>
     <published>{{ .Date.UTC.Format "2006-01-02T15:04:05Z07:00" }}</published>
     <updated>{{ .Lastmod.UTC.Format "2006-01-02T15:04:05Z07:00" }}</updated>
     {{- with .Description | default .Summary | plainify }}

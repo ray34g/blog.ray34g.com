@@ -1,22 +1,23 @@
-# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.170.7/schema/sveltia-cms.json
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.171.1/schema/sveltia-cms.json
 
 backend:
   name: github
   repo: ray34g/blog.ray34g.com
   branch: main
+  # Replace with [oauth] and add base_url after the private OAuth broker is deployed.
+  auth_methods: [token]
   squash_merges: true
 
-# A local proxy changes only the working tree. Production authentication uses
-# a short-lived, least-privilege GitHub token for this single-maintainer site.
-local_backend:
-  url: http://localhost:8081/api/v1
-
-publish_mode: editorial_workflow
 site_url: https://blog.ray34g.com
 display_url: https://blog.ray34g.com
-logo_url: /images/icon.svg
+logo:
+  src: /images/icon.svg
+  show_in_header: true
 media_folder: static/uploads
 public_folder: /uploads
+
+output:
+  omit_empty_optional_fields: true
 
 i18n:
   structure: multiple_files
@@ -25,9 +26,9 @@ i18n:
 
 collections:
   - name: posts
-    label: Posts
-    label_singular: Post
-    description: Multilingual posts stored as Hugo leaf bundles.
+    label: Posts / 記事
+    label_singular: Post / 記事
+    description: 通常の記事と、外部サイトを参照する記事を管理します。
     folder: content/posts
     path: '{{slug}}/index'
     extension: md
@@ -38,55 +39,110 @@ collections:
     media_folder: ''
     public_folder: ''
     slug: '{{slug}}'
+    filter: { field: video, value: null }
     summary: '{{title}} — {{date}}'
     sortable_fields: [title, date, commit_date]
     view_filters:
-      - label: Drafts
-        field: draft
-        pattern: true
-    fields:
-      - name: title
-        label: Title
-        widget: string
-        i18n: true
+      - { label: Drafts, field: draft, pattern: true }
+    fields: &post_fields
+      - { name: title, label: Title / タイトル, widget: string, i18n: true }
       - name: date
-        label: Published at
+        label: Published at / 公開日
         widget: datetime
         format: YYYY-MM-DD
         date_format: YYYY-MM-DD
         time_format: false
         i18n: duplicate
-      - name: draft
-        label: Draft
-        widget: boolean
-        default: true
+      - { name: draft, label: Draft / 下書き, widget: boolean, default: true, required: false, i18n: duplicate }
+      - { name: description, label: Description / 概要, widget: text, i18n: true }
+      - name: externalUrl
+        label: External URL / 外部リンク
+        widget: string
         required: false
+        pattern: ['^https://.+', 'https:// で始まるURLを入力してください']
+        hint: 設定すると一覧とフィードからこのURLへ直接リンクします。
         i18n: duplicate
-      - name: description
-        label: Description
-        widget: text
+      - label: Hero image / ヒーロー画像
+        name: hero
+        widget: object
+        required: false
+        collapsed: true
         i18n: true
-      - name: techs
-        label: Technologies
-        widget: list
-        required: false
+        hint: 表示レイアウトは未実装です。画像は記事bundle内に保存されます。
+        fields:
+          - { name: image, label: Image / 画像, widget: image, i18n: duplicate }
+          - name: aspect_ratio
+            label: Aspect ratio / アスペクト比
+            widget: select
+            options:
+              - { label: '16:9 (landscape)', value: '16:9' }
+              - { label: '1:1 (square)', value: '1:1' }
+            default: '16:9'
+            i18n: duplicate
+          - { name: alt, label: Alternative text / 代替テキスト, widget: string, required: false, i18n: true }
+      - { name: techs, label: Technologies, widget: list, required: false, i18n: duplicate }
+      - { name: roles, label: Roles, widget: list, required: false, i18n: duplicate }
+      - { name: capabilities, label: Capabilities, widget: list, required: false, i18n: duplicate }
+      - { name: contexts, label: Contexts, widget: list, required: false, i18n: duplicate }
+      - { name: body, label: Body / 本文, widget: markdown, i18n: true }
+
+  - name: videos
+    label: Videos / 動画
+    label_singular: Video / 動画
+    description: 動画紹介を外部リンク型の記事として管理します。
+    folder: content/posts
+    path: '{{slug}}/index'
+    extension: md
+    format: yaml-frontmatter
+    create: true
+    delete: true
+    i18n: true
+    media_folder: ''
+    public_folder: ''
+    slug: '{{slug}}'
+    filter: { field: video, value: true }
+    summary: '{{title}} — {{date}}'
+    sortable_fields: [title, date, commit_date]
+    view_filters:
+      - { label: Drafts, field: draft, pattern: true }
+    fields:
+      - { name: title, label: Title / タイトル, widget: string, i18n: true }
+      - name: date
+        label: Published at / 公開日
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
         i18n: duplicate
-      - name: roles
-        label: Roles
-        widget: list
-        required: false
+      - { name: draft, label: Draft / 下書き, widget: boolean, default: true, required: false, i18n: duplicate }
+      - { name: description, label: Description / 概要, widget: text, i18n: true }
+      - name: externalUrl
+        label: Video URL / 動画URL
+        widget: string
+        pattern: ['^https://.+', 'https:// で始まるURLを入力してください']
         i18n: duplicate
-      - name: capabilities
-        label: Capabilities
-        widget: list
-        required: false
+      - { name: video, label: Video entry, widget: hidden, default: true, i18n: duplicate }
+      - name: _build
+        label: Hugo build options
+        widget: hidden
+        default: { render: never, list: local }
         i18n: duplicate
-      - name: contexts
-        label: Contexts
-        widget: list
+      - label: Hero image / ヒーロー画像
+        name: hero
+        widget: object
         required: false
-        i18n: duplicate
-      - name: body
-        label: Body
-        widget: markdown
+        collapsed: true
         i18n: true
+        hint: 表示レイアウトは未実装です。画像は記事bundle内に保存されます。
+        fields:
+          - { name: image, label: Image / 画像, widget: image, i18n: duplicate }
+          - name: aspect_ratio
+            label: Aspect ratio / アスペクト比
+            widget: select
+            options:
+              - { label: '16:9 (landscape)', value: '16:9' }
+              - { label: '1:1 (square)', value: '1:1' }
+            default: '16:9'
+            i18n: duplicate
+          - { name: alt, label: Alternative text / 代替テキスト, widget: string, required: false, i18n: true }
+      - { name: body, label: Notes / 補足本文, widget: markdown, required: false, i18n: true }

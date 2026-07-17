@@ -9,9 +9,11 @@
     <h3 id="archive-{{ .Key }}">{{ .Key }}</h3>
     <ul class="list-unstyled">
       {{- range .Pages }}
+      {{- $postURL := .Params.externalUrl | default .RelPermalink -}}
+      {{- $external := ne (.Params.externalUrl | default "") "" -}}
       <li class="d-flex flex-column flex-sm-row gap-1 gap-sm-3 py-2 border-bottom">
         <time class="text-body-secondary flex-shrink-0" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-        <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        <a href="{{ $postURL }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>{{ .LinkTitle }}{{ if $external }} <span class="visually-hidden">({{ cond (eq .Lang "ja") "外部リンク" "external link" }})</span>{{ end }}</a>
       </li>
       {{- end }}
     </ul>

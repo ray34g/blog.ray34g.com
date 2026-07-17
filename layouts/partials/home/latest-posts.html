@@ -18,11 +18,13 @@
     {{- if gt (len $posts) 0 -}}
       <div class="row g-4">
         {{- range $posts -}}
+          {{- $postURL := .Params.externalUrl | default .RelPermalink -}}
+          {{- $external := ne (.Params.externalUrl | default "") "" -}}
           <article class="col-12 col-lg-4">
             <div class="card h-100 border-0 shadow-sm">
               <div class="card-body p-4">
                 <time class="small text-body-secondary" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format (site.Params.dateFormat | default "2006-01-02") }}</time>
-                <h3 class="h4 mt-2 mb-3"><a class="stretched-link text-decoration-none" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                <h3 class="h4 mt-2 mb-3"><a class="stretched-link text-decoration-none" href="{{ $postURL }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>{{ .Title }}{{ if $external }} <span class="visually-hidden">({{ cond (eq .Lang "ja") "外部リンク" "external link" }})</span>{{ end }}</a></h3>
                 {{- with .Description -}}<p class="card-text text-body-secondary">{{ . }}</p>{{- end -}}
               </div>
             </div>
