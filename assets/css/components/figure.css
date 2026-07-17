@@ -21,11 +21,11 @@
 
 .image-media.has-bg-grid {
   background:
-    linear-gradient(135deg, rgba(var(--christmas-red-rgb), 0.06), rgba(var(--gold-20-rgb), 0.1)),
+    linear-gradient(135deg, rgba(var(--primary-accent-rgb), 0.06), rgba(var(--secondary-accent-rgb), 0.1)),
     repeating-linear-gradient(
       -45deg,
-      rgba(var(--christmas-red-rgb), 0.04) 0,
-      rgba(var(--christmas-red-rgb), 0.04) var(--figure-placeholder-stripe-step),
+      rgba(var(--primary-accent-rgb), 0.04) 0,
+      rgba(var(--primary-accent-rgb), 0.04) var(--figure-placeholder-stripe-step),
       rgba(255, 255, 255, 0.55) var(--figure-placeholder-stripe-step),
       rgba(255, 255, 255, 0.55) var(--figure-placeholder-stripe-cycle)
     );
@@ -34,11 +34,11 @@
 .image-media.has-placeholder {
   min-height: var(--figure-placeholder-min-height);
   background:
-    linear-gradient(135deg, rgba(var(--christmas-red-rgb), 0.08), rgba(var(--gold-20-rgb), 0.12)),
+    linear-gradient(135deg, rgba(var(--primary-accent-rgb), 0.08), rgba(var(--secondary-accent-rgb), 0.12)),
     repeating-linear-gradient(
       -45deg,
-      rgba(var(--christmas-red-rgb), 0.08) 0,
-      rgba(var(--christmas-red-rgb), 0.08) var(--figure-placeholder-stripe-step),
+      rgba(var(--primary-accent-rgb), 0.08) 0,
+      rgba(var(--primary-accent-rgb), 0.08) var(--figure-placeholder-stripe-step),
       rgba(255, 255, 255, 0.45) var(--figure-placeholder-stripe-step),
       rgba(255, 255, 255, 0.45) var(--figure-placeholder-stripe-cycle)
     );
@@ -50,7 +50,7 @@
   inset: 50% auto auto 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
-  color: rgba(var(--christmas-deep-red-rgb), 0.7);
+  color: rgba(var(--primary-accent-strong-rgb), 0.7);
   font-size: var(--figure-placeholder-label-size);
   font-weight: 500;
   letter-spacing: var(--figure-placeholder-label-spacing);
@@ -59,11 +59,11 @@
 }
 
 .image-media.is-coming-soon::before {
-  color: rgba(var(--christmas-red-rgb), 0.8);
+  color: rgba(var(--primary-accent-rgb), 0.8);
 }
 
 .image-media.is-broken::before {
-  color: rgba(var(--christmas-red-rgb), 0.8);
+  color: rgba(var(--primary-accent-rgb), 0.8);
 }
 
 .figure-img.is-clamped-height,

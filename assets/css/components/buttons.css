@@ -5,11 +5,11 @@
   --bs-btn-border-color: var(--bs-primary);
   --bs-btn-hover-color: var(--bs-primary);
   --bs-btn-hover-bg: #fff;
-  --bs-btn-hover-border-color: var(--christmas-deep-red);
-  --bs-btn-focus-shadow-rgb: var(--christmas-deep-red-rgb);
+  --bs-btn-hover-border-color: var(--primary-accent-strong);
+  --bs-btn-focus-shadow-rgb: var(--primary-accent-strong-rgb);
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: var(--christmas-deep-red);
-  --bs-btn-active-border-color: var(--christmas-deep-red);
+  --bs-btn-active-bg: var(--primary-accent-strong);
+  --bs-btn-active-border-color: var(--primary-accent-strong);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
   --bs-btn-disabled-bg: var(--bs-primary);
@@ -38,7 +38,7 @@
   --bs-btn-hover-color: #fff;
   --bs-btn-hover-bg: var(--bs-primary);
   --bs-btn-hover-border-color: var(--bs-primary);
-  --bs-btn-focus-shadow-rgb: var(--christmas-deep-red-rgb);
+  --bs-btn-focus-shadow-rgb: var(--primary-accent-strong-rgb);
   --bs-btn-active-color: #fff;
   --bs-btn-active-bg: var(--bs-primary);
   --bs-btn-active-border-color: var(--bs-primary);

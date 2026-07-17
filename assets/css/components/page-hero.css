@@ -4,7 +4,7 @@
 }
 
 .page-hero-title {
-  color: var(--christmas-red);
+  color: var(--primary-accent);
   font-weight: 900;
 }
 
@@ -14,5 +14,5 @@
 }
 
 .page-hero-subtitle {
-  color: var(--gold-20);
+  color: var(--secondary-accent);
 }

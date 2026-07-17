@@ -1,13 +1,45 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.3.0",
+  "contractVersion": "1.4.0",
   "sourceRepository": "ray34g/ray34g-personal-website",
-  "sourceCommit": "4f06736c1dcf485aa6a9c74c4d039140cca7a5cf",
+  "sourceCommit": "d2811c4a0dfccd6f2c2d38ecdec0474daa5d5aa4",
   "bootstrapVersion": "5.3.8",
   "files": [
     {
+      "path": "assets/css/main.css",
+      "sha256": "19d75cb355b3805ad143ef6a48d7eed0f4d0e68797f6610169691176568190e1"
+    },
+    {
       "path": "assets/css/base/tokens.css",
       "sha256": "420725e76c76a17f3321d2896734c1bcf173ef188ee965064955fd77cbbdfa06"
+    },
+    {
+      "path": "assets/css/base/typography.css",
+      "sha256": "b4ddfc64b25ede923c8297d42650c9debc3c85db1d8d6c83f4e22079a46acea7"
+    },
+    {
+      "path": "assets/css/components/buttons.css",
+      "sha256": "9a439ecfbb56688566cf592676e114a1f5ed7f7f6f23c9ab6eecaeda59911350"
+    },
+    {
+      "path": "assets/css/components/figure.css",
+      "sha256": "1622b299df2132867d6db9aab22b3b9967dd6ec8abd3fd84142749817a335b82"
+    },
+    {
+      "path": "assets/css/components/page-hero.css",
+      "sha256": "bf94fd3a8798faafb37abb321dcb816f1114a82afe04fbf2d80012bcb253cd12"
+    },
+    {
+      "path": "assets/css/components/shortcode-stat-values.css",
+      "sha256": "b266691024446876f2c2546372e9fd940e95bd46af875a6768955084af05efaa"
+    },
+    {
+      "path": "assets/css/layout/blog.css",
+      "sha256": "839c28fb28eb699b2bded1d959f091ba85284ecd9ea88b2e16a2a8fb8433b006"
+    },
+    {
+      "path": "assets/css/layout/single.css",
+      "sha256": "e4396519c8c5eaf5df6fc52d34fcf6edfd7a27e352466d1dd0ff3f1d53e57496"
     },
     {
       "path": "assets/css/base/fonts.css",
