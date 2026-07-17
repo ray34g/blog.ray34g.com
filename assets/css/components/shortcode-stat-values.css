@@ -51,7 +51,7 @@
 }
 
 .stat-value-underline::after {
-  --underline-color: var(--gold-20);
+  --underline-color: var(--secondary-accent);
   content: "";
   position: absolute;
   inset-inline: 0;
