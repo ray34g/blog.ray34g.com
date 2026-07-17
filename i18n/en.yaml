@@ -24,6 +24,7 @@ back_to_top: "Back to top"
 "search.placeholder": "Type to search..."
 "search.results": "Search results"
 "search.hint": "Start typing to see results."
+"search.no_results": "No matching pages were found."
 "search.footer_hint": "Tip: Press Esc to close."
 "common.close": "Close"
 

@@ -40,6 +40,7 @@ back_to_top: "ページの先頭へ戻る"
 "search.placeholder": "検索語句を入力..."
 "search.results": "検索結果"
 "search.hint": "入力すると検索結果が表示されます。"
+"search.no_results": "一致するページは見つかりませんでした。"
 "search.footer_hint": "Escキーで閉じられます。"
 "common.close": "閉じる"
 

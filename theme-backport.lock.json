@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.2.0",
+  "contractVersion": "1.3.0",
   "sourceRepository": "ray34g/ray34g-personal-website",
-  "sourceCommit": "5e84c742fa83deec0c416cf621d58d812aa103c6",
+  "sourceCommit": "4f06736c1dcf485aa6a9c74c4d039140cca7a5cf",
   "bootstrapVersion": "5.3.8",
   "files": [
     {
@@ -15,19 +15,31 @@
     },
     {
       "path": "assets/js/app.entry.js",
-      "sha256": "9ad7d9540a0f35ccc8b56562a3a8386e160bcf604778fda2e5adc1fc4ab4c8dd"
+      "sha256": "301e9e9a9c2dc7a06936e35094f65080a0b6bc6136ca87175a0d37532321761c"
     },
     {
       "path": "assets/js/search-fuse.js",
-      "sha256": "7c7f742b0c6a6df6d4888ec147112b771dfd547d0af7a3321c342ea3a4ee4027"
+      "sha256": "68d4764ffa92a01f8b6841ac743ccf65c3af30b14e7659fe7c726e528b697d03"
     },
     {
       "path": "assets/js/theme.js",
       "sha256": "b00d4c30b223e868bbdcd1360c7715c470c3e5e4f568bbb096fa2b12a4e74171"
     },
     {
+      "path": "i18n/en.yaml",
+      "sha256": "93a5f892925203aec6cc14de986f79ad8c3aa5fbfbd46ba60e423d646248cde5"
+    },
+    {
+      "path": "i18n/ja.yaml",
+      "sha256": "b38811f59b6f871f1c746e27b9cc3360020cbc58b4fcb2749326db2b0a402d53"
+    },
+    {
       "path": "layouts/_default/baseof.html",
       "sha256": "f8f45fd1cb1f85986d17876e99185443d81d6d6aa28e3352e6df0430c19fe09a"
+    },
+    {
+      "path": "layouts/index.json",
+      "sha256": "9998a44d10c20b961281402c11a3e6f18e8e8d932201c8cd767ab6cb201c954e"
     },
     {
       "path": "layouts/partials/functions/fingerprinted-font-url.html",
@@ -51,7 +63,11 @@
     },
     {
       "path": "layouts/partials/scripts.html",
-      "sha256": "c34cbae071a2021bfad27b6c4ccdf7d01b3d8f442706319daa622afe05e49392"
+      "sha256": "19d5afc505116aa4d990e473852871ece7b66c5b9cdfe0943a15f1f0ecafa525"
+    },
+    {
+      "path": "layouts/partials/search.html",
+      "sha256": "884392b191ffa82869dac553f462c65a18c127d1a7db04a393ca6980a70eb3fa"
     },
     {
       "path": "layouts/robots.txt",

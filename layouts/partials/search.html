@@ -35,7 +35,11 @@
         <div id="search-results" class="list-group" role="listbox" aria-label="{{ i18n "search.results" | default "Search results" }}"></div>
 
         {{/* Optional: empty state placeholder (JS can toggle) */}}
-        <div id="search-empty" class="text-body-secondary mt-3">
+        <div
+          id="search-empty"
+          class="text-body-secondary mt-3"
+          data-search-hint="{{ i18n "search.hint" | default "Start typing to see results." }}"
+          data-search-no-results="{{ i18n "search.no_results" | default "No matching pages were found." }}">
           {{ i18n "search.hint" | default "Start typing to see results." }}
         </div>
       </div>
