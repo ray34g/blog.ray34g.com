@@ -7,7 +7,11 @@ header:
     alt: ray34g.com
     homeURL: https://www.ray34g.com/
 search:
-  indexBaseURL: https://www.ray34g.com
+  sources:
+  - id: www
+    baseURL: https://www.ray34g.com
+  - id: blog
+    baseURL: https://blog.ray34g.com
 feed:
   sections:
   - posts
