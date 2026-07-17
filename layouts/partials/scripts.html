@@ -2,9 +2,15 @@
 {{- $alg := "sha384" -}}
 
 {{- $lang := .Site.Language.Lang | default "ja" -}}
-{{- $searchIndexBaseURL := "" -}}
+{{- $searchSources := slice (dict "id" "current" "baseURL" "") -}}
 {{- if not hugo.IsServer -}}
-  {{- $searchIndexBaseURL = site.Params.search.indexBaseURL | default "" -}}
+  {{- $searchSources = slice -}}
+  {{- range site.Params.search.sources -}}
+    {{- $searchSources = $searchSources | append (dict
+      "id" (.id | default "unknown")
+      "baseURL" (.baseURL | default "")
+      ) -}}
+  {{- end -}}
 {{- end -}}
 
 {{- $jsResources := slice -}}
@@ -21,7 +27,7 @@
     "minify" true
     "params" (dict
       "lang" (.Site.Language.Lang | default "ja")
-      "searchIndexBaseURL" $searchIndexBaseURL
+      "searchSources" $searchSources
       )
     )
 -}}

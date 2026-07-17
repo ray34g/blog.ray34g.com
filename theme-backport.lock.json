@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.1.0",
+  "contractVersion": "1.2.0",
   "sourceRepository": "ray34g/ray34g-personal-website",
-  "sourceCommit": "63144d1af2e47e5d236a361ceb7878fd7073a5e2",
+  "sourceCommit": "5e84c742fa83deec0c416cf621d58d812aa103c6",
   "bootstrapVersion": "5.3.8",
   "files": [
     {
@@ -15,11 +15,11 @@
     },
     {
       "path": "assets/js/app.entry.js",
-      "sha256": "60f9d838255c26639266020756daa4312145ba913432c89920f0984fb339e7b3"
+      "sha256": "9ad7d9540a0f35ccc8b56562a3a8386e160bcf604778fda2e5adc1fc4ab4c8dd"
     },
     {
       "path": "assets/js/search-fuse.js",
-      "sha256": "b29225844b6ca742ee2dd3a1c0d4599b3210691f319c166c911c2c716b23d858"
+      "sha256": "7c7f742b0c6a6df6d4888ec147112b771dfd547d0af7a3321c342ea3a4ee4027"
     },
     {
       "path": "assets/js/theme.js",
@@ -51,7 +51,7 @@
     },
     {
       "path": "layouts/partials/scripts.html",
-      "sha256": "0d3c9afce0e03df384504bea06e6c6c7d31371dffe4f26a30e2bae59c5dc6090"
+      "sha256": "c34cbae071a2021bfad27b6c4ccdf7d01b3d8f442706319daa622afe05e49392"
     },
     {
       "path": "layouts/robots.txt",

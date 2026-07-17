@@ -8,9 +8,10 @@ export function initFuseSearch(options = {}) {
   if (!modalEl || !inputEl || !resultsEl) return;
 
   const lang = (options.lang || document.documentElement.lang || "ja").toLowerCase();
-  const indexBaseURL = String(options.indexBaseURL || "").replace(/\/$/, "");
+  const sources = Array.isArray(options.sources) && options.sources.length > 0
+    ? options.sources
+    : [{ id: "current", baseURL: "" }];
   const indexPath = lang.startsWith("en") ? "/en/index.json" : "/index.json";
-  const INDEX_URL = `${indexBaseURL}${indexPath}`;
   let indexPromise = null;
   let indexData = null;
   let fuse = null;
@@ -53,19 +54,42 @@ export function initFuseSearch(options = {}) {
   async function loadIndex() {
     if (indexData) return indexData;
     if (!indexPromise) {
-      // Search indexes change independently from fingerprinted assets. Always
-      // revalidate so a browser cannot retain stale cross-site destinations.
-      indexPromise = fetch(INDEX_URL, { credentials: "same-origin", cache: "no-cache" })
-        .then((r) => r.ok ? r.json() : Promise.reject(new Error(String(r.status))))
-        .then((data) => {
-          indexData = Array.isArray(data) ? data : [];
-          return indexData;
-        })
-        .catch((err) => {
-          console.error("index.json load failed", err);
-          indexData = [];
-          return indexData;
+      // Each Hugo site owns its JSON output. Collect the configured sources at
+      // runtime so independently deployed repositories remain independently
+      // searchable. Revalidate because indexes are not fingerprinted assets.
+      indexPromise = Promise.all(sources.map(async (source) => {
+        const id = String(source.id || "unknown");
+        const baseURL = String(source.baseURL || "").replace(/\/$/, "");
+        const indexURL = `${baseURL}${indexPath}`;
+
+        try {
+          const response = await fetch(indexURL, {
+            credentials: "same-origin",
+            cache: "no-cache",
+          });
+          if (!response.ok) throw new Error(String(response.status));
+          const data = await response.json();
+          if (!Array.isArray(data)) throw new TypeError("index is not an array");
+
+          const origin = baseURL || window.location.origin;
+          return data.map((item) => ({
+            ...item,
+            source: id,
+            url: new URL(String(item.url || "/"), `${origin}/`).href,
+          }));
+        } catch (err) {
+          console.error(`search index load failed: ${id}`, err);
+          return [];
+        }
+      })).then((sourceItems) => {
+        const seen = new Set();
+        indexData = sourceItems.flat().filter((item) => {
+          if (seen.has(item.url)) return false;
+          seen.add(item.url);
+          return true;
         });
+        return indexData;
+      });
     }
     return indexPromise;
   }

@@ -16,7 +16,7 @@ import { initFuseSearch } from "./search-fuse.js";
 {{- end }}
 
 const LANG = params.lang || "ja";
-const SEARCH_INDEX_BASE_URL = params.searchIndexBaseURL || "";
+const SEARCH_SOURCES = Array.isArray(params.searchSources) ? params.searchSources : [];
 
 (() => {
   initApp();
@@ -30,6 +30,6 @@ const SEARCH_INDEX_BASE_URL = params.searchIndexBaseURL || "";
 
   {{ if .Site.Params.enableSearch | default false -}}
   initSearchModal({ lang: LANG });
-  initFuseSearch({ lang: LANG, indexBaseURL: SEARCH_INDEX_BASE_URL });
+  initFuseSearch({ lang: LANG, sources: SEARCH_SOURCES });
   {{- end }}
 })();

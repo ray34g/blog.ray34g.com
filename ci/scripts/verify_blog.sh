@@ -88,10 +88,12 @@ if ! rg -q '/css/main\.ja\.bundle\.min\.[[:xdigit:]]+\.css' "${PUBLIC_DIR}/index
   exit 1
 fi
 
-if ! rg -q 'https://www\.ray34g\.com' "${PUBLIC_DIR}/js/"; then
-  echo "[verify-blog] ERROR: public blog search does not use the canonical shared index" >&2
-  exit 1
-fi
+for source_url in 'https://www\.ray34g\.com' 'https://blog\.ray34g\.com'; do
+  if ! rg -q "${source_url}" "${PUBLIC_DIR}/js/"; then
+    echo "[verify-blog] ERROR: public blog search source is missing: ${source_url}" >&2
+    exit 1
+  fi
+done
 
 if rg -q 'main-content-wrapper[^>]*data-bs-theme=.?light' "${PUBLIC_DIR}/index.html"; then
   echo "[verify-blog] ERROR: blog content wrapper must inherit the selected color theme" >&2
