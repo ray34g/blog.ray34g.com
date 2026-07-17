@@ -1,5 +1,5 @@
 schemaVersion: 1
-contractVersion: 1.2.0
+contractVersion: 1.3.0
 sourceRepository: ray34g/ray34g-personal-website
 bootstrapVersion: 5.3.8
 allowedFiles:
@@ -8,11 +8,15 @@ allowedFiles:
   - assets/js/app.entry.js
   - assets/js/search-fuse.js
   - assets/js/theme.js
+  - i18n/en.yaml
+  - i18n/ja.yaml
   - layouts/_default/baseof.html
+  - layouts/index.json
   - layouts/partials/functions/fingerprinted-font-url.html
   - layouts/partials/functions/is-public-environment.html
   - layouts/partials/head/font-preloads.html
   - layouts/partials/head/styles.html
   - layouts/partials/header/navbar-brand.html
   - layouts/partials/scripts.html
+  - layouts/partials/search.html
   - layouts/robots.txt

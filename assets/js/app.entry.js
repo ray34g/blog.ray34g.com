@@ -17,6 +17,7 @@ import { initFuseSearch } from "./search-fuse.js";
 
 const LANG = params.lang || "ja";
 const SEARCH_SOURCES = Array.isArray(params.searchSources) ? params.searchSources : [];
+const SEARCH_SORT = params.searchSort || "relevance";
 
 (() => {
   initApp();
@@ -30,6 +31,6 @@ const SEARCH_SOURCES = Array.isArray(params.searchSources) ? params.searchSource
 
   {{ if .Site.Params.enableSearch | default false -}}
   initSearchModal({ lang: LANG });
-  initFuseSearch({ lang: LANG, sources: SEARCH_SOURCES });
+  initFuseSearch({ lang: LANG, sources: SEARCH_SOURCES, sort: SEARCH_SORT });
   {{- end }}
 })();

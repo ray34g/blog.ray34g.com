@@ -28,6 +28,7 @@
     "params" (dict
       "lang" (.Site.Language.Lang | default "ja")
       "searchSources" $searchSources
+      "searchSort" (site.Params.search.sort | default "relevance")
       )
     )
 -}}

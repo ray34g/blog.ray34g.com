@@ -11,12 +11,17 @@ export function initFuseSearch(options = {}) {
   const sources = Array.isArray(options.sources) && options.sources.length > 0
     ? options.sources
     : [{ id: "current", baseURL: "" }];
+  const sortMode = ["relevance", "date-desc", "title"].includes(options.sort)
+    ? options.sort
+    : "relevance";
   const indexPath = lang.startsWith("en") ? "/en/index.json" : "/index.json";
   let indexPromise = null;
   let indexData = null;
   let fuse = null;
 
   const setStatus = (t) => { if (statusEl) statusEl.textContent = t || ""; };
+  const hintText = emptyEl?.dataset.searchHint || "Start typing to see results.";
+  const noResultsText = emptyEl?.dataset.searchNoResults || "No matching pages were found.";
 
   const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) =>
     ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])
@@ -25,9 +30,14 @@ export function initFuseSearch(options = {}) {
   function render(items) {
     resultsEl.innerHTML = "";
     if (!items || items.length === 0) {
+      if (emptyEl) {
+        emptyEl.textContent = noResultsText;
+        emptyEl.classList.remove("d-none");
+      }
       setStatus("No results.");
       return;
     }
+    if (emptyEl) emptyEl.classList.add("d-none");
     const frag = document.createDocumentFragment();
     items.forEach((item) => {
       const a = document.createElement("a");
@@ -100,7 +110,7 @@ export function initFuseSearch(options = {}) {
 
     fuse = new window.Fuse(data, {
       includeScore: true,
-      shouldSort: true,
+      shouldSort: false,
       threshold: 0.35,        // ノイズが多ければ 0.30 くらいへ
       ignoreLocation: true,
       minMatchCharLength: 1,  // ご希望どおり
@@ -111,6 +121,25 @@ export function initFuseSearch(options = {}) {
       ],
     });
     return fuse;
+  }
+
+  function sortHits(hits) {
+    const score = (hit) => Number.isFinite(hit.score) ? hit.score : 1;
+    const date = (hit) => Date.parse(hit.item.date || "") || 0;
+    const title = (hit) => String(hit.item.title || "");
+    const byRelevance = (a, b) => score(a) - score(b);
+    const byNewest = (a, b) => date(b) - date(a);
+    const byTitle = (a, b) => title(a).localeCompare(title(b), lang);
+
+    return hits.sort((a, b) => {
+      if (sortMode === "date-desc") {
+        return byNewest(a, b) || byRelevance(a, b) || byTitle(a, b);
+      }
+      if (sortMode === "title") {
+        return byTitle(a, b) || byRelevance(a, b) || byNewest(a, b);
+      }
+      return byRelevance(a, b) || byNewest(a, b) || byTitle(a, b);
+    });
   }
 
   // モーダルが開いたら先読み（体感改善）
@@ -125,7 +154,10 @@ export function initFuseSearch(options = {}) {
   modalEl.addEventListener("hidden.bs.modal", () => {
     inputEl.value = "";
     resultsEl.innerHTML = "";
-    if (emptyEl) emptyEl.classList.remove("d-none");
+    if (emptyEl) {
+      emptyEl.textContent = hintText;
+      emptyEl.classList.remove("d-none");
+    }
     setStatus("");
   });
 
@@ -139,6 +171,10 @@ export function initFuseSearch(options = {}) {
     debounce = window.setTimeout(async () => {
       if (!q.trim()) {
         resultsEl.innerHTML = "";
+        if (emptyEl) {
+          emptyEl.textContent = hintText;
+          emptyEl.classList.remove("d-none");
+        }
         setStatus("");
         return;
       }
@@ -148,7 +184,7 @@ export function initFuseSearch(options = {}) {
         setStatus("Search unavailable.");
         return;
       }
-      const hits = f.search(q).slice(0, 30).map((x) => x.item);
+      const hits = sortHits(f.search(q)).slice(0, 30).map((x) => x.item);
       render(hits);
     }, 60);
   });
